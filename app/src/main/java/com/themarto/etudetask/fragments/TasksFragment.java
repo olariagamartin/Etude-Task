@@ -7,11 +7,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,21 +59,33 @@ public class TasksFragment extends Fragment {
             }
         });
 
-        binding.toolbarTask.topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch(item.getItemId()){
-                    case R.id.rename_chapter:
-                        renameChapter();
-                        return true;
-                    case R.id.delete_chapter:
-                        deleteChapter();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
+        // take it in another method
+        binding.toolbarTask.topAppBar.setNavigationIcon(R.drawable.ic_arrow_back);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(binding.toolbarTask.topAppBar);
+        binding.toolbarTask.toolbarLayout.setTitle("My Tasks");
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_toolbar_task, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.rename_chapter:
+                renameChapter();
+                return true;
+            case R.id.delete_chapter:
+                deleteChapter();
+                return true;
+            case android.R.id.home:
+                Navigation.findNavController(getView()).navigateUp();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void renameChapter(){

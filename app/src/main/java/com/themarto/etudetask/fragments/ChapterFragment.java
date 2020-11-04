@@ -7,19 +7,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.themarto.etudetask.BottomSheet;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.Util;
 import com.themarto.etudetask.adapters.ChapterAdapter;
@@ -40,11 +38,31 @@ public class ChapterFragment extends Fragment {
 
         showChapters(Util.getChapterListEx());
 
-        binding.extendedFab.setOnClickListener(new View.OnClickListener() {
+        binding.fabAddChapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Add Chapter", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BottomSheet bottomSheet = new BottomSheet();
                 bottomSheet.show(getParentFragmentManager(), "TAG");
+            }
+        });
+
+        binding.bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.more_actions:
+                        Toast.makeText(getContext(), "Settings", Toast.LENGTH_SHORT).show();
+                        return true;
+                    default:
+                        return false;
+                }
             }
         });
 
@@ -54,8 +72,6 @@ public class ChapterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setTopAppBarTitle("Calculus");
-
         setViewBehavior();
     }
 
@@ -65,41 +81,51 @@ public class ChapterFragment extends Fragment {
         binding = null;
     }
 
-    private void setTopAppBarTitle(String title){
-        binding.toolbarChapter.topAppBar.setTitle(title);
+    private void setViewBehavior() {
+        // take it in another method
+        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbarChapter.topAppBar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("My Chapters");
+        setHasOptionsMenu(true);
     }
 
-    private void setViewBehavior(){
-        binding.toolbarChapter.topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch(item.getItemId()){
-                    case R.id.rename_signature:
-                        renameSignature();
-                        return true;
-                    case R.id.delete_signature:
-                        deleteSignature();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_toolbar_chapter, menu);
     }
 
-    public void renameSignature(){
-        Toast.makeText(getContext(), "Edit Signature", Toast.LENGTH_SHORT).show();
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.rename_signature:
+                renameSignature();
+                return true;
+            case R.id.delete_signature:
+                deleteSignature();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
-    public void deleteSignature(){
-        Toast.makeText(getContext(), "Delete Signature", Toast.LENGTH_SHORT).show();
-    }
+        private void renameSignature () {
+            Toast.makeText(getContext(), "Edit Signature", Toast.LENGTH_SHORT).show();
+        }
 
-    private void showChapters(List<Chapter> chapterList){
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        ChapterAdapter chapterAdapter = new ChapterAdapter(chapterList);
-        binding.recyclerViewChapters.setAdapter(chapterAdapter);
-        binding.recyclerViewChapters.setLayoutManager(layoutManager);
-        binding.recyclerViewChapters.setHasFixedSize(true);
+        private void deleteSignature () {
+            Toast.makeText(getContext(), "Delete Signature", Toast.LENGTH_SHORT).show();
+        }
+
+        private void showChapters (List < Chapter > chapterList) {
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            ChapterAdapter chapterAdapter = new ChapterAdapter(chapterList);
+            binding.recyclerViewChapters.setAdapter(chapterAdapter);
+            binding.recyclerViewChapters.setLayoutManager(layoutManager);
+            binding.recyclerViewChapters.setHasFixedSize(true);
+        }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }

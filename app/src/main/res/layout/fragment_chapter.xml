@@ -14,8 +14,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewChapters"
         android:layout_width="match_parent"
+        android:paddingTop="5dp"
         android:layout_height="match_parent"
-        android:paddingTop="65dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:paddingBottom="80dp"
         android:clipToPadding="false"/>
 
@@ -28,19 +29,16 @@
         app:fabCradleMargin="0dp"
         app:fabCradleRoundedCornerRadius="0dp"
         app:fabCradleVerticalOffset="0dp"
+        app:menu="@menu/menu_bottom_app_bar"
         android:backgroundTint="@color/white"
         app:navigationIcon="@drawable/ic_menu_bottom_bar" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/extended_fab"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_chapter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Signatures"
-        android:textAllCaps="false"
-        app:rippleColor="@color/green2"
-        app:icon="@drawable/ic_arrow_up"
-        app:iconTint="@color/white"
-        android:textColor="@color/white"
+        android:src="@drawable/ic_add"
+        app:tint="@color/white"
         android:backgroundTint="@color/black"
         app:layout_anchor="@id/bottomAppBar" />
 

@@ -1,4 +1,4 @@
-package com.themarto.etudetask;
+package com.themarto.etudetask.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.themarto.etudetask.R;
+import com.themarto.etudetask.Util;
 import com.themarto.etudetask.adapters.SignatureAdapter;
 import com.themarto.etudetask.models.Signature;
 
