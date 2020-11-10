@@ -8,11 +8,14 @@ import android.widget.TextView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.themarto.etudetask.R;
+import com.themarto.etudetask.fragments.TasksFragmentDirections;
 import com.themarto.etudetask.models.Task;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
@@ -57,6 +60,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             taskTitle = itemView.findViewById(R.id.taskTitle);
             taskDate = itemView.findViewById(R.id.taskDate);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToTaskDetails(v);
+                }
+            });
+        }
+
+        // TODO: pass data
+        private void goToTaskDetails(View view){
+            NavDirections action = TasksFragmentDirections.actionTasksFragmentToTaskDetailsFragment();
+            Navigation.findNavController(view).navigate(action);
         }
     }
 }

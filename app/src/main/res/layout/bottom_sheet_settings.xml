@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/bottom_sheet_settings"
+    android:paddingVertical="15dp"
+    android:background="@drawable/bottom_sheet_background">
+
+    <TextView
+        android:id="@+id/settings_rename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="14dp"
+        android:paddingStart="25dp"
+        android:text="Rename Signature"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textColor="@color/green2"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/settings_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="14dp"
+        android:paddingStart="25dp"
+        android:text="Delete Signature"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textColor="@color/green2"
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="5dp"
+        android:background="#e2e2e2" />
+
+    <TextView
+        android:id="@+id/settings_theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="14dp"
+        android:paddingStart="25dp"
+        android:text="Theme: Light"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textColor="@color/green2"
+        android:textSize="14sp" />
+
+</LinearLayout>

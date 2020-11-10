@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/toolbar_task"
-        layout="@layout/toolbar_task"/>
+        layout="@layout/toolbar_task" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTasks"

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".fragments.TaskDetailsFragment">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_arrow_back_task_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="@android:color/transparent"
+        android:src="@drawable/ic_arrow_back"
+        android:tint="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/top_title_task_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Task Details"
+        android:textColor="@color/green2"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_arrow_back_task_details"
+        app:layout_constraintStart_toEndOf="@+id/btn_arrow_back_task_details"
+        app:layout_constraintTop_toTopOf="@id/btn_arrow_back_task_details" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_delete_task_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_delete_outline"
+        android:tint="@color/black"
+        android:backgroundTint="@android:color/transparent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/edit_text_task_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:layout_marginVertical="20dp"
+        android:background="@android:color/transparent"
+        android:paddingVertical="10dp"
+        android:text="My Task"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_arrow_back_task_details" />
+
+    <!--maybe take it in another layout resource-->
+    <LinearLayout
+        android:id="@+id/layout_chips_task_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:layout_marginHorizontal="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_task_title">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_due_date_task_details"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="Due date"
+            android:textAllCaps="false"
+            android:textColor="@color/green3"
+            android:textSize="16sp"
+            app:iconSize="16dp"
+            app:icon="@drawable/ic_calendar"
+            app:iconTint="@color/green2" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_due_date_task_details"
+            style="@style/Widget.MaterialComponents.Chip.Entry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="false"
+            android:text="Today"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:chipBackgroundColor="@color/black"
+            app:closeIconTint="@color/white"
+            app:iconStartPadding="8dp"
+            app:chipIcon="@drawable/ic_calendar"
+            app:chipIconSize="16dp"
+            app:chipIconTint="@color/white"
+            app:chipStrokeColor="@color/cardview_dark_background" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_notification_task_details"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Inactive"
+            android:textAllCaps="false"
+            android:textColor="@color/green3"
+            android:textSize="16sp"
+            app:icon="@drawable/ic_notifications_off"
+            app:iconSize="20dp"
+            app:iconTint="@color/green2"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_notification_task_details"
+            style="@style/Widget.MaterialComponents.Chip.Entry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:checkable="false"
+            android:text="Active"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:chipBackgroundColor="@color/black"
+            app:closeIconTint="@color/white"
+            app:iconStartPadding="8dp"
+            app:chipIcon="@drawable/ic_notifications_active"
+            app:chipIconSize="20dp"
+            app:chipIconTint="@color/white"
+            app:chipStrokeColor="@color/cardview_dark_background" />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/appCompatImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="3dp"
+        android:background="@android:color/transparent"
+        android:tint="@color/black"
+        android:src="@drawable/ic_notes"
+        app:layout_constraintStart_toStartOf="@+id/layout_chips_task_details"
+        app:layout_constraintTop_toBottomOf="@+id/layout_chips_task_details" />
+
+    <EditText
+        android:id="@+id/edit_text_task_description"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="20dp"
+        android:background="@android:color/transparent"
+        android:hint="Add description..."
+        android:gravity="top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.708"
+        app:layout_constraintStart_toEndOf="@+id/appCompatImageButton"
+        app:layout_constraintTop_toTopOf="@+id/appCompatImageButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

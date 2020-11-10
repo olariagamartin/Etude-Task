@@ -59,6 +59,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
             });
         }
 
+        // TODO: pass data
         private void goToTaskList(View view){
             NavDirections action = ChapterFragmentDirections.actionChapterFragmentToTasksFragment();
             Navigation.findNavController(view).navigate(action);
