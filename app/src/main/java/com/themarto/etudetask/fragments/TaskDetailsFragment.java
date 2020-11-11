@@ -2,7 +2,11 @@ package com.themarto.etudetask.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
@@ -15,10 +19,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.themarto.etudetask.databinding.FragmentTaskDetailsBinding;
+import com.themarto.etudetask.models.Task;
+import com.themarto.etudetask.viewmodel.SharedViewModel;
 
 public class TaskDetailsFragment extends Fragment {
 
+    private SharedViewModel viewModel;
+
     private FragmentTaskDetailsBinding binding;
+
+    private Task currentTask;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,9 +36,20 @@ public class TaskDetailsFragment extends Fragment {
         binding = FragmentTaskDetailsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        setViewBehavior();
-
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
+        viewModel.getSelectedTask().observe(getViewLifecycleOwner(), new Observer<Task>() {
+            @Override
+            public void onChanged(Task task) {
+                currentTask = task;
+                setViewBehavior();
+            }
+        });
     }
 
     private void setViewBehavior(){
@@ -52,7 +73,8 @@ public class TaskDetailsFragment extends Fragment {
 
     // TODO: set title
     private void topTitleBehavior(){
-        binding.topTitleTaskDetails.setText("Section");
+        String title = viewModel.getSelectedChapter().getValue().getTitle();
+        binding.topTitleTaskDetails.setText(title);
     }
 
     private void deleteButtonBehavior(){
@@ -66,6 +88,7 @@ public class TaskDetailsFragment extends Fragment {
     }
 
     private void taskTitleBehavior(){
+        binding.editTextTaskTitle.setText(currentTask.getTitle());
         binding.editTextTaskTitle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -141,4 +164,9 @@ public class TaskDetailsFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

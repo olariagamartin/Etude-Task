@@ -1,12 +1,15 @@
 package com.themarto.etudetask.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Chapter {
     private String title;
     private List<Task> taskList;
 
-    public Chapter() {
+    public Chapter(String title) {
+        this.title = title;
+        this.taskList = new ArrayList<>();
     }
 
     public Chapter(String title, List<Task> taskList) {

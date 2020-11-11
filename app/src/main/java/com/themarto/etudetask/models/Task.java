@@ -1,5 +1,7 @@
 package com.themarto.etudetask.models;
 
+import com.themarto.etudetask.Util;
+
 public class Task {
     private String title;
     private String description;
@@ -7,7 +9,10 @@ public class Task {
     // TODO: due date
 
 
-    public Task() {
+    public Task(String title) {
+        this.title = title;
+        this.description = "";
+        this.isDone = false;
     }
 
     public Task(String title, String description, boolean isDone) {

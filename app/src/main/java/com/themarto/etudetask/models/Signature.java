@@ -1,12 +1,15 @@
 package com.themarto.etudetask.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Signature {
     private String title;
     private List<Chapter> chapterList;
 
-    public Signature() {
+    public Signature(String title) {
+        this.title = title;
+        chapterList = new ArrayList<>();
     }
 
     public Signature(String title, List<Chapter> chapterList) {

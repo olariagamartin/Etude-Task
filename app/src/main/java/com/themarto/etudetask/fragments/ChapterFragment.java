@@ -8,6 +8,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,10 +33,14 @@ import com.themarto.etudetask.Util;
 import com.themarto.etudetask.adapters.ChapterAdapter;
 import com.themarto.etudetask.databinding.FragmentChapterBinding;
 import com.themarto.etudetask.models.Chapter;
+import com.themarto.etudetask.models.Signature;
+import com.themarto.etudetask.viewmodel.SharedViewModel;
 
 import java.util.List;
 
 public class ChapterFragment extends Fragment {
+
+    private SharedViewModel viewModel;
 
     private FragmentChapterBinding binding;
 
@@ -41,8 +49,6 @@ public class ChapterFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentChapterBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-
-        loadChapters(Util.getChapterListEx());
 
         binding.fabAddChapter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,16 +86,25 @@ public class ChapterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setViewBehavior();
+        viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
+        viewModel.getSelectedSignature().observe(getViewLifecycleOwner(), new Observer<Signature>() {
+            @Override
+            public void onChanged(Signature signature) {
+                setViewBehavior();
+                loadChapters(signature.getChapterList());
+            }
+        });
+
     }
 
     private void setViewBehavior() {
         // take it in another method
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbarChapter.topAppBar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("My Chapters");
+        String title = viewModel.getSelectedSignature().getValue().getTitle();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(title);
     }
 
-    private void lunchBottomSheetDialogSettings(){
+    private void lunchBottomSheetDialogSettings() {
         BottomSheetDialog settings = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
 
         View settingsView = LayoutInflater.from(getContext())
@@ -124,6 +139,7 @@ public class ChapterFragment extends Fragment {
     }
 
     private void renameSignature() {
+        // TODO: show dialog
         Toast.makeText(getContext(), "Edit Signature", Toast.LENGTH_SHORT).show();
     }
 
@@ -149,7 +165,7 @@ public class ChapterFragment extends Fragment {
                 .show();
     }
 
-    private void showBottomSheetAddChapter(){
+    private void showBottomSheetAddChapter() {
         BottomSheetDialog addChapterDialog = new BottomSheetDialog(getContext(), R.style.DialogStyle);
 
         View addChapterView = LayoutInflater.from(getContext())
@@ -169,7 +185,7 @@ public class ChapterFragment extends Fragment {
                 // TODO: extract in a method (util)
                 String title = s.toString();
                 // TODO: add condition on start with ' '
-                if(title.isEmpty()){
+                if (title.isEmpty()) {
                     btnSaveChapter.setEnabled(false);
                     btnSaveChapter.setTextColor(getResources()
                             .getColor(R.color.green1));
@@ -199,21 +215,30 @@ public class ChapterFragment extends Fragment {
         addChapterDialog.show();
     }
 
-    private void addNewChapter(String title){
-        Snackbar.make(getView(), title+" added", Snackbar.LENGTH_SHORT).show();
+    private void addNewChapter(String title) {
+        Snackbar.make(getView(), title + " added", Snackbar.LENGTH_SHORT).show();
     }
 
     private void loadChapters(List<Chapter> chapterList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         ChapterAdapter chapterAdapter = new ChapterAdapter(chapterList);
+        chapterAdapter.setListener(new Util.MyListener() {
+            @Override
+            public void onItemClick(int position) {
+                // TODO: goto method
+                viewModel.selectChapter(position);
+                NavDirections action = ChapterFragmentDirections.actionChapterFragmentToTasksFragment();
+                Navigation.findNavController(getView()).navigate(action);
+            }
+        });
         binding.recyclerViewChapters.setAdapter(chapterAdapter);
         binding.recyclerViewChapters.setLayoutManager(layoutManager);
         binding.recyclerViewChapters.setHasFixedSize(true);
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         binding = null;
     }
 }

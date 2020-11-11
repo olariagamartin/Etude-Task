@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.themarto.etudetask.R;
+import com.themarto.etudetask.Util;
 import com.themarto.etudetask.fragments.ChapterFragmentDirections;
 import com.themarto.etudetask.models.Chapter;
 
@@ -20,8 +21,15 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
 
     private List<Chapter> chapterList;
 
+    private Util.MyListener mListener;
+
     public ChapterAdapter(List<Chapter> chapterList) {
         this.chapterList = chapterList;
+    }
+
+    // TODO: make it obligatory
+    public void setListener(Util.MyListener listener){
+        mListener = listener;
     }
 
     @NonNull
@@ -54,15 +62,11 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    goToTaskList(v);
+                    if (mListener != null){
+                        mListener.onItemClick(getAdapterPosition());
+                    }
                 }
             });
-        }
-
-        // TODO: pass data
-        private void goToTaskList(View view){
-            NavDirections action = ChapterFragmentDirections.actionChapterFragmentToTasksFragment();
-            Navigation.findNavController(view).navigate(action);
         }
     }
 }

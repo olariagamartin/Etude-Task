@@ -6,11 +6,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,8 +24,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -36,7 +34,9 @@ import com.themarto.etudetask.Util;
 import com.themarto.etudetask.adapters.TaskAdapter;
 import com.themarto.etudetask.databinding.BottomSheetAddTaskBinding;
 import com.themarto.etudetask.databinding.FragmentTasksBinding;
+import com.themarto.etudetask.models.Chapter;
 import com.themarto.etudetask.models.Task;
+import com.themarto.etudetask.viewmodel.SharedViewModel;
 
 import java.util.List;
 
@@ -44,17 +44,28 @@ public class TasksFragment extends Fragment {
 
     private FragmentTasksBinding binding;
 
+    private SharedViewModel viewModel;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentTasksBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        showTasks(Util.getTaskListExample());
-
-        setViewBehavior();
-
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
+        viewModel.getSelectedChapter().observe(getViewLifecycleOwner(), new Observer<Chapter>() {
+            @Override
+            public void onChanged(Chapter chapter) {
+                loadTasks(chapter.getTaskList());
+            }
+        });
+        setViewBehavior();
     }
 
     private void setViewBehavior() {
@@ -74,7 +85,8 @@ public class TasksFragment extends Fragment {
         // take it in another method
         binding.toolbarTask.topAppBar.setNavigationIcon(R.drawable.ic_arrow_back);
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbarTask.topAppBar);
-        binding.toolbarTask.toolbarLayout.setTitle("My Tasks");
+        String title = viewModel.getSelectedChapter().getValue().getTitle();
+        binding.toolbarTask.toolbarLayout.setTitle(title);
         setHasOptionsMenu(true);
 
         binding.fabAddTask.setOnClickListener(new View.OnClickListener() {
@@ -220,11 +232,21 @@ public class TasksFragment extends Fragment {
                 }).show();
     }
 
-    private void showTasks(List<Task> taskList) {
+    private void loadTasks(List<Task> taskList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         TaskAdapter taskAdapter = new TaskAdapter(taskList);
+        taskAdapter.setListener(new Util.MyListener() {
+            @Override
+            public void onItemClick(int position) {
+                // TODO: goto method
+                viewModel.selectTask(position);
+                NavDirections action = TasksFragmentDirections.actionTasksFragmentToTaskDetailsFragment();
+                Navigation.findNavController(binding.getRoot()).navigate(action);
+            }
+        });
         binding.recyclerViewTasks.setLayoutManager(layoutManager);
         binding.recyclerViewTasks.setAdapter(taskAdapter);
+        binding.recyclerViewTasks.setHasFixedSize(true);
     }
 
     @Override

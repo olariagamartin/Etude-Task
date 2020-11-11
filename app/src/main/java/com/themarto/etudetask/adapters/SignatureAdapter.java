@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.themarto.etudetask.R;
+import com.themarto.etudetask.Util;
 import com.themarto.etudetask.models.Signature;
 
 import java.util.List;
@@ -19,8 +20,14 @@ public class SignatureAdapter extends RecyclerView.Adapter<SignatureAdapter.View
 
     private List<Signature> signatureList;
 
+    private Util.MyListener mListener;
+
     public SignatureAdapter(List<Signature> signatureList) {
         this.signatureList = signatureList;
+    }
+
+    public void setListener(Util.MyListener listener) {
+        mListener = listener;
     }
 
     @NonNull
@@ -35,9 +42,9 @@ public class SignatureAdapter extends RecyclerView.Adapter<SignatureAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Signature currentSignature = signatureList.get(position);
         holder.signatureTitle.setText(currentSignature.getTitle());
-        // Test
+        // TODO: set color if it's the current signature
         if (currentSignature.getTitle().equals("Stats")){
-            holder.cardView.setCardBackgroundColor(Color.parseColor("#340077C2"));
+            //holder.cardView.setCardBackgroundColor(Color.parseColor("#340077C2"));
         }
     }
 
@@ -56,8 +63,15 @@ public class SignatureAdapter extends RecyclerView.Adapter<SignatureAdapter.View
             super(itemView);
             // TODO: do it with view binding
             signatureTitle = itemView.findViewById(R.id.signatureTitle);
-            // Test
-            cardView = (CardView) itemView.getRootView();
+            if(mListener != null) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onItemClick(getAdapterPosition());
+                    }
+                });
+            }
         }
     }
+
 }

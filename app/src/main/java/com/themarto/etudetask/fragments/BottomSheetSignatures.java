@@ -1,7 +1,6 @@
 package com.themarto.etudetask.fragments;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,9 +9,7 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.themarto.etudetask.R;
@@ -20,11 +17,14 @@ import com.themarto.etudetask.Util;
 import com.themarto.etudetask.adapters.SignatureAdapter;
 import com.themarto.etudetask.databinding.BottomSheetSignaturesBinding;
 import com.themarto.etudetask.models.Signature;
+import com.themarto.etudetask.viewmodel.SharedViewModel;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +34,7 @@ public class BottomSheetSignatures extends BottomSheetDialogFragment {
 
     private BottomSheetSignaturesBinding binding;
 
-    private Context context;
+    private SharedViewModel viewModel;
 
     public BottomSheetSignatures() { }
 
@@ -44,8 +44,7 @@ public class BottomSheetSignatures extends BottomSheetDialogFragment {
         binding = BottomSheetSignaturesBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        context = getContext();
-
+        // TODO: take it in another method
         // prevent the key board cover buttons when add signature
         int minHeight = getResources().getDisplayMetrics().heightPixels / 2;
         binding.recyclerViewSignatures.setMinimumHeight(minHeight);
@@ -59,12 +58,24 @@ public class BottomSheetSignatures extends BottomSheetDialogFragment {
             }
         });
 
-        showSignatures(Util.getSignatureListEx());
-
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        viewModel.getAllSignatures().observe(this, new Observer<List<Signature>>() {
+            @Override
+            public void onChanged(List<Signature> signatureList) {
+                loadSignatures(signatureList);
+            }
+        });
+    }
+
+    // ACTIONS
     private void runAddSignature(){
+        // TODO: showAddElements
         TransitionManager.beginDelayedTransition(binding.getRoot(), new AutoTransition());
         binding.parentViewTitle.setVisibility(View.GONE);
         binding.parentViewAddSignature.setVisibility(View.VISIBLE);
@@ -111,22 +122,36 @@ public class BottomSheetSignatures extends BottomSheetDialogFragment {
         binding.editTextNewSignature.requestFocus();
     }
 
-    private void saveSignature(String title){
-        Toast.makeText(context, title + "saved", Toast.LENGTH_SHORT).show();
-    }
-
-    private void hideSoftKeyboard (View view){
+    public void hideSoftKeyboard (View view){
         InputMethodManager imm = (InputMethodManager)
                 getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    private void showSignatures(List<Signature> signatureList) {
+    private void loadSignatures(List<Signature> signatureList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         SignatureAdapter signatureAdapter = new SignatureAdapter(signatureList);
+        signatureAdapter.setListener(new Util.MyListener() {
+            @Override
+            public void onItemClick(int position) {
+                viewModel.selectSignature(position);
+                dismiss();
+            }
+        });
         recyclerViewSignatures.setLayoutManager(layoutManager);
         recyclerViewSignatures.setAdapter(signatureAdapter);
         recyclerViewSignatures.setHasFixedSize(true);
     }
 
+    // CRUD
+    private void saveSignature(String title){
+        Signature signature = new Signature(title);
+        viewModel.addSignature(signature);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }
