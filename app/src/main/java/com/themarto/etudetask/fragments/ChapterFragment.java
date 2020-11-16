@@ -121,7 +121,11 @@ public class ChapterFragment extends Fragment {
         editTitle.setSelection(editTitle.getText().length());
         builder.setView(editLayout)
                 .setPositiveButton("Save", (dialog, which) -> {
-                    viewModel.changeSignatureTitle(editTitle.getText().toString());
+                    if(editTitle.getText().toString().isEmpty()){
+                        Toast.makeText(getContext(), "The name cannot be empty", Toast.LENGTH_SHORT).show();
+                    } else {
+                        viewModel.changeSignatureTitle(editTitle.getText().toString());
+                    }
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {});
         builder.create().show();
@@ -137,9 +141,11 @@ public class ChapterFragment extends Fragment {
                 .setPositiveButton("Delete", (dialog, which) -> {
                     // TODO: set red color
                     //Delete action
-                    viewModel.deleteSignature();
-                    Toast.makeText(getContext(), "Signature deleted", Toast.LENGTH_SHORT)
-                            .show();
+                    if (!viewModel.deleteSignature()) {
+                        // Todo: extract string
+                        Snackbar.make(binding.getRoot(), "You must have at least one list", Snackbar.LENGTH_LONG)
+                                .show();
+                    }
                 })
                 .show();
     }
@@ -194,7 +200,6 @@ public class ChapterFragment extends Fragment {
     private void addNewChapter(String title) {
         Chapter chapter = new Chapter(title);
         viewModel.addChapter(chapter);
-        Snackbar.make(getView(), title + " added", Snackbar.LENGTH_SHORT).show();
     }
 
     private void loadChapters(List<Chapter> chapterList) {

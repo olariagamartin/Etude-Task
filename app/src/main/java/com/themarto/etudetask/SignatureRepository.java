@@ -23,67 +23,66 @@ public class SignatureRepository {
         allSignatures = new MutableLiveData<>();
         RealmResults<Signature> signatures = realm.where(Signature.class).findAll();
         allSignatures.setValue(signatures);
-        signatures.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<Signature>>() {
-            @Override
-            public void onChange(RealmResults<Signature> signatures, OrderedCollectionChangeSet changeSet) {
-                allSignatures.setValue(signatures);
-            }
-        });
     }
 
     public MutableLiveData<List<Signature>> getAllSignatures() {
         return allSignatures;
     }
 
-    public void addSignature (Signature signature) {
+    public void addSignature(Signature signature) {
         realm.beginTransaction();
         realm.copyToRealm(signature);
         realm.commitTransaction();
     }
 
-    public void changeSignatureTitle (Signature signature, String nTitle){
+    public Signature changeSignatureTitle(Signature signature, String nTitle) {
         realm.beginTransaction();
         signature.setTitle(nTitle);
         realm.commitTransaction();
+        return signature;
     }
 
-    public void deleteSignature (Signature signature) {
+    public void deleteSignature(Signature signature) {
         realm.beginTransaction();
         signature.deleteFromRealm();
         realm.commitTransaction();
     }
 
-    public void addChapter(Signature signature, Chapter nChapter){
+    public Signature addChapter(Signature signature, Chapter nChapter) {
         realm.beginTransaction();
         signature.getChapterList().add(nChapter);
         realm.commitTransaction();
+        return signature;
     }
 
-    public void changeChapterTitle (Chapter chapter, String nTitle){
+    public Chapter changeChapterTitle(Chapter chapter, String nTitle) {
         realm.beginTransaction();
         chapter.setTitle(nTitle);
         realm.commitTransaction();
+        return chapter;
     }
 
-    public void deleteChapter (Chapter chapter) {
+    public void deleteChapter(Chapter chapter) {
         realm.beginTransaction();
         chapter.deleteFromRealm();
         realm.commitTransaction();
     }
 
-    public void addTask (Chapter chapter, Task nTask) {
+    public Chapter addTask(Chapter chapter, Task nTask) {
         realm.beginTransaction();
         chapter.getTaskList().add(nTask);
         realm.commitTransaction();
+        return chapter;
     }
 
-    public void changeTaskTitle (Task task, String nTitle){
+    public Task changeTaskTitle(Task task, String nTitle) {
         realm.beginTransaction();
         task.setTitle(nTitle);
         realm.commitTransaction();
+        return task;
     }
 
-    public void deleteTask (Task task) {
+    public void deleteTask(Task task) {
         realm.beginTransaction();
         task.deleteFromRealm();
         realm.commitTransaction();

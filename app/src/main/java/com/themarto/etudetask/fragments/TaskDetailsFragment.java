@@ -28,6 +28,8 @@ public class TaskDetailsFragment extends Fragment {
 
     private Task currentTask;
 
+    private boolean deleted = false;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,19 +55,16 @@ public class TaskDetailsFragment extends Fragment {
         backButtonBehavior();
         topTitleBehavior();
         deleteButtonBehavior();
-        taskTitleBehavior();
         layoutChipsBehavior();
         taskDescriptionBehavior();
     }
 
     private void backButtonBehavior(){
         binding.btnArrowBackTaskDetails.setOnClickListener(v -> {
-            // TODO: save data
             Navigation.findNavController(v).navigateUp();
         });
     }
 
-    // TODO: set title
     private void topTitleBehavior(){
         String title = viewModel.getSelectedChapter().getValue().getTitle();
         binding.topTitleTaskDetails.setText(title);
@@ -74,27 +73,8 @@ public class TaskDetailsFragment extends Fragment {
     private void deleteButtonBehavior(){
         binding.btnDeleteTaskDetails.setOnClickListener(v -> {
             viewModel.deleteTask();
+            deleted = true;
             Navigation.findNavController(v).navigateUp();
-        });
-    }
-
-    private void taskTitleBehavior(){
-        binding.editTextTaskTitle.setText(currentTask.getTitle());
-        binding.editTextTaskTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // TODO: deny when text is empty
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
         });
     }
 
@@ -127,7 +107,7 @@ public class TaskDetailsFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // TODO: verify and save
+                // TODO: verify and save (maybe not)
             }
 
             @Override
@@ -155,7 +135,9 @@ public class TaskDetailsFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        commitChanges();
+        if (!deleted){
+            commitChanges();
+        }
     }
 
     @Override

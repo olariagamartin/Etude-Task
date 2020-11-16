@@ -78,14 +78,20 @@ public class SharedViewModel extends ViewModel {
      * @param title new title for the signature
      */
     public void changeSignatureTitle (String title) {
-        mRepository.changeSignatureTitle(selectedSignature.getValue(), title);
+        Signature signature = mRepository.changeSignatureTitle(selectedSignature.getValue(), title);
+        selectedSignature.setValue(signature);
     }
 
     /**
      * Delete the selected signature
      */
-    public void deleteSignature () {
-        mRepository.deleteSignature(selectedSignature.getValue());
+    public boolean deleteSignature () {
+        if (signatures.getValue().size() > 1) {
+            mRepository.deleteSignature(selectedSignature.getValue());
+            selectedSignature.setValue(signatures.getValue().get(0));
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -93,7 +99,8 @@ public class SharedViewModel extends ViewModel {
      * @param chapter new chapter to be added
      */
     public void addChapter (Chapter chapter) {
-        mRepository.addChapter(selectedSignature.getValue(), chapter);
+        Signature signature = mRepository.addChapter(selectedSignature.getValue(), chapter);
+        selectedSignature.setValue(signature);
     }
 
     /**
@@ -101,7 +108,8 @@ public class SharedViewModel extends ViewModel {
      * @param title new title of the chapter
      */
     public void changeChapterTitle (String title) {
-        mRepository.changeChapterTitle(selectedChapter.getValue(), title);
+        Chapter chapter = mRepository.changeChapterTitle(selectedChapter.getValue(), title);
+        selectedChapter.setValue(chapter);
     }
 
     /**
@@ -116,7 +124,8 @@ public class SharedViewModel extends ViewModel {
      * @param task new task to be added
      */
     public void addTask (Task task) {
-        mRepository.addTask(selectedChapter.getValue(), task);
+        Chapter chapter = mRepository.addTask(selectedChapter.getValue(), task);
+        selectedChapter.setValue(chapter);
     }
 
     /**
@@ -124,7 +133,8 @@ public class SharedViewModel extends ViewModel {
      * @param title new title of the task
      */
     public void changeTaskTitle (String title) {
-        mRepository.changeTaskTitle(selectedTask.getValue(), title);
+        Task task = mRepository.changeTaskTitle(selectedTask.getValue(), title);
+        selectedTask.setValue(task);
     }
 
     /**

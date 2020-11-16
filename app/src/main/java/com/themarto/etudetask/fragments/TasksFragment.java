@@ -62,9 +62,9 @@ public class TasksFragment extends Fragment {
             @Override
             public void onChanged(Chapter chapter) {
                 loadTasks(chapter.getTaskList());
+                setViewBehavior();
             }
         });
-        setViewBehavior();
     }
 
     private void setViewBehavior() {
@@ -205,20 +205,18 @@ public class TasksFragment extends Fragment {
     private void addNewTask(String title) {
         Task task = new Task(title);
         viewModel.addTask(task);
-        Snackbar.make(getView(), title+" added", Snackbar.LENGTH_SHORT).show();
     }
 
     public void showDialogDeleteChapter() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getContext());
-        alertDialogBuilder.setTitle("Delete this chapter") // TODO: add title
-                .setMessage("The chapter will be deleted")
+        alertDialogBuilder.setTitle("Are you sure?") // TODO: add title
+                .setMessage("The section will be deleted")
                 .setNegativeButton("Cancel", (dialog, which) -> {
                     //
                 })
-                .setPositiveButton("Delete", (dialog, which) -> {
+                .setPositiveButton("Delete", (dialog, which) -> { // todo: red button
                     viewModel.deleteChapter();
-                    Toast.makeText(getContext(), "Chapter deleted", Toast.LENGTH_SHORT)
-                            .show();
+                    Navigation.findNavController(binding.getRoot()).navigateUp();
                 }).show();
     }
 
