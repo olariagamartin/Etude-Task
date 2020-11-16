@@ -1,8 +1,6 @@
 package com.themarto.etudetask.adapters;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +8,7 @@ import android.widget.TextView;
 
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.Util;
-import com.themarto.etudetask.models.Signature;
-import com.themarto.etudetask.viewmodel.SharedViewModel;
+import com.themarto.etudetask.models.Subject;
 
 import java.util.List;
 
@@ -19,19 +16,19 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SignatureAdapter extends RecyclerView.Adapter<SignatureAdapter.ViewHolder> {
+public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHolder> {
 
-    private List<Signature> signatureList;
+    private List<Subject> subjectList;
 
     private Util.MyListener mListener;
 
     private Context context;
 
-    private int selectedSignature;
+    private int selectedSubject;
 
-    public SignatureAdapter(List<Signature> signatureList, int selectedSignature) {
-        this.signatureList = signatureList;
-        this.selectedSignature = selectedSignature;
+    public SubjectAdapter(List<Subject> subjectList, int selectedSubject) {
+        this.subjectList = subjectList;
+        this.selectedSubject = selectedSubject;
     }
 
     public void setListener(Util.MyListener listener) {
@@ -43,36 +40,36 @@ public class SignatureAdapter extends RecyclerView.Adapter<SignatureAdapter.View
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.signature_item, parent, false);
+                .inflate(R.layout.subject_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Signature currentSignature = signatureList.get(position);
-        holder.signatureTitle.setText(currentSignature.getTitle());
-        // TODO: set color if it's the current signature
-        if (position == selectedSignature){
+        Subject currentSubject = subjectList.get(position);
+        holder.subjectTitle.setText(currentSubject.getTitle());
+        // TODO: set color if it's the current subject
+        if (position == selectedSubject){
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.itemBackground));
-            holder.signatureTitle.setTextColor(context.getResources().getColor(R.color.blue_button));
+            holder.subjectTitle.setTextColor(context.getResources().getColor(R.color.blue_button));
         }
     }
 
     @Override
     public int getItemCount() {
-        return signatureList.size();
+        return subjectList.size();
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView signatureTitle;
+        TextView subjectTitle;
         CardView cardView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // TODO: do it with view binding
-            signatureTitle = itemView.findViewById(R.id.signatureTitle);
+            subjectTitle = itemView.findViewById(R.id.subjectTitle);
             cardView = (CardView) itemView.getRootView();
             if(mListener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {

@@ -7,24 +7,21 @@ import android.widget.TextView;
 
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.Util;
-import com.themarto.etudetask.fragments.ChapterFragmentDirections;
-import com.themarto.etudetask.models.Chapter;
+import com.themarto.etudetask.models.Section;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHolder> {
+public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHolder> {
 
-    private List<Chapter> chapterList;
+    private List<Section> sectionList;
 
     private Util.MyListener mListener;
 
-    public ChapterAdapter(List<Chapter> chapterList) {
-        this.chapterList = chapterList;
+    public SectionAdapter(List<Section> sectionList) {
+        this.sectionList = sectionList;
     }
 
     // TODO: make it obligatory
@@ -36,28 +33,28 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.chapter_item, parent, false);
+                .inflate(R.layout.section_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Chapter currentChapter = chapterList.get(position);
-        holder.chapterTitle.setText(currentChapter.getTitle());
+        Section currentSection = sectionList.get(position);
+        holder.sectionTitle.setText(currentSection.getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return chapterList.size();
+        return sectionList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView chapterTitle;
+        TextView sectionTitle;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // TODO: do it with view binding
-            chapterTitle = itemView.findViewById(R.id.textViewChapterTitle);
+            sectionTitle = itemView.findViewById(R.id.textViewSectionTitle);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

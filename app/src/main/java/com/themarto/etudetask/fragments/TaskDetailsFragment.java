@@ -67,7 +67,7 @@ public class TaskDetailsFragment extends Fragment {
     }
 
     private void topTitleBehavior(){
-        String title = viewModel.getSelectedChapter().getValue().getTitle();
+        String title = viewModel.getSelectedSection().getValue().getTitle();
         binding.topTitleTaskDetails.setText(title);
     }
 

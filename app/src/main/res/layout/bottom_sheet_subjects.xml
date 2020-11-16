@@ -25,7 +25,7 @@
             android:id="@+id/bottom_sheet_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Signatures"
+            android:text="Subjects"
             android:textSize="22sp"
             android:textColor="@color/green2"
             android:layout_marginHorizontal="20dp"
@@ -35,7 +35,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/add_signature"
+            android:id="@+id/add_subject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -53,22 +53,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:id="@+id/parent_view_add_signature">
+        android:id="@+id/parent_view_add_subject">
 
         <EditText
-            android:id="@+id/edit_text_new_signature"
+            android:id="@+id/edit_text_new_subject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:paddingVertical="15dp"
             android:background="@android:color/transparent"
-            android:hint="New signature"
+            android:hint="New subject"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_save_signature"
+            android:id="@+id/btn_save_subject"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
@@ -78,7 +78,7 @@
             android:textAllCaps="false"
             android:textColor="@color/green1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_new_signature" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_new_subject" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     <View
@@ -88,7 +88,7 @@
         android:background="#e2e2e2" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewSignatures"
+        android:id="@+id/recyclerViewSubjects"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="20dp"/>

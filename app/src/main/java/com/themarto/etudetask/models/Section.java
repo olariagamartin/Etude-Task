@@ -5,18 +5,18 @@ import java.util.List;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
-public class Chapter extends RealmObject {
+public class Section extends RealmObject {
     private String title;
     private RealmList<Task> taskList;
 
-    public Chapter() {}
+    public Section() {}
 
-    public Chapter(String title) {
+    public Section(String title) {
         this.title = title;
         this.taskList = new RealmList<>();
     }
 
-    public Chapter(String title, RealmList<Task> taskList) {
+    public Section(String title, RealmList<Task> taskList) {
         this.title = title;
         this.taskList = taskList;
     }

@@ -9,7 +9,7 @@
     android:background="@drawable/bottom_sheet_background">
 
     <EditText
-        android:id="@+id/edit_text_new_chapter"
+        android:id="@+id/edit_text_new_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="15dp"
@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btn_save_chapter"
+        android:id="@+id/btn_save_section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save"

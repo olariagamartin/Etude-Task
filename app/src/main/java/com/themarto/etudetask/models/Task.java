@@ -1,7 +1,5 @@
 package com.themarto.etudetask.models;
 
-import com.themarto.etudetask.Util;
-
 import io.realm.RealmObject;
 
 public class Task extends RealmObject {

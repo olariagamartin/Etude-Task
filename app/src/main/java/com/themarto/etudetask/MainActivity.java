@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
 
         // TODO: extract string
-        viewModel.setStartSignature(sharedPref.getInt("SELECTED_SIGNATURE", 0));
+        viewModel.setStartSubject(sharedPref.getInt("SELECTED_SUBJECT", 0));
     }
 
 }

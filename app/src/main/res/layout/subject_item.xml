@@ -10,7 +10,7 @@
     app:cardElevation="0dp">
 
     <TextView
-        android:id="@+id/signatureTitle"
+        android:id="@+id/subjectTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="45dp"

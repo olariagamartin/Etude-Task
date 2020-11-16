@@ -14,10 +14,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
-import com.themarto.etudetask.adapters.ChapterAdapter;
-import com.themarto.etudetask.databinding.FragmentChapterBinding;
-import com.themarto.etudetask.models.Chapter;
-import com.themarto.etudetask.models.Signature;
+import com.themarto.etudetask.adapters.SectionAdapter;
+import com.themarto.etudetask.databinding.FragmentSectionBinding;
+import com.themarto.etudetask.models.Section;
+import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.viewmodel.SharedViewModel;
 
 import java.util.List;
@@ -25,7 +25,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
@@ -33,23 +32,23 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ChapterFragment extends Fragment {
+public class SectionFragment extends Fragment {
 
     private SharedViewModel viewModel;
 
-    private FragmentChapterBinding binding;
+    private FragmentSectionBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentChapterBinding.inflate(inflater, container, false);
+        binding = FragmentSectionBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        binding.fabAddChapter.setOnClickListener(v -> showBottomSheetAddChapter());
+        binding.fabAddSection.setOnClickListener(v -> showBottomSheetAddSection());
 
-        // Show list of Signatures
+        // Show list of Subjects
         binding.bottomAppBar.setNavigationOnClickListener(v -> {
-            BottomSheetSignatures bottomSheet = new BottomSheetSignatures();
+            BottomSheetSubjects bottomSheet = new BottomSheetSubjects();
             // bottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme);
             bottomSheet.show(getParentFragmentManager(), "TAG");
         });
@@ -72,17 +71,17 @@ public class ChapterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
-        viewModel.getSelectedSignature().observe(getViewLifecycleOwner(), signature -> {
-            setViewBehavior(signature);
-            loadChapters(signature.getChapterList());
+        viewModel.getSelectedSubject().observe(getViewLifecycleOwner(), subject -> {
+            setViewBehavior(subject);
+            loadSections(subject.getSectionList());
         });
 
     }
 
-    private void setViewBehavior(Signature signature) {
+    private void setViewBehavior(Subject subject) {
         // take it in another method
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbarChapter.topAppBar);
-        String title = viewModel.getSelectedSignature().getValue().getTitle();
+        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbarSection.topAppBar);
+        String title = viewModel.getSelectedSubject().getValue().getTitle();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(title);
     }
 
@@ -93,12 +92,12 @@ public class ChapterFragment extends Fragment {
                 .inflate(R.layout.bottom_sheet_settings, null);
 
         settingsView.findViewById(R.id.settings_rename).setOnClickListener(v -> {
-            showDialogRenameSignature();
+            showDialogRenameSubject();
             settings.dismiss();
         });
 
         settingsView.findViewById(R.id.settings_delete).setOnClickListener(v -> {
-            showDialogDeleteSignature();
+            showDialogDeleteSubject();
             settings.dismiss();
         });
 
@@ -111,37 +110,37 @@ public class ChapterFragment extends Fragment {
         settings.show();
     }
 
-    private void showDialogRenameSignature() {
+    private void showDialogRenameSubject() {
         // TODO: show keyboard
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle("Rename");
         View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_title, null);
         EditText editTitle = editLayout.findViewById(R.id.edit_title_dialog);
-        editTitle.setText(viewModel.getSelectedSignature().getValue().getTitle());
+        editTitle.setText(viewModel.getSelectedSubject().getValue().getTitle());
         editTitle.setSelection(editTitle.getText().length());
         builder.setView(editLayout)
                 .setPositiveButton("Save", (dialog, which) -> {
                     if(editTitle.getText().toString().isEmpty()){
                         Toast.makeText(getContext(), "The name cannot be empty", Toast.LENGTH_SHORT).show();
                     } else {
-                        viewModel.changeSignatureTitle(editTitle.getText().toString());
+                        viewModel.changeSubjectTitle(editTitle.getText().toString());
                     }
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {});
         builder.create().show();
     }
 
-    private void showDialogDeleteSignature() {
+    private void showDialogDeleteSubject() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getContext());
-        alertDialogBuilder.setTitle("Delete Signature") // TODO: add title
-                .setMessage("The signature will be deleted")
+        alertDialogBuilder.setTitle("Delete Subject") // TODO: add title
+                .setMessage("The subject will be deleted")
                 .setNegativeButton("Cancel", (dialog, which) -> {
                     //
                 })
                 .setPositiveButton("Delete", (dialog, which) -> {
                     // TODO: set red color
                     //Delete action
-                    if (!viewModel.deleteSignature()) {
+                    if (!viewModel.deleteSubject()) {
                         // Todo: extract string
                         Snackbar.make(binding.getRoot(), "You must have at least one list", Snackbar.LENGTH_LONG)
                                 .show();
@@ -150,16 +149,16 @@ public class ChapterFragment extends Fragment {
                 .show();
     }
 
-    private void showBottomSheetAddChapter() {
-        BottomSheetDialog addChapterDialog = new BottomSheetDialog(getContext(), R.style.DialogStyle);
+    private void showBottomSheetAddSection() {
+        BottomSheetDialog addSectionDialog = new BottomSheetDialog(getContext(), R.style.DialogStyle);
 
-        View addChapterView = LayoutInflater.from(getContext())
-                .inflate(R.layout.bottom_sheet_add_chapter, null);
+        View addSectionView = LayoutInflater.from(getContext())
+                .inflate(R.layout.bottom_sheet_add_section, null);
 
-        EditText chapterTitle = addChapterView.findViewById(R.id.edit_text_new_chapter);
-        Button btnSaveChapter = addChapterView.findViewById(R.id.btn_save_chapter);
+        EditText sectionTitle = addSectionView.findViewById(R.id.edit_text_new_section);
+        Button btnSaveSection = addSectionView.findViewById(R.id.btn_save_section);
 
-        chapterTitle.addTextChangedListener(new TextWatcher() {
+        sectionTitle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -171,12 +170,12 @@ public class ChapterFragment extends Fragment {
                 String title = s.toString();
                 // TODO: add condition on start with ' '
                 if (title.isEmpty()) {
-                    btnSaveChapter.setEnabled(false);
-                    btnSaveChapter.setTextColor(getResources()
+                    btnSaveSection.setEnabled(false);
+                    btnSaveSection.setTextColor(getResources()
                             .getColor(R.color.green1));
                 } else {
-                    btnSaveChapter.setEnabled(true);
-                    btnSaveChapter.setTextColor(getResources()
+                    btnSaveSection.setEnabled(true);
+                    btnSaveSection.setTextColor(getResources()
                             .getColor(R.color.blue_button));
                 }
             }
@@ -187,33 +186,33 @@ public class ChapterFragment extends Fragment {
             }
         });
 
-        btnSaveChapter.setOnClickListener(v -> {
-            String title = chapterTitle.getText().toString();
-            addNewChapter(title);
-            addChapterDialog.dismiss();
+        btnSaveSection.setOnClickListener(v -> {
+            String title = sectionTitle.getText().toString();
+            addNewSection(title);
+            addSectionDialog.dismiss();
         });
 
-        addChapterDialog.setContentView(addChapterView);
-        addChapterDialog.show();
+        addSectionDialog.setContentView(addSectionView);
+        addSectionDialog.show();
     }
 
-    private void addNewChapter(String title) {
-        Chapter chapter = new Chapter(title);
-        viewModel.addChapter(chapter);
+    private void addNewSection(String title) {
+        Section section = new Section(title);
+        viewModel.addSection(section);
     }
 
-    private void loadChapters(List<Chapter> chapterList) {
+    private void loadSections(List<Section> sectionList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        ChapterAdapter chapterAdapter = new ChapterAdapter(chapterList);
-        chapterAdapter.setListener(position -> {
+        SectionAdapter sectionAdapter = new SectionAdapter(sectionList);
+        sectionAdapter.setListener(position -> {
             // TODO: goto method
-            viewModel.selectChapter(position);
-            NavDirections action = ChapterFragmentDirections.actionChapterFragmentToTasksFragment();
+            viewModel.selectSection(position);
+            NavDirections action = SectionFragmentDirections.actionSectionFragmentToTasksFragment();
             Navigation.findNavController(getView()).navigate(action);
         });
-        binding.recyclerViewChapters.setAdapter(chapterAdapter);
-        binding.recyclerViewChapters.setLayoutManager(layoutManager);
-        binding.recyclerViewChapters.setHasFixedSize(true);
+        binding.recyclerViewSections.setAdapter(sectionAdapter);
+        binding.recyclerViewSections.setLayoutManager(layoutManager);
+        binding.recyclerViewSections.setHasFixedSize(true);
     }
 
     @Override

@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/chapterFragment">
+    app:startDestination="@id/sectionFragment">
 
     <fragment
-        android:id="@+id/chapterFragment"
-        android:name="com.themarto.etudetask.fragments.ChapterFragment"
-        android:label="fragment_chapter"
-        tools:layout="@layout/fragment_chapter" >
+        android:id="@+id/sectionFragment"
+        android:name="com.themarto.etudetask.fragments.SectionFragment"
+        android:label="fragment_section"
+        tools:layout="@layout/fragment_section">
         <action
-            android:id="@+id/action_chapterFragment_to_tasksFragment"
+            android:id="@+id/action_sectionFragment_to_tasksFragment"
             app:destination="@id/tasksFragment" />
     </fragment>
     <fragment

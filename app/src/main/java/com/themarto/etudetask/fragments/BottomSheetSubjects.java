@@ -15,48 +15,47 @@ import android.widget.Button;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.Util;
-import com.themarto.etudetask.adapters.SignatureAdapter;
-import com.themarto.etudetask.databinding.BottomSheetSignaturesBinding;
-import com.themarto.etudetask.models.Signature;
+import com.themarto.etudetask.adapters.SubjectAdapter;
+import com.themarto.etudetask.databinding.BottomSheetSubjectsBinding;
+import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.viewmodel.SharedViewModel;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class BottomSheetSignatures extends BottomSheetDialogFragment {
+public class BottomSheetSubjects extends BottomSheetDialogFragment {
 
-    RecyclerView recyclerViewSignatures;
+    RecyclerView recyclerViewSubjects;
 
-    private BottomSheetSignaturesBinding binding;
+    private BottomSheetSubjectsBinding binding;
 
     private SharedViewModel viewModel;
 
     private SharedPreferences sharedPref;
 
-    public BottomSheetSignatures() { }
+    public BottomSheetSubjects() { }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = BottomSheetSignaturesBinding.inflate(inflater, container, false);
+        binding = BottomSheetSubjectsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 
         // TODO: take it in another method
-        // prevent the key board cover buttons when add signature
+        // prevent the key board cover buttons when add subject
         int minHeight = getResources().getDisplayMetrics().heightPixels / 2;
-        binding.recyclerViewSignatures.setMinimumHeight(minHeight);
+        binding.recyclerViewSubjects.setMinimumHeight(minHeight);
 
-        recyclerViewSignatures = binding.recyclerViewSignatures;
+        recyclerViewSubjects = binding.recyclerViewSubjects;
 
-        binding.addSignature.setOnClickListener(v -> runAddSignature());
+        binding.addSubject.setOnClickListener(v -> runAddSubject());
 
         return view;
     }
@@ -65,14 +64,14 @@ public class BottomSheetSignatures extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-        viewModel.getAllSignatures().observe(this, signatureList -> loadSignatures(signatureList));
+        viewModel.getAllSubjects().observe(this, subjectList -> loadSubjects(subjectList));
     }
 
     // ACTIONS
-    private void runAddSignature(){
+    private void runAddSubject(){
         showAddElements();
 
-        binding.editTextNewSignature.addTextChangedListener(new TextWatcher() {
+        binding.editTextNewSubject.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -82,9 +81,9 @@ public class BottomSheetSignatures extends BottomSheetDialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String title = s.toString();
                 if(title.isEmpty()){
-                    disableButton(binding.btnSaveSignature);
+                    disableButton(binding.btnSaveSubject);
                 } else {
-                    enableButton(binding.btnSaveSignature);
+                    enableButton(binding.btnSaveSubject);
                 }
             }
 
@@ -94,21 +93,21 @@ public class BottomSheetSignatures extends BottomSheetDialogFragment {
             }
         });
 
-        binding.btnSaveSignature.setOnClickListener(v -> {
-            String signatureTitle = binding.editTextNewSignature.getText().toString();
-            saveSignature(signatureTitle);
+        binding.btnSaveSubject.setOnClickListener(v -> {
+            String subjectTitle = binding.editTextNewSubject.getText().toString();
+            saveSubject(subjectTitle);
             sharedPref.edit()
-                    .putInt("SELECTED_SIGNATURE", viewModel.getAllSignatures().getValue().size() - 1 )
+                    .putInt("SELECTED_SIGNATURE", viewModel.getAllSubjects().getValue().size() - 1 )
                     .apply();
             dismiss();
         });
 
-        binding.editTextNewSignature.requestFocus();
+        binding.editTextNewSubject.requestFocus();
     }
 
     private void enableButton(Button btn){
-        binding.btnSaveSignature.setEnabled(true);
-        binding.btnSaveSignature.setTextColor(getResources()
+        binding.btnSaveSubject.setEnabled(true);
+        binding.btnSaveSubject.setTextColor(getResources()
                 .getColor(R.color.blue_button));
     }
 
@@ -121,33 +120,33 @@ public class BottomSheetSignatures extends BottomSheetDialogFragment {
     private void showAddElements() {
         TransitionManager.beginDelayedTransition(binding.getRoot(), new AutoTransition());
         binding.parentViewTitle.setVisibility(View.GONE);
-        binding.parentViewAddSignature.setVisibility(View.VISIBLE);
+        binding.parentViewAddSubject.setVisibility(View.VISIBLE);
     }
 
-    private void loadSignatures(List<Signature> signatureList) {
+    private void loadSubjects(List<Subject> subjectList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        int selectedSignature = sharedPref.getInt("SELECTED_SIGNATURE", 0);
-        SignatureAdapter signatureAdapter = new SignatureAdapter(signatureList, selectedSignature);
-        signatureAdapter.setListener(new Util.MyListener() {
+        int selectedSubject = sharedPref.getInt("SELECTED_SUBJECT", 0);
+        SubjectAdapter subjectAdapter = new SubjectAdapter(subjectList, selectedSubject);
+        subjectAdapter.setListener(new Util.MyListener() {
             @Override
             public void onItemClick(int position) {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 // todo: extract string
-                editor.putInt("SELECTED_SIGNATURE", position);
+                editor.putInt("SELECTED_SUBJECT", position);
                 editor.apply();
-                viewModel.selectSignature(position);
+                viewModel.selectSubject(position);
                 dismiss();
             }
         });
-        recyclerViewSignatures.setLayoutManager(layoutManager);
-        recyclerViewSignatures.setAdapter(signatureAdapter);
-        recyclerViewSignatures.setHasFixedSize(true);
+        recyclerViewSubjects.setLayoutManager(layoutManager);
+        recyclerViewSubjects.setAdapter(subjectAdapter);
+        recyclerViewSubjects.setHasFixedSize(true);
     }
 
     // CRUD
-    private void saveSignature(String title){
-        Signature signature = new Signature(title);
-        viewModel.addSignature(signature);
+    private void saveSubject(String title){
+        Subject subject = new Subject(title);
+        viewModel.addSubject(subject);
     }
 
     @Override

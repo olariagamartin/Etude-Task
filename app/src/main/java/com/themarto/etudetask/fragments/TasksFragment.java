@@ -34,7 +34,7 @@ import com.themarto.etudetask.Util;
 import com.themarto.etudetask.adapters.TaskAdapter;
 import com.themarto.etudetask.databinding.BottomSheetAddTaskBinding;
 import com.themarto.etudetask.databinding.FragmentTasksBinding;
-import com.themarto.etudetask.models.Chapter;
+import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Task;
 import com.themarto.etudetask.viewmodel.SharedViewModel;
 
@@ -58,10 +58,10 @@ public class TasksFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
-        viewModel.getSelectedChapter().observe(getViewLifecycleOwner(), new Observer<Chapter>() {
+        viewModel.getSelectedSection().observe(getViewLifecycleOwner(), new Observer<Section>() {
             @Override
-            public void onChanged(Chapter chapter) {
-                loadTasks(chapter.getTaskList());
+            public void onChanged(Section section) {
+                loadTasks(section.getTaskList());
                 setViewBehavior();
             }
         });
@@ -84,7 +84,7 @@ public class TasksFragment extends Fragment {
         // take it in another method
         binding.toolbarTask.topAppBar.setNavigationIcon(R.drawable.ic_arrow_back);
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbarTask.topAppBar);
-        String title = viewModel.getSelectedChapter().getValue().getTitle();
+        String title = viewModel.getSelectedSection().getValue().getTitle();
         binding.toolbarTask.toolbarLayout.setTitle(title);
         setHasOptionsMenu(true);
 
@@ -104,11 +104,11 @@ public class TasksFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.rename_chapter:
-                showDialogRenameChapter();
+            case R.id.rename_section:
+                showDialogRenameSection();
                 return true;
-            case R.id.delete_chapter:
-                showDialogDeleteChapter();
+            case R.id.delete_section:
+                showDialogDeleteSection();
                 return true;
             case android.R.id.home:
                 Navigation.findNavController(getView()).navigateUp();
@@ -118,17 +118,17 @@ public class TasksFragment extends Fragment {
         }
     }
 
-    private void showDialogRenameChapter() {
+    private void showDialogRenameSection() {
         // TODO: show keyboard
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(getContext());
         dialogBuilder.setTitle("Rename");
         View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_title, null);
         EditText editTitle = editLayout.findViewById(R.id.edit_title_dialog);
-        editTitle.setText(viewModel.getSelectedChapter().getValue().getTitle());
+        editTitle.setText(viewModel.getSelectedSection().getValue().getTitle());
         editTitle.setSelection(editTitle.getText().length());
         dialogBuilder.setView(editLayout)
                 .setPositiveButton("Save", (dialog, which) -> {
-                    viewModel.changeChapterTitle(editTitle.getText().toString());
+                    viewModel.changeSectionTitle(editTitle.getText().toString());
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {});
 
@@ -207,7 +207,7 @@ public class TasksFragment extends Fragment {
         viewModel.addTask(task);
     }
 
-    public void showDialogDeleteChapter() {
+    public void showDialogDeleteSection() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getContext());
         alertDialogBuilder.setTitle("Are you sure?") // TODO: add title
                 .setMessage("The section will be deleted")
@@ -215,7 +215,7 @@ public class TasksFragment extends Fragment {
                     //
                 })
                 .setPositiveButton("Delete", (dialog, which) -> { // todo: red button
-                    viewModel.deleteChapter();
+                    viewModel.deleteSection();
                     Navigation.findNavController(binding.getRoot()).navigateUp();
                 }).show();
     }

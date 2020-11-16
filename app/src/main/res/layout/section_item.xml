@@ -10,7 +10,7 @@
     android:focusable="true">
 
     <TextView
-        android:id="@+id/textViewChapterTitle"
+        android:id="@+id/textViewSectionTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="17dp"

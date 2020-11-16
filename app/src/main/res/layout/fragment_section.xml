@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.ChapterFragment">
+    tools:context=".fragments.SectionFragment">
 
     <include
-        android:id="@+id/toolbar_chapter"
-        layout="@layout/toolbar_chapter" />
+        android:id="@+id/toolbar_section"
+        layout="@layout/toolbar_section" />
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewChapters"
+        android:id="@+id/recyclerViewSections"
         android:layout_width="match_parent"
         android:paddingTop="5dp"
         android:layout_height="match_parent"
@@ -34,7 +34,7 @@
         app:navigationIcon="@drawable/ic_menu_bottom_bar" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_chapter"
+        android:id="@+id/fab_add_section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add"
