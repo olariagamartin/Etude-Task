@@ -55,6 +55,7 @@ public class TaskDetailsFragment extends Fragment {
         backButtonBehavior();
         topTitleBehavior();
         deleteButtonBehavior();
+        taskTitleBehavior();
         layoutChipsBehavior();
         taskDescriptionBehavior();
     }
@@ -75,6 +76,26 @@ public class TaskDetailsFragment extends Fragment {
             viewModel.deleteTask();
             deleted = true;
             Navigation.findNavController(v).navigateUp();
+        });
+    }
+
+    private void taskTitleBehavior(){
+        binding.editTextTaskTitle.setText(currentTask.getTitle());
+        binding.editTextTaskTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO: deny when text is empty
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
         });
     }
 
