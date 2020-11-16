@@ -1,6 +1,5 @@
 package com.themarto.etudetask.fragments;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -50,9 +50,8 @@ public class TasksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentTasksBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
 
-        return view;
+        return binding.getRoot();
     }
 
     @Override
@@ -106,10 +105,10 @@ public class TasksFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.rename_chapter:
-                renameChapter();
+                showDialogRenameChapter();
                 return true;
             case R.id.delete_chapter:
-                deleteChapter();
+                showDialogDeleteChapter();
                 return true;
             case android.R.id.home:
                 Navigation.findNavController(getView()).navigateUp();
@@ -119,6 +118,24 @@ public class TasksFragment extends Fragment {
         }
     }
 
+    private void showDialogRenameChapter() {
+        // TODO: show keyboard
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(getContext());
+        dialogBuilder.setTitle("Rename");
+        View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_title, null);
+        EditText editTitle = editLayout.findViewById(R.id.edit_title_dialog);
+        editTitle.setText(viewModel.getSelectedChapter().getValue().getTitle());
+        editTitle.setSelection(editTitle.getText().length());
+        dialogBuilder.setView(editLayout)
+                .setPositiveButton("Save", (dialog, which) -> {
+                    viewModel.changeChapterTitle(editTitle.getText().toString());
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {});
+
+        dialogBuilder.create().show();
+    }
+
+    // TODO: divide
     private void showBottomSheetAddTask() {
         BottomSheetDialog addTaskDialog = new BottomSheetDialog(getContext(), R.style.DialogStyle);
 
@@ -129,9 +146,7 @@ public class TasksFragment extends Fragment {
 
         addTaskBinding.editTextNewTask.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -149,86 +164,61 @@ public class TasksFragment extends Fragment {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) { }
         });
 
-        addTaskBinding.btnDueDateTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
-                addTaskBinding.btnDueDateTask.setVisibility(View.GONE);
-                addTaskBinding.chipDueDate.setVisibility(View.VISIBLE);
-            }
+        addTaskBinding.btnDueDateTask.setOnClickListener(v -> {
+            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
+            addTaskBinding.btnDueDateTask.setVisibility(View.GONE);
+            addTaskBinding.chipDueDate.setVisibility(View.VISIBLE);
         });
 
-        addTaskBinding.btnNotificationAddTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
-                addTaskBinding.btnNotificationAddTask.setVisibility(View.GONE);
-                addTaskBinding.chipNotification.setVisibility(View.VISIBLE);
-            }
+        addTaskBinding.btnNotificationAddTask.setOnClickListener(v -> {
+            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
+            addTaskBinding.btnNotificationAddTask.setVisibility(View.GONE);
+            addTaskBinding.chipNotification.setVisibility(View.VISIBLE);
         });
 
-        addTaskBinding.chipDueDate.setOnCloseIconClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
-                addTaskBinding.btnDueDateTask.setVisibility(View.VISIBLE);
-                addTaskBinding.chipDueDate.setVisibility(View.GONE);
-            }
+        addTaskBinding.chipDueDate.setOnCloseIconClickListener(v -> {
+            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
+            addTaskBinding.btnDueDateTask.setVisibility(View.VISIBLE);
+            addTaskBinding.chipDueDate.setVisibility(View.GONE);
         });
 
-        addTaskBinding.chipNotification.setOnCloseIconClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
-                addTaskBinding.btnNotificationAddTask.setVisibility(View.VISIBLE);
-                addTaskBinding.chipNotification.setVisibility(View.GONE);
-            }
+        addTaskBinding.chipNotification.setOnCloseIconClickListener(v -> {
+            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
+            addTaskBinding.btnNotificationAddTask.setVisibility(View.VISIBLE);
+            addTaskBinding.chipNotification.setVisibility(View.GONE);
         });
 
-        addTaskBinding.btnSaveTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String title = addTaskBinding.editTextNewTask.getText().toString();
-                addNewTask(title);
-                addTaskDialog.dismiss();
-            }
+        addTaskBinding.btnSaveTask.setOnClickListener(v -> {
+            String title = addTaskBinding.editTextNewTask.getText().toString();
+            addNewTask(title);
+            addTaskDialog.dismiss();
         });
 
         addTaskDialog.setContentView(addTaskView);
         addTaskDialog.show();
-
     }
 
+    // TODO: add date and reminder
     private void addNewTask(String title) {
+        Task task = new Task(title);
+        viewModel.addTask(task);
         Snackbar.make(getView(), title+" added", Snackbar.LENGTH_SHORT).show();
     }
 
-    public void renameChapter() {
-        Toast.makeText(getContext(), "Edit Chapter", Toast.LENGTH_SHORT).show();
-    }
-
-    public void deleteChapter() {
+    public void showDialogDeleteChapter() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getContext());
         alertDialogBuilder.setTitle("Delete this chapter") // TODO: add title
                 .setMessage("The chapter will be deleted")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //
-                    }
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    //
                 })
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Delete action
-                        Toast.makeText(getContext(), "Chapter deleted", Toast.LENGTH_SHORT)
-                                .show();
-                    }
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    viewModel.deleteChapter();
+                    Toast.makeText(getContext(), "Chapter deleted", Toast.LENGTH_SHORT)
+                            .show();
                 }).show();
     }
 

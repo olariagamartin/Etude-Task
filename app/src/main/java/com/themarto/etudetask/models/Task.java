@@ -2,12 +2,15 @@ package com.themarto.etudetask.models;
 
 import com.themarto.etudetask.Util;
 
-public class Task {
+import io.realm.RealmObject;
+
+public class Task extends RealmObject {
     private String title;
     private String description;
     private boolean isDone;
     // TODO: due date
 
+    public Task(){}
 
     public Task(String title) {
         this.title = title;

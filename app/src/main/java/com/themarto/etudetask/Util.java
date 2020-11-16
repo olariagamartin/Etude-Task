@@ -1,5 +1,9 @@
 package com.themarto.etudetask;
 
+import android.content.Context;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+
 import com.themarto.etudetask.models.Chapter;
 import com.themarto.etudetask.models.Signature;
 import com.themarto.etudetask.models.Task;
@@ -9,7 +13,7 @@ import java.util.List;
 
 public class Util {
 
-    static List<Task> taskListExample = new ArrayList<Task>(){{
+    /*static List<Task> taskListExample = new ArrayList<Task>(){{
         add((new Task("Task 1", "none", false)));
         add(new Task("Task 1", "none", false));
         add(new Task("Task 1", "none", false));
@@ -64,7 +68,13 @@ public class Util {
 
     public static List<Task> getTaskListExample () { return  taskListExample; }
 
-    public static List<Signature> getSignatureListEx () { return signatureList; }
+    public static List<Signature> getSignatureListEx () { return signatureList; }*/
+
+    public static void hideSoftKeyboard (View view, Context context){
+        InputMethodManager imm = (InputMethodManager)
+                context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
 
     public interface MyListener {
         void onItemClick(int position);

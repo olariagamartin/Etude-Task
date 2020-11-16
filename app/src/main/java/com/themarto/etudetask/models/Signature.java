@@ -1,18 +1,22 @@
 package com.themarto.etudetask.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Signature {
+import io.realm.RealmList;
+import io.realm.RealmObject;
+
+public class Signature extends RealmObject {
     private String title;
-    private List<Chapter> chapterList;
+    private RealmList<Chapter> chapterList;
+
+    public Signature(){}
 
     public Signature(String title) {
         this.title = title;
-        chapterList = new ArrayList<>();
+        chapterList = new RealmList<>();
     }
 
-    public Signature(String title, List<Chapter> chapterList) {
+    public Signature(String title, RealmList<Chapter> chapterList) {
         this.title = title;
         this.chapterList = chapterList;
     }
@@ -29,7 +33,7 @@ public class Signature {
         return chapterList;
     }
 
-    public void setChapterList(List<Chapter> chapterList) {
+    public void setChapterList(RealmList<Chapter> chapterList) {
         this.chapterList = chapterList;
     }
 }

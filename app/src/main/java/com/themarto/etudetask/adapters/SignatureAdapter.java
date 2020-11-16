@@ -1,5 +1,7 @@
 package com.themarto.etudetask.adapters;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.Util;
 import com.themarto.etudetask.models.Signature;
+import com.themarto.etudetask.viewmodel.SharedViewModel;
 
 import java.util.List;
 
@@ -22,8 +25,13 @@ public class SignatureAdapter extends RecyclerView.Adapter<SignatureAdapter.View
 
     private Util.MyListener mListener;
 
-    public SignatureAdapter(List<Signature> signatureList) {
+    private Context context;
+
+    private int selectedSignature;
+
+    public SignatureAdapter(List<Signature> signatureList, int selectedSignature) {
         this.signatureList = signatureList;
+        this.selectedSignature = selectedSignature;
     }
 
     public void setListener(Util.MyListener listener) {
@@ -33,6 +41,7 @@ public class SignatureAdapter extends RecyclerView.Adapter<SignatureAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.signature_item, parent, false);
         return new ViewHolder(view);
@@ -43,8 +52,9 @@ public class SignatureAdapter extends RecyclerView.Adapter<SignatureAdapter.View
         Signature currentSignature = signatureList.get(position);
         holder.signatureTitle.setText(currentSignature.getTitle());
         // TODO: set color if it's the current signature
-        if (currentSignature.getTitle().equals("Stats")){
-            //holder.cardView.setCardBackgroundColor(Color.parseColor("#340077C2"));
+        if (position == selectedSignature){
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.itemBackground));
+            holder.signatureTitle.setTextColor(context.getResources().getColor(R.color.blue_button));
         }
     }
 
@@ -63,6 +73,7 @@ public class SignatureAdapter extends RecyclerView.Adapter<SignatureAdapter.View
             super(itemView);
             // TODO: do it with view binding
             signatureTitle = itemView.findViewById(R.id.signatureTitle);
+            cardView = (CardView) itemView.getRootView();
             if(mListener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

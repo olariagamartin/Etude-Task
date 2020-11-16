@@ -1,5 +1,6 @@
 package com.themarto.etudetask.viewmodel;
 
+import com.themarto.etudetask.SignatureRepository;
 import com.themarto.etudetask.Util;
 import com.themarto.etudetask.models.Chapter;
 import com.themarto.etudetask.models.Signature;
@@ -12,32 +13,32 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class SharedViewModel extends ViewModel {
+    private SignatureRepository mRepository;
     private MutableLiveData<List<Signature>> signatures;
     private MutableLiveData<Signature> selectedSignature = new MutableLiveData<>();
     private MutableLiveData<Chapter> selectedChapter = new MutableLiveData<>();
     private MutableLiveData<Task> selectedTask = new MutableLiveData<>();
 
     public SharedViewModel() {
+        mRepository = new SignatureRepository();
         signatures = new MutableLiveData<>();
         loadSignatures();
-        setStartSignature();
     }
 
     public LiveData<List<Signature>> getAllSignatures () {
-        if (signatures == null){
-            loadSignatures();
-        }
         return signatures;
     }
 
-    public void loadSignatures(){
-        // TODO: connect to DB
-        signatures.setValue(Util.getSignatureListEx());
+    public void setStartSignature(int position) {
+        selectedSignature.setValue(signatures.getValue().get(position));
     }
 
-    private void setStartSignature() {
-        // TODO:
-        selectedSignature.setValue(signatures.getValue().get(0));
+    public void loadSignatures(){
+        signatures = mRepository.getAllSignatures();
+        if(signatures.getValue().isEmpty()) {
+            mRepository.addSignature(new Signature("Default")); // TODO: string
+            selectSignature(0);
+        }
     }
 
     public void selectSignature (int position) {
@@ -66,9 +67,71 @@ public class SharedViewModel extends ViewModel {
         return selectedTask;
     }
 
-    // Create
+    // CRUD actions
     public void addSignature(Signature newSignature) {
-        // TODO: send to DB
+        mRepository.addSignature(newSignature);
+        selectSignature(signatures.getValue().size() - 1);
+    }
+
+    /**
+     * Change the title of the selected signature
+     * @param title new title for the signature
+     */
+    public void changeSignatureTitle (String title) {
+        mRepository.changeSignatureTitle(selectedSignature.getValue(), title);
+    }
+
+    /**
+     * Delete the selected signature
+     */
+    public void deleteSignature () {
+        mRepository.deleteSignature(selectedSignature.getValue());
+    }
+
+    /**
+     * Add a new Chapter to the selected signature
+     * @param chapter new chapter to be added
+     */
+    public void addChapter (Chapter chapter) {
+        mRepository.addChapter(selectedSignature.getValue(), chapter);
+    }
+
+    /**
+     * Change the title of the selected chapter
+     * @param title new title of the chapter
+     */
+    public void changeChapterTitle (String title) {
+        mRepository.changeChapterTitle(selectedChapter.getValue(), title);
+    }
+
+    /**
+     * Delete the selected chapter
+     */
+    public void deleteChapter () {
+        mRepository.deleteChapter(selectedChapter.getValue());
+    }
+
+    /**
+     * Add a new task to the selected chapter
+     * @param task new task to be added
+     */
+    public void addTask (Task task) {
+        mRepository.addTask(selectedChapter.getValue(), task);
+    }
+
+    /**
+     * Change the task title of the selected task
+     * @param title new title of the task
+     */
+    public void changeTaskTitle (String title) {
+        mRepository.changeTaskTitle(selectedTask.getValue(), title);
+    }
+
+    /**
+     * Delete selected task
+     */
+    public void deleteTask () {
+        mRepository.deleteTask(selectedTask.getValue());
     }
 
 }
