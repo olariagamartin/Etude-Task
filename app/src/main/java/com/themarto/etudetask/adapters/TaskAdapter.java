@@ -3,20 +3,17 @@ package com.themarto.etudetask.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.Util;
-import com.themarto.etudetask.fragments.TasksFragmentDirections;
 import com.themarto.etudetask.models.Task;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
@@ -25,12 +22,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     private Util.MyListener mListener;
 
+    private TaskListener taskListener;
+
     public TaskAdapter(List<Task> taskList) {
         this.taskList = taskList;
     }
 
     public void setListener(Util.MyListener listener){
         mListener = listener;
+    }
+
+    public void setTaskListener (TaskListener taskListener) {
+        this.taskListener = taskListener;
     }
 
     @NonNull
@@ -46,7 +49,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         Task currentTask = taskList.get(position);
         holder.taskTitle.setText(currentTask.getTitle());
         holder.taskDate.setText(currentTask.getDateStr());
-        holder.taskDone.setChecked(currentTask.isDone());
     }
 
     @Override
@@ -56,14 +58,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        MaterialCheckBox taskDone;
+        // Todo: change for image button
+        ImageButton taskDone;
         TextView taskTitle;
         TextView taskDate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // TODO: do it with view binding
-            taskDone = itemView.findViewById(R.id.switchTaskDone);
+            taskDone = itemView.findViewById(R.id.btn_checkbox_task);
             taskTitle = itemView.findViewById(R.id.taskTitle);
             taskDate = itemView.findViewById(R.id.taskDate);
 
@@ -75,6 +78,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     }
                 }
             });
+
+            taskDone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    taskListener.onTaskChecked(getAdapterPosition());
+                }
+            });
         }
+    }
+
+    public interface TaskListener {
+        public void onTaskChecked (int position);
     }
 }

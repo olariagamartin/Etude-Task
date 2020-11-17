@@ -223,6 +223,7 @@ public class TasksFragment extends Fragment {
     private void loadTasks(List<Task> taskList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         TaskAdapter taskAdapter = new TaskAdapter(taskList);
+        // Todo: refactor listeners
         taskAdapter.setListener(new Util.MyListener() {
             @Override
             public void onItemClick(int position) {
@@ -230,6 +231,12 @@ public class TasksFragment extends Fragment {
                 viewModel.selectTask(position);
                 NavDirections action = TasksFragmentDirections.actionTasksFragmentToTaskDetailsFragment();
                 Navigation.findNavController(binding.getRoot()).navigate(action);
+            }
+        });
+        taskAdapter.setTaskListener(new TaskAdapter.TaskListener() {
+            @Override
+            public void onTaskChecked(int position) {
+                viewModel.deleteTask(position);
             }
         });
         binding.recyclerViewTasks.setLayoutManager(layoutManager);

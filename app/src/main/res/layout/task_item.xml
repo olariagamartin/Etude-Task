@@ -14,11 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/switchTaskDone"
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_checkbox_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
+            android:src="@drawable/ic_checkmark_circle"
+            android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +35,7 @@
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/taskDate"
-            app:layout_constraintStart_toEndOf="@+id/switchTaskDone"
+            app:layout_constraintStart_toEndOf="@+id/btn_checkbox_task"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView

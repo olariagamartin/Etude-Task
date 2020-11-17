@@ -144,4 +144,13 @@ public class SharedViewModel extends ViewModel {
         mRepository.deleteTask(selectedTask.getValue());
     }
 
+    /**
+     * Delete task in the position received
+     * @param position the position of the task to be deleted
+     */
+    public void deleteTask (int position) {
+        Section section = mRepository.deleteTask(selectedSection.getValue(), position);
+        selectedSection.setValue(section);
+    }
+
 }

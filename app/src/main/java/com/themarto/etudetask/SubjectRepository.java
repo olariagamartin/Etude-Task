@@ -88,4 +88,11 @@ public class SubjectRepository {
         realm.commitTransaction();
     }
 
+    public Section deleteTask(Section section, int position){
+        realm.beginTransaction();
+        section.getTaskList().get(position).deleteFromRealm();
+        realm.commitTransaction();
+        return section;
+    }
+
 }
