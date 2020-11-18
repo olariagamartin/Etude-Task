@@ -6,7 +6,9 @@ import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -150,6 +152,11 @@ public class SharedViewModel extends ViewModel {
      */
     public void deleteTask (int position) {
         Section section = mRepository.deleteTask(selectedSection.getValue(), position);
+        selectedSection.setValue(section);
+    }
+
+    public void setTaskDone (int position) {
+        Section section = mRepository.setTaskDone(getSelectedSection().getValue(), position);
         selectedSection.setValue(section);
     }
 

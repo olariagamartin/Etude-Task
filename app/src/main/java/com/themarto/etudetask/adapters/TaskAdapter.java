@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.material.checkbox.MaterialCheckBox;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.Util;
 import com.themarto.etudetask.models.Task;
@@ -58,15 +57,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        // Todo: change for image button
-        ImageButton taskDone;
+        ImageButton btnTaskDone;
         TextView taskTitle;
         TextView taskDate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // TODO: do it with view binding
-            taskDone = itemView.findViewById(R.id.btn_checkbox_task);
+            btnTaskDone = itemView.findViewById(R.id.btn_checkbox_task);
             taskTitle = itemView.findViewById(R.id.taskTitle);
             taskDate = itemView.findViewById(R.id.taskDate);
 
@@ -79,7 +77,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 }
             });
 
-            taskDone.setOnClickListener(new View.OnClickListener() {
+            btnTaskDone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     taskListener.onTaskChecked(getAdapterPosition());

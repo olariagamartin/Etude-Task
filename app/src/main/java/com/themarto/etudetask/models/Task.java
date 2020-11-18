@@ -5,7 +5,6 @@ import io.realm.RealmObject;
 public class Task extends RealmObject {
     private String title;
     private String description;
-    private boolean isDone;
     // TODO: due date
 
     public Task(){}
@@ -13,13 +12,11 @@ public class Task extends RealmObject {
     public Task(String title) {
         this.title = title;
         this.description = "";
-        this.isDone = false;
     }
 
     public Task(String title, String description, boolean isDone) {
         this.title = title;
         this.description = description;
-        this.isDone = isDone;
     }
 
     public String getTitle() {
@@ -36,14 +33,6 @@ public class Task extends RealmObject {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public boolean isDone() {
-        return isDone;
-    }
-
-    public void setDone(boolean done) {
-        isDone = done;
     }
 
     public String getDateStr(){

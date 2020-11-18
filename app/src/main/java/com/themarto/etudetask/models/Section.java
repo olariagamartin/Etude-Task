@@ -8,12 +8,14 @@ import io.realm.RealmObject;
 public class Section extends RealmObject {
     private String title;
     private RealmList<Task> taskList;
+    private RealmList<Task> taskDoneList;
 
     public Section() {}
 
     public Section(String title) {
         this.title = title;
         this.taskList = new RealmList<>();
+        this.taskDoneList = new RealmList<>();
     }
 
     public Section(String title, RealmList<Task> taskList) {
@@ -33,7 +35,7 @@ public class Section extends RealmObject {
         return taskList;
     }
 
-    public void setTaskList(RealmList<Task> taskList) {
-        this.taskList = taskList;
+    public List<Task> getTaskDoneList() {
+        return taskDoneList;
     }
 }

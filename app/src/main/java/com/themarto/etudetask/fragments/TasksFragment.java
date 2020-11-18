@@ -32,6 +32,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.Util;
 import com.themarto.etudetask.adapters.TaskAdapter;
+import com.themarto.etudetask.adapters.TaskDoneAdapter;
 import com.themarto.etudetask.databinding.BottomSheetAddTaskBinding;
 import com.themarto.etudetask.databinding.FragmentTasksBinding;
 import com.themarto.etudetask.models.Section;
@@ -61,7 +62,7 @@ public class TasksFragment extends Fragment {
         viewModel.getSelectedSection().observe(getViewLifecycleOwner(), new Observer<Section>() {
             @Override
             public void onChanged(Section section) {
-                loadTasks(section.getTaskList());
+                loadTasks(section);
                 setViewBehavior();
             }
         });
@@ -220,9 +221,10 @@ public class TasksFragment extends Fragment {
                 }).show();
     }
 
-    private void loadTasks(List<Task> taskList) {
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        TaskAdapter taskAdapter = new TaskAdapter(taskList);
+    private void loadTasks(Section section) {
+        // To to tasks
+        RecyclerView.LayoutManager layoutManagerTask = new LinearLayoutManager(getContext());
+        TaskAdapter taskAdapter = new TaskAdapter(section.getTaskList());
         // Todo: refactor listeners
         taskAdapter.setListener(new Util.MyListener() {
             @Override
@@ -236,12 +238,21 @@ public class TasksFragment extends Fragment {
         taskAdapter.setTaskListener(new TaskAdapter.TaskListener() {
             @Override
             public void onTaskChecked(int position) {
-                viewModel.deleteTask(position);
+                viewModel.setTaskDone(position);
             }
         });
-        binding.recyclerViewTasks.setLayoutManager(layoutManager);
+        binding.recyclerViewTasks.setLayoutManager(layoutManagerTask);
         binding.recyclerViewTasks.setAdapter(taskAdapter);
         binding.recyclerViewTasks.setHasFixedSize(true);
+        binding.recyclerViewTasks.setNestedScrollingEnabled(false);
+
+        // Done tasks
+        RecyclerView.LayoutManager layoutManagerDone = new LinearLayoutManager(getContext());
+        TaskDoneAdapter taskDoneAdapter = new TaskDoneAdapter(section.getTaskDoneList());
+        binding.recyclerViewDoneTasks.setLayoutManager(layoutManagerDone);
+        binding.recyclerViewDoneTasks.setAdapter(taskDoneAdapter);
+        binding.recyclerViewDoneTasks.setHasFixedSize(true);
+        binding.recyclerViewDoneTasks.setNestedScrollingEnabled(false);
     }
 
     @Override
