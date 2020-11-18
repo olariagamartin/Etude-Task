@@ -160,4 +160,9 @@ public class SharedViewModel extends ViewModel {
         selectedSection.setValue(section);
     }
 
+    public void setTaskUndone (int position) {
+        Section section = mRepository.setTaskUndone(getSelectedSection().getValue(), position);
+        selectedSection.setValue(section);
+    }
+
 }

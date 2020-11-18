@@ -1,6 +1,8 @@
 package com.themarto.etudetask.adapters;
 
 import android.graphics.Paint;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +21,14 @@ public class TaskDoneAdapter extends RecyclerView.Adapter<TaskDoneAdapter.ViewHo
 
     private List<Task> taskDoneList;
 
+    private TaskDoneListener listener;
+
     public TaskDoneAdapter(List<Task> taskDoneList) {
         this.taskDoneList = taskDoneList;
+    }
+
+    public void setListener(TaskDoneListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -53,7 +61,13 @@ public class TaskDoneAdapter extends RecyclerView.Adapter<TaskDoneAdapter.ViewHo
             taskTitle = itemView.findViewById(R.id.taskDoneTitle);
             taskTitle.setPaintFlags(taskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-            // TODO: set click listener
+            if(listener != null) {
+                btnTaskDone.setOnClickListener(v -> listener.onBtnDoneClick(getAdapterPosition()));
+            }
         }
+    }
+
+    public interface TaskDoneListener {
+        public void onBtnDoneClick(int position);
     }
 }

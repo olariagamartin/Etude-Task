@@ -249,6 +249,12 @@ public class TasksFragment extends Fragment {
         // Done tasks
         RecyclerView.LayoutManager layoutManagerDone = new LinearLayoutManager(getContext());
         TaskDoneAdapter taskDoneAdapter = new TaskDoneAdapter(section.getTaskDoneList());
+        taskDoneAdapter.setListener(new TaskDoneAdapter.TaskDoneListener() {
+            @Override
+            public void onBtnDoneClick(int position) {
+                viewModel.setTaskUndone(position);
+            }
+        });
         binding.recyclerViewDoneTasks.setLayoutManager(layoutManagerDone);
         binding.recyclerViewDoneTasks.setAdapter(taskDoneAdapter);
         binding.recyclerViewDoneTasks.setHasFixedSize(true);

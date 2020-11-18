@@ -104,4 +104,13 @@ public class SubjectRepository {
         return section;
     }
 
+    public Section setTaskUndone (Section section, int position) {
+        realm.beginTransaction();
+        Task task = section.getTaskDoneList().get(position);
+        section.getTaskDoneList().remove(position);
+        section.getTaskList().add(task);
+        realm.commitTransaction();
+        return section;
+    }
+
 }
