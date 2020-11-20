@@ -18,7 +18,7 @@
             android:id="@+id/btn_checkbox_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="5dp"
             android:layout_marginVertical="5dp"
             android:src="@drawable/ic_checkmark_circle"
             android:background="@android:color/transparent"

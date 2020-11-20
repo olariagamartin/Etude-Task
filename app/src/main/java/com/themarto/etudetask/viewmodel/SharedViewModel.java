@@ -1,14 +1,11 @@
 package com.themarto.etudetask.viewmodel;
 
 import com.themarto.etudetask.SubjectRepository;
-import com.themarto.etudetask.Util;
 import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -134,9 +131,12 @@ public class SharedViewModel extends ViewModel {
      * Change the task title of the selected task
      * @param title new title of the task
      */
-    public void changeTaskTitle (String title) {
-        Task task = mRepository.changeTaskTitle(selectedTask.getValue(), title);
-        selectedTask.setValue(task);
+    public void updateTaskTitle(String title) {
+        mRepository.updateTaskTitle(selectedTask.getValue(), title);
+    }
+
+    public void updateTaskDetails(String details) {
+        mRepository.updateTaskDetails(selectedTask.getValue(), details);
     }
 
     /**
@@ -144,6 +144,11 @@ public class SharedViewModel extends ViewModel {
      */
     public void deleteTask () {
         mRepository.deleteTask(selectedTask.getValue());
+    }
+
+    public void deleteAllCompletedTasks () {
+        Section section = mRepository.deleteAllCompletedTasks(selectedSection.getValue());
+        selectedSection.setValue(section);
     }
 
     /**
@@ -156,7 +161,7 @@ public class SharedViewModel extends ViewModel {
     }
 
     public void setTaskDone (int position) {
-        Section section = mRepository.setTaskDone(getSelectedSection().getValue(), position);
+        Section section = mRepository.setTaskDone(selectedSection.getValue(), position);
         selectedSection.setValue(section);
     }
 

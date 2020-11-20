@@ -23,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -44,14 +45,12 @@ import java.util.List;
 public class TasksFragment extends Fragment {
 
     private FragmentTasksBinding binding;
-
     private SharedViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentTasksBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -62,14 +61,15 @@ public class TasksFragment extends Fragment {
         viewModel.getSelectedSection().observe(getViewLifecycleOwner(), new Observer<Section>() {
             @Override
             public void onChanged(Section section) {
+                // todo: establish a current section
                 loadTasks(section);
-                setViewBehavior();
+                setViewBehavior(section);
             }
         });
     }
 
-    private void setViewBehavior() {
-        // TODO: take it in another method
+    private void setViewBehavior(Section section) {
+        // On Scroll behavior
         binding.recyclerViewTasks.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -82,19 +82,35 @@ public class TasksFragment extends Fragment {
             }
         });
 
-        // take it in another method
+        // Toolbar behavior
         binding.toolbarTask.topAppBar.setNavigationIcon(R.drawable.ic_arrow_back);
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbarTask.topAppBar);
-        String title = viewModel.getSelectedSection().getValue().getTitle();
+        String title = section.getTitle();
         binding.toolbarTask.toolbarLayout.setTitle(title);
         setHasOptionsMenu(true);
 
-        binding.fabAddTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBottomSheetAddTask();
-            }
-        });
+        // Tasks completed title
+        binding.tasksDoneText.setText("Completed (" + section.getTaskDoneList().size() + ")");
+
+        // FAB behavior
+        binding.fabAddTask.setOnClickListener(v -> showBottomSheetAddTask());
+
+        // Done tasks behavior
+        if (section.getTaskDoneList().isEmpty()) {
+            binding.tasksDoneText.setVisibility(View.GONE);
+            binding.recyclerViewDoneTasks.setVisibility(View.GONE);
+        } else {
+            binding.tasksDoneText.setVisibility(View.VISIBLE);
+            binding.recyclerViewDoneTasks.setVisibility(View.VISIBLE);
+
+            binding.tasksDoneText.setOnClickListener(v -> {
+                if (binding.recyclerViewDoneTasks.getVisibility() == View.VISIBLE) {
+                    binding.recyclerViewDoneTasks.setVisibility(View.GONE);
+                } else {
+                    binding.recyclerViewDoneTasks.setVisibility(View.VISIBLE);
+                }
+            });
+        }
     }
 
     @Override
@@ -110,6 +126,9 @@ public class TasksFragment extends Fragment {
                 return true;
             case R.id.delete_section:
                 showDialogDeleteSection();
+                return true;
+            case R.id.delete_completed_tasks:
+                deleteCompletedTasks();
                 return true;
             case android.R.id.home:
                 Navigation.findNavController(getView()).navigateUp();
@@ -145,52 +164,12 @@ public class TasksFragment extends Fragment {
 
         BottomSheetAddTaskBinding addTaskBinding = BottomSheetAddTaskBinding.bind(addTaskView);
 
-        addTaskBinding.editTextNewTask.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+        setEditTextNewTaskBehavior(addTaskBinding);
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String title = s.toString();
-                // TODO: add condition on start with ' '
-                if (title.isEmpty()) {
-                    addTaskBinding.btnSaveTask.setEnabled(false);
-                    addTaskBinding.btnSaveTask.setTextColor(getResources()
-                            .getColor(R.color.green1));
-                } else {
-                    addTaskBinding.btnSaveTask.setEnabled(true);
-                    addTaskBinding.btnSaveTask.setTextColor(getResources()
-                            .getColor(R.color.blue_button));
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
-
-        addTaskBinding.btnDueDateTask.setOnClickListener(v -> {
-            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
-            addTaskBinding.btnDueDateTask.setVisibility(View.GONE);
-            addTaskBinding.chipDueDate.setVisibility(View.VISIBLE);
-        });
-
-        addTaskBinding.btnNotificationAddTask.setOnClickListener(v -> {
-            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
-            addTaskBinding.btnNotificationAddTask.setVisibility(View.GONE);
-            addTaskBinding.chipNotification.setVisibility(View.VISIBLE);
-        });
-
-        addTaskBinding.chipDueDate.setOnCloseIconClickListener(v -> {
-            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
-            addTaskBinding.btnDueDateTask.setVisibility(View.VISIBLE);
-            addTaskBinding.chipDueDate.setVisibility(View.GONE);
-        });
-
-        addTaskBinding.chipNotification.setOnCloseIconClickListener(v -> {
-            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
-            addTaskBinding.btnNotificationAddTask.setVisibility(View.VISIBLE);
-            addTaskBinding.chipNotification.setVisibility(View.GONE);
-        });
+        setBtnDueDateTaskBehavior(addTaskBinding);
+        setBtnActiveNotificationBehavior(addTaskBinding);
+        setChipDueDateBehavior(addTaskBinding);
+        setChipNotificationBehavior(addTaskBinding);
 
         addTaskBinding.btnSaveTask.setOnClickListener(v -> {
             String title = addTaskBinding.editTextNewTask.getText().toString();
@@ -200,6 +179,72 @@ public class TasksFragment extends Fragment {
 
         addTaskDialog.setContentView(addTaskView);
         addTaskDialog.show();
+    }
+
+    private void setEditTextNewTaskBehavior(BottomSheetAddTaskBinding addTaskBinding) {
+        addTaskBinding.editTextNewTask.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String title = s.toString();
+                // TODO: add condition on start with ' '
+                if (title.isEmpty()) {
+                    disableBtnSaveTask(addTaskBinding.btnSaveTask);
+                } else {
+                    enableBtnSaveTask(addTaskBinding.btnSaveTask);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+    }
+
+    private void disableBtnSaveTask(Button btnSave) {
+        btnSave.setEnabled(false);
+        btnSave.setTextColor(getResources()
+                .getColor(R.color.green1));
+    }
+
+    private void enableBtnSaveTask(Button btnSave)  {
+        btnSave.setEnabled(true);
+        btnSave.setTextColor(getResources()
+                .getColor(R.color.blue_button));
+    }
+
+    private void setBtnDueDateTaskBehavior(BottomSheetAddTaskBinding addTaskBinding) {
+        addTaskBinding.btnDueDateTask.setOnClickListener(v -> {
+
+            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
+            addTaskBinding.btnDueDateTask.setVisibility(View.GONE);
+            addTaskBinding.chipDueDate.setVisibility(View.VISIBLE);
+        });
+    }
+
+    private void setBtnActiveNotificationBehavior(BottomSheetAddTaskBinding addTaskBinding) {
+        addTaskBinding.btnActiveNotificationTask.setOnClickListener(v -> {
+            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
+            addTaskBinding.btnActiveNotificationTask.setVisibility(View.GONE);
+            addTaskBinding.chipNotification.setVisibility(View.VISIBLE);
+        });
+    }
+
+    private void setChipDueDateBehavior(BottomSheetAddTaskBinding addTaskBinding){
+        addTaskBinding.chipDueDate.setOnCloseIconClickListener(v -> {
+            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
+            addTaskBinding.btnDueDateTask.setVisibility(View.VISIBLE);
+            addTaskBinding.chipDueDate.setVisibility(View.GONE);
+        });
+    }
+
+    private void setChipNotificationBehavior(BottomSheetAddTaskBinding addTaskBinding){
+        addTaskBinding.chipNotification.setOnCloseIconClickListener(v -> {
+            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
+            addTaskBinding.btnActiveNotificationTask.setVisibility(View.VISIBLE);
+            addTaskBinding.chipNotification.setVisibility(View.GONE);
+        });
     }
 
     // TODO: add date and reminder
@@ -219,6 +264,13 @@ public class TasksFragment extends Fragment {
                     viewModel.deleteSection();
                     Navigation.findNavController(binding.getRoot()).navigateUp();
                 }).show();
+    }
+
+    private void deleteCompletedTasks() {
+        viewModel.deleteAllCompletedTasks();
+        // Todo: study snack bar
+        Snackbar.make(binding.getRoot(), "Completed tasks deleted", Snackbar.LENGTH_SHORT)
+                .show();
     }
 
     private void loadTasks(Section section) {

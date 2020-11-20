@@ -23,18 +23,14 @@ import androidx.navigation.Navigation;
 public class TaskDetailsFragment extends Fragment {
 
     private SharedViewModel viewModel;
-
     private FragmentTaskDetailsBinding binding;
-
     private Task currentTask;
-
     private boolean deleted = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentTaskDetailsBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -51,6 +47,7 @@ public class TaskDetailsFragment extends Fragment {
         });
     }
 
+    // maybe change and send task
     private void setViewBehavior(){
         backButtonBehavior();
         topTitleBehavior();
@@ -122,18 +119,9 @@ public class TaskDetailsFragment extends Fragment {
     }
 
     private void taskDescriptionBehavior() {
-        binding.editTextTaskDescription.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // TODO: verify and save (maybe not)
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
+        String details = currentTask.getDescription();
+        binding.editTextTaskDescription
+                .setText(details);
     }
 
     private void switchVisibility (View visible, View notVisible, View viewGroup){
@@ -144,12 +132,14 @@ public class TaskDetailsFragment extends Fragment {
 
     private void commitChanges (){
         validateAndSaveTitle();
+        String taskDetails = binding.editTextTaskDescription.getText().toString();
+        viewModel.updateTaskDetails(taskDetails);
     }
 
     private void validateAndSaveTitle () {
         String taskTitle = binding.editTextTaskTitle.getText().toString();
         if (!taskTitle.isEmpty()) {
-            viewModel.changeTaskTitle(taskTitle);
+            viewModel.updateTaskTitle(taskTitle);
         }
     }
 

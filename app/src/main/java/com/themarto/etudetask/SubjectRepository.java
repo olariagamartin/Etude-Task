@@ -75,17 +75,29 @@ public class SubjectRepository {
         return section;
     }
 
-    public Task changeTaskTitle(Task task, String nTitle) {
+    public void updateTaskTitle(Task task, String nTitle) {
         realm.beginTransaction();
         task.setTitle(nTitle);
         realm.commitTransaction();
-        return task;
+    }
+
+    public void updateTaskDetails (Task task, String details) {
+        realm.beginTransaction();
+        task.setDescription(details);
+        realm.commitTransaction();
     }
 
     public void deleteTask(Task task) {
         realm.beginTransaction();
         task.deleteFromRealm();
         realm.commitTransaction();
+    }
+
+    public Section deleteAllCompletedTasks(Section section) {
+        realm.beginTransaction();
+        section.getTaskDoneList().clear();
+        realm.commitTransaction();
+        return section;
     }
 
     public Section deleteTask(Section section, int position){
