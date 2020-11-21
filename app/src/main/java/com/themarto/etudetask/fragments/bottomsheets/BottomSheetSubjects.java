@@ -1,4 +1,4 @@
-package com.themarto.etudetask.fragments;
+package com.themarto.etudetask.fragments.bottomsheets;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,6 +24,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,6 +40,12 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
     private SharedPreferences sharedPref;
 
     public BottomSheetSubjects() { }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme);
+    }
 
     @Nullable
     @Override

@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.adapters.SectionAdapter;
 import com.themarto.etudetask.databinding.FragmentSectionBinding;
+import com.themarto.etudetask.fragments.bottomsheets.BottomSheetSubjects;
 import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.viewmodel.SharedViewModel;
@@ -50,7 +51,7 @@ public class SectionFragment extends Fragment {
         binding.bottomAppBar.setNavigationOnClickListener(v -> {
             BottomSheetSubjects bottomSheet = new BottomSheetSubjects();
             // bottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme);
-            bottomSheet.show(getParentFragmentManager(), "TAG");
+            bottomSheet.show(getParentFragmentManager(), "SUBJECT_TAG");
         });
 
         //
