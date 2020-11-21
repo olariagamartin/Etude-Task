@@ -1,5 +1,8 @@
 package com.themarto.etudetask.fragments;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,7 +27,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -40,6 +45,9 @@ import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Task;
 import com.themarto.etudetask.viewmodel.SharedViewModel;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class TasksFragment extends Fragment {
@@ -155,9 +163,11 @@ public class TasksFragment extends Fragment {
         dialogBuilder.create().show();
     }
 
-    // TODO: divide
+    // TODO: divide, maybe use a bottom sheet fragment
     private void showBottomSheetAddTask() {
         BottomSheetDialog addTaskDialog = new BottomSheetDialog(getContext(), R.style.DialogStyle);
+        Calendar actual = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
 
         View addTaskView = LayoutInflater.from(getContext())
                 .inflate(R.layout.bottom_sheet_add_task, null);
@@ -165,15 +175,63 @@ public class TasksFragment extends Fragment {
         BottomSheetAddTaskBinding addTaskBinding = BottomSheetAddTaskBinding.bind(addTaskView);
 
         setEditTextNewTaskBehavior(addTaskBinding);
+        setEditTextDetailsBehavior(addTaskBinding);
 
-        setBtnDueDateTaskBehavior(addTaskBinding);
-        setBtnActiveNotificationBehavior(addTaskBinding);
-        setChipDueDateBehavior(addTaskBinding);
-        setChipNotificationBehavior(addTaskBinding);
+        addTaskBinding.btnAddTaskDueDate.setOnClickListener(v -> {
+            int year = actual.get(Calendar.YEAR);
+            int month = actual.get(Calendar.MONTH);
+            int day = actual.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view12, int year, int month, int dayOfMonth) {
+                            // save the value we pick
+                            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                            calendar.set(Calendar.MONTH, month);
+                            calendar.set(Calendar.YEAR, year);
+
+                            showView(addTaskBinding.chipAddTaskDueDate);
+                            hideView(addTaskBinding.btnAddTaskDueDate);
+                            addTaskBinding.chipAddTaskDueDate.setText(dateToString(calendar.getTime()));
+                        }
+                    }, year, month, day);
+            datePickerDialog.show();
+        });
+
+        addTaskBinding.btnAddTaskTime.setOnClickListener(v -> {
+            int hour = actual.get(Calendar.HOUR_OF_DAY);
+            int min = actual.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(v.getContext(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
+                    new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view1, int hourOfDay, int minute) {
+                            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            calendar.set(Calendar.MINUTE, minute);
+
+                            showView(addTaskBinding.chipAddTaskTime);
+                            hideView(addTaskBinding.btnAddTaskTime);
+                            addTaskBinding.chipAddTaskTime
+                                    .setText(String.format("%02d:%02d", hourOfDay, minute));
+                        }
+                    }, hour, min, false);
+            timePickerDialog.show();
+        });
 
         addTaskBinding.btnSaveTask.setOnClickListener(v -> {
+            // todo: get task data
             String title = addTaskBinding.editTextNewTask.getText().toString();
-            addNewTask(title);
+            String details = "";
+            if(addTaskBinding.editTextNewTaskDetails.getVisibility() == View.VISIBLE
+            && !addTaskBinding.editTextNewTaskDetails.getText().toString().isEmpty()) {
+                details = addTaskBinding.editTextNewTaskDetails.getText().toString();
+            }
+            //...
+            // todo: save task
+            Task nTask = new Task(title, details);
+            viewModel.addTask(nTask);
+            //...
             addTaskDialog.dismiss();
         });
 
@@ -214,44 +272,27 @@ public class TasksFragment extends Fragment {
                 .getColor(R.color.blue_button));
     }
 
-    private void setBtnDueDateTaskBehavior(BottomSheetAddTaskBinding addTaskBinding) {
-        addTaskBinding.btnDueDateTask.setOnClickListener(v -> {
-
-            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
-            addTaskBinding.btnDueDateTask.setVisibility(View.GONE);
-            addTaskBinding.chipDueDate.setVisibility(View.VISIBLE);
+    private void setEditTextDetailsBehavior(BottomSheetAddTaskBinding addTaskBinding) {
+        addTaskBinding.btnAddTaskDetails.setOnClickListener(v -> {
+            showView(addTaskBinding.editTextNewTaskDetails);
+            addTaskBinding.editTextNewTaskDetails.requestFocus();
         });
     }
-
-    private void setBtnActiveNotificationBehavior(BottomSheetAddTaskBinding addTaskBinding) {
-        addTaskBinding.btnActiveNotificationTask.setOnClickListener(v -> {
-            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
-            addTaskBinding.btnActiveNotificationTask.setVisibility(View.GONE);
-            addTaskBinding.chipNotification.setVisibility(View.VISIBLE);
-        });
+    private void showView(View view) {
+        view.setVisibility(View.VISIBLE);
     }
 
-    private void setChipDueDateBehavior(BottomSheetAddTaskBinding addTaskBinding){
-        addTaskBinding.chipDueDate.setOnCloseIconClickListener(v -> {
-            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
-            addTaskBinding.btnDueDateTask.setVisibility(View.VISIBLE);
-            addTaskBinding.chipDueDate.setVisibility(View.GONE);
-        });
+    private void hideView(View view) {
+        view.setVisibility(View.GONE);
     }
 
-    private void setChipNotificationBehavior(BottomSheetAddTaskBinding addTaskBinding){
-        addTaskBinding.chipNotification.setOnCloseIconClickListener(v -> {
-            TransitionManager.beginDelayedTransition(addTaskBinding.layoutChips, new AutoTransition());
-            addTaskBinding.btnActiveNotificationTask.setVisibility(View.VISIBLE);
-            addTaskBinding.chipNotification.setVisibility(View.GONE);
-        });
+    // todo: util method
+    private String dateToString (Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
+        return format.format(date);
     }
 
     // TODO: add date and reminder
-    private void addNewTask(String title) {
-        Task task = new Task(title);
-        viewModel.addTask(task);
-    }
 
     public void showDialogDeleteSection() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getContext());

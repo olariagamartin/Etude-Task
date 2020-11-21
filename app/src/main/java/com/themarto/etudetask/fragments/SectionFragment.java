@@ -55,13 +55,11 @@ public class SectionFragment extends Fragment {
 
         //
         binding.bottomAppBar.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.more_actions:
-                    lunchBottomSheetDialogSettings();
-                    return true;
-                default:
-                    return false;
+            if (item.getItemId() == R.id.more_actions) {
+                lunchBottomSheetDialogSettings();
+                return true;
             }
+            return false;
         });
 
         return view;

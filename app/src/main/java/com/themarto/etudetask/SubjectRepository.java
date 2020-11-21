@@ -7,8 +7,6 @@ import com.themarto.etudetask.models.Task;
 import java.util.List;
 
 import androidx.lifecycle.MutableLiveData;
-import io.realm.OrderedCollectionChangeSet;
-import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -83,7 +81,7 @@ public class SubjectRepository {
 
     public void updateTaskDetails (Task task, String details) {
         realm.beginTransaction();
-        task.setDescription(details);
+        task.setDetails(details);
         realm.commitTransaction();
     }
 

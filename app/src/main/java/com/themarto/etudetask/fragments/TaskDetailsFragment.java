@@ -119,7 +119,7 @@ public class TaskDetailsFragment extends Fragment {
     }
 
     private void taskDescriptionBehavior() {
-        String details = currentTask.getDescription();
+        String details = currentTask.getDetails();
         binding.editTextTaskDescription
                 .setText(details);
     }

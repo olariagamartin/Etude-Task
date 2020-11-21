@@ -4,19 +4,19 @@ import io.realm.RealmObject;
 
 public class Task extends RealmObject {
     private String title;
-    private String description;
+    private String details;
     // TODO: due date
 
     public Task(){}
 
     public Task(String title) {
         this.title = title;
-        this.description = "";
+        this.details = "";
     }
 
-    public Task(String title, String description, boolean isDone) {
+    public Task(String title, String details) {
         this.title = title;
-        this.description = description;
+        this.details = details;
     }
 
     public String getTitle() {
@@ -27,12 +27,12 @@ public class Task extends RealmObject {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDetails() {
+        return details;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDetails(String details) {
+        this.details = details;
     }
 
     public String getDateStr(){
