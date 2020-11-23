@@ -44,7 +44,7 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
     }
 
     @Nullable
@@ -55,10 +55,10 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
 
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 
-        // TODO: take it in another method
+        /*// TODO: take it in another method
         // prevent the key board cover buttons when add subject
         int minHeight = getResources().getDisplayMetrics().heightPixels / 2;
-        binding.recyclerViewSubjects.setMinimumHeight(minHeight);
+        binding.recyclerViewSubjects.setMinimumHeight(minHeight);*/
 
         recyclerViewSubjects = binding.recyclerViewSubjects;
 

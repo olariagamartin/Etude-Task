@@ -1,17 +1,17 @@
 package com.themarto.etudetask.fragments.bottomsheets;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TimePicker;
+import android.widget.ImageButton;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.themarto.etudetask.R;
@@ -25,6 +25,8 @@ import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -64,6 +66,9 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         setBtnAddDateBehavior();
         setBtnAddTimeBehavior();
         setBtnSaveTaskBehavior();
+        setChipsBehavior();
+
+        disableImageButton(binding.btnAddTaskTime);
     }
 
     // Behavior methods
@@ -77,9 +82,9 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                 String title = s.toString();
                 // TODO: add condition on start with ' '
                 if (title.isEmpty()) {
-                    disableBtnSaveTask(binding.btnSaveTask);
+                    disableTextButton(binding.btnSaveTask);
                 } else {
-                    enableBtnSaveTask(binding.btnSaveTask);
+                    enableTextButton(binding.btnSaveTask);
                 }
             }
 
@@ -97,47 +102,13 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
     private void setBtnAddDateBehavior(){
         binding.btnAddTaskDueDate.setOnClickListener(v -> {
-            int year = actual.get(Calendar.YEAR);
-            int month = actual.get(Calendar.MONTH);
-            int day = actual.get(Calendar.DAY_OF_MONTH);
-
-            DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view12, int year, int month, int dayOfMonth) {
-                            // save the value we pick
-                            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                            calendar.set(Calendar.MONTH, month);
-                            calendar.set(Calendar.YEAR, year);
-
-                            binding.chipAddTaskDueDate.setVisibility(View.VISIBLE);
-                            binding.btnAddTaskDueDate.setVisibility(View.GONE);
-                            binding.chipAddTaskDueDate.setText(dateToString(calendar.getTime()));
-                        }
-                    }, year, month, day);
-            datePickerDialog.show();
+            lunchDatePicker();
         });
     }
 
     private void setBtnAddTimeBehavior(){
         binding.btnAddTaskTime.setOnClickListener(v -> {
-            int hour = actual.get(Calendar.HOUR_OF_DAY);
-            int min = actual.get(Calendar.MINUTE);
-
-            TimePickerDialog timePickerDialog = new TimePickerDialog(v.getContext(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
-                    new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker view1, int hourOfDay, int minute) {
-                            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                            calendar.set(Calendar.MINUTE, minute);
-
-                            binding.chipAddTaskTime.setVisibility(View.VISIBLE);
-                            binding.btnAddTaskTime.setVisibility(View.GONE);
-                            binding.chipAddTaskTime
-                                    .setText(String.format("%02d:%02d", hourOfDay, minute));
-                        }
-                    }, hour, min, false);
-            timePickerDialog.show();
+            lunchTimePicker();
         });
     }
 
@@ -148,7 +119,73 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             dismiss();
         });
     }
+
+    private void setChipsBehavior(){
+        binding.chipAddTaskDueDate.setOnCloseIconClickListener(v -> {
+            TransitionManager.beginDelayedTransition(binding.layoutChips);
+            binding.chipAddTaskDueDate.setVisibility(View.GONE);
+            binding.btnAddTaskDueDate.setVisibility(View.VISIBLE);
+            binding.chipAddTaskTime.performCloseIconClick();
+            disableImageButton(binding.btnAddTaskTime);
+        });
+
+        binding.chipAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
+
+        binding.chipAddTaskTime.setOnCloseIconClickListener(v -> {
+            TransitionManager.beginDelayedTransition(binding.layoutChips);
+            binding.chipAddTaskTime.setVisibility(View.GONE);
+            binding.btnAddTaskTime.setVisibility(View.VISIBLE);
+        });
+
+        binding.chipAddTaskTime.setOnClickListener(v -> lunchTimePicker());
+    }
     //...
+
+    private void lunchDatePicker(){
+        int year = actual.get(Calendar.YEAR);
+        int month = actual.get(Calendar.MONTH);
+        int day = actual.get(Calendar.DAY_OF_MONTH);
+
+        // todo: change theme
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), R.style.ThemeOverlay_App_MaterialAlertDialog,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view12, int year, int month, int dayOfMonth) {
+                        // save the value we pick
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.YEAR, year);
+
+                        TransitionManager.beginDelayedTransition(binding.layoutChips);
+                        binding.chipAddTaskDueDate.setVisibility(View.VISIBLE);
+                        binding.btnAddTaskDueDate.setVisibility(View.GONE);
+                        binding.chipAddTaskDueDate.setText(dateToString(calendar.getTime()));
+
+                        enableImageButton(binding.btnAddTaskTime);
+                    }
+                }, year, month, day);
+        datePickerDialog.show();
+    }
+
+    private void lunchTimePicker(){
+        int hour = actual.get(Calendar.HOUR_OF_DAY);
+        int min = actual.get(Calendar.MINUTE);
+
+        // todo: change theme
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), R.style.ThemeOverlay_App_MaterialAlertDialog,
+                (view1, hourOfDay, minute) -> {
+                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    calendar.set(Calendar.MINUTE, minute);
+
+                    TransitionManager.beginDelayedTransition(binding.layoutChips);
+                    binding.chipAddTaskTime.setVisibility(View.VISIBLE);
+                    binding.btnAddTaskTime.setVisibility(View.GONE);
+                    // todo: change format
+                    binding.chipAddTaskTime
+                            .setText(String.format("%02d:%02d", hourOfDay, minute));
+                }, hour, min, false);
+        timePickerDialog.show();
+    }
 
     private Task getTask(){
         String title = binding.editTextNewTask.getText().toString();
@@ -162,16 +199,28 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     }
 
     // todo: maybe util methods
-    private void disableBtnSaveTask(Button btnSave) {
-        btnSave.setEnabled(false);
-        btnSave.setTextColor(getResources()
+    private void disableTextButton(Button btn) {
+        btn.setEnabled(false);
+        btn.setTextColor(getResources()
                 .getColor(R.color.green1));
     }
 
-    private void enableBtnSaveTask(Button btnSave)  {
-        btnSave.setEnabled(true);
-        btnSave.setTextColor(getResources()
+    private void enableTextButton(Button btn)  {
+        btn.setEnabled(true);
+        btn.setTextColor(getResources()
                 .getColor(R.color.blue_button));
+    }
+
+    private void disableImageButton(ImageButton btn){
+        btn.setEnabled(false);
+        btn.setImageTintList(AppCompatResources.getColorStateList(getContext(),
+                R.color.green1));
+    }
+
+    private void enableImageButton(AppCompatImageButton btn){
+        btn.setEnabled(true);
+        btn.setImageTintList(AppCompatResources.getColorStateList(getContext(),
+                R.color.blue_button));
     }
 
     private String dateToString (Date date) {

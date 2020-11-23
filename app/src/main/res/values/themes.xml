@@ -16,6 +16,12 @@
         
     </style>
 
+    <style name="timePicker">
+        <item name="colorPrimary">@color/blue_button</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/black</item>
+    </style>
+
     <style name="TextAppearance.App.CollapsingToolbar.Expanded" parent="TextAppearance.MaterialComponents.Headline5">
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textSize">25sp</item>
@@ -46,7 +52,7 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
-        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+        <item name="colorAccent">@color/blue_button</item>
     </style>
 
 </resources>
