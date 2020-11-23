@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.themarto.etudetask.R;
+import com.themarto.etudetask.WorkManagerAlarm;
 import com.themarto.etudetask.databinding.BottomSheetAddTaskBinding;
 import com.themarto.etudetask.models.Task;
 import com.themarto.etudetask.viewmodel.SharedViewModel;
@@ -29,6 +30,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.work.Data;
 
 public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
@@ -36,6 +38,8 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private SharedViewModel viewModel;
     private Calendar actual = Calendar.getInstance();
     private Calendar calendar = Calendar.getInstance();
+
+    private boolean hasAlarm = false;
 
     public BottomSheetAddTask() { }
 
@@ -116,6 +120,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         binding.btnSaveTask.setOnClickListener(v -> {
             Task task = getTask();
             viewModel.addTask(task);
+            saveAlarm(task);
             dismiss();
         });
     }
@@ -127,6 +132,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             binding.btnAddTaskDueDate.setVisibility(View.VISIBLE);
             binding.chipAddTaskTime.performCloseIconClick();
             disableImageButton(binding.btnAddTaskTime);
+            hasAlarm = false;
         });
 
         binding.chipAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
@@ -135,6 +141,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             TransitionManager.beginDelayedTransition(binding.layoutChips);
             binding.chipAddTaskTime.setVisibility(View.GONE);
             binding.btnAddTaskTime.setVisibility(View.VISIBLE);
+            hasAlarm = false;
         });
 
         binding.chipAddTaskTime.setOnClickListener(v -> lunchTimePicker());
@@ -183,6 +190,8 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                     // todo: change format
                     binding.chipAddTaskTime
                             .setText(String.format("%02d:%02d", hourOfDay, minute));
+
+                    hasAlarm = true;
                 }, hour, min, false);
         timePickerDialog.show();
     }
@@ -227,5 +236,25 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
         return format.format(date);
     }
+
+    private Data saveData (String title, String detail, int id){
+        return new Data.Builder()
+                .putString("title", title)
+                .putString("detail", detail)
+                .putInt("id", id).build();
+    }
     //...
+
+    private void saveAlarm(Task task) {
+        if (hasAlarm) {
+            // TODO: verify posterior time
+            long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
+            String title = viewModel.getSelectedSubject().getValue().getTitle() + ": " +
+                    viewModel.getSelectedSection().getValue().getTitle();
+            String detail = task.getTitle();
+            Data data = saveData(title, detail, 1);
+            // todo: change tag for each task
+            WorkManagerAlarm.saveAlarm(alertTime, data, "tag1");
+        }
+    }
 }

@@ -1,11 +1,12 @@
 package com.themarto.etudetask.models;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 
 public class Task extends RealmObject {
     private String title;
     private String details;
-    // TODO: due date
 
     public Task(){}
 
@@ -39,4 +40,5 @@ public class Task extends RealmObject {
         // TODO
         return "Tomorrow, 8:00 AM";
     }
+
 }
