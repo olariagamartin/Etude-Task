@@ -10,6 +10,7 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -55,11 +56,6 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
 
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 
-        /*// TODO: take it in another method
-        // prevent the key board cover buttons when add subject
-        int minHeight = getResources().getDisplayMetrics().heightPixels / 2;
-        binding.recyclerViewSubjects.setMinimumHeight(minHeight);*/
-
         recyclerViewSubjects = binding.recyclerViewSubjects;
 
         binding.addSubject.setOnClickListener(v -> runAddSubject());
@@ -77,6 +73,7 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
     // ACTIONS
     private void runAddSubject(){
         showAddElements();
+        binding.editTextNewSubject.requestFocus();
 
         binding.editTextNewSubject.addTextChangedListener(new TextWatcher() {
             @Override

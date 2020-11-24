@@ -114,8 +114,8 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private void setBtnSaveTaskBehavior(){
         binding.btnSaveTask.setOnClickListener(v -> {
             Task task = getTask();
-            viewModel.addTask(task);
             saveAlarm(task);
+            viewModel.addTask(task);
             dismiss();
         });
     }
@@ -247,11 +247,13 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
             if(alertTime > 0) {
                 String notificationTitle = task.getTitle();
-                String notificationDetail = viewModel.getSelectedSubject().getValue().getTitle() + " - " +
-                        viewModel.getSelectedSection().getValue().getTitle();
+                String subjectTitle = viewModel.getSelectedSubject().getValue().getTitle();
+                String sectionTitle = viewModel.getSelectedSection().getValue().getTitle();
+                String notificationDetail = subjectTitle + " - " + sectionTitle;
                 Data data = saveData(notificationTitle, notificationDetail, 1);
-                // todo: change tag for each task
-                WorkManagerAlarm.saveAlarm(alertTime, data, "tag1");
+                String alarmStringId = WorkManagerAlarm
+                        .saveAlarm(alertTime, data, sectionTitle, subjectTitle);
+                task.setAlarmStringId(alarmStringId);
             }
         }
     }

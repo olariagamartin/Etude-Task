@@ -45,12 +45,14 @@ public class WorkManagerAlarm extends Worker {
         return Result.success();
     }
 
-    public static void saveAlarm(long duration, Data data, String tag){
+    public static String saveAlarm(long duration, Data data, String tag1, String tag2){
         OneTimeWorkRequest alarm = new OneTimeWorkRequest.Builder(WorkManagerAlarm.class)
-                .setInitialDelay(duration, TimeUnit.MILLISECONDS).addTag(tag)
+                .setInitialDelay(duration, TimeUnit.MILLISECONDS).addTag(tag1).addTag(tag2)
                 .setInputData(data).build();
+        String alarmStringId = alarm.getId().toString();
         WorkManager instance = WorkManager.getInstance(context);
         instance.enqueue(alarm);
+        return alarmStringId;
     }
 
     private void createNotificationChannel () {

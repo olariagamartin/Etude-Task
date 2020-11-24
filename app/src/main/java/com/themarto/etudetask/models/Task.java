@@ -11,6 +11,7 @@ public class Task extends RealmObject {
     private String details;
     private Date date;
     private boolean hasAlarm;
+    private String alarmStringId;
 
     public Task(){}
 
@@ -70,5 +71,13 @@ public class Task extends RealmObject {
 
     public void setHasAlarm(boolean hasAlarm) {
         this.hasAlarm = hasAlarm;
+    }
+
+    public String getAlarmStringId() {
+        return alarmStringId;
+    }
+
+    public void setAlarmStringId(String alarmStringId) {
+        this.alarmStringId = alarmStringId;
     }
 }
