@@ -1,24 +1,29 @@
 package com.themarto.etudetask.viewmodel;
 
+import android.app.Application;
+
 import com.themarto.etudetask.SubjectRepository;
 import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
 
 import java.util.List;
+import java.util.UUID;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import androidx.work.WorkManager;
 
-public class SharedViewModel extends ViewModel {
+public class SharedViewModel extends AndroidViewModel {
     private SubjectRepository mRepository;
     private MutableLiveData<List<Subject>> subjects;
     private MutableLiveData<Subject> selectedSubject = new MutableLiveData<>();
     private MutableLiveData<Section> selectedSection = new MutableLiveData<>();
     private MutableLiveData<Task> selectedTask = new MutableLiveData<>();
 
-    public SharedViewModel() {
+    public SharedViewModel(Application application) {
+        super(application);
         mRepository = new SubjectRepository();
         subjects = new MutableLiveData<>();
         loadSubjects();
@@ -143,6 +148,11 @@ public class SharedViewModel extends ViewModel {
      * Delete selected task
      */
     public void deleteTask () {
+        // todo: extract method
+        if (selectedTask.getValue().hasAlarm()){
+            WorkManager.getInstance(getApplication()).cancelWorkById(UUID
+                    .fromString(selectedTask.getValue().getAlarmStringId()));
+        }
         mRepository.deleteTask(selectedTask.getValue());
     }
 
