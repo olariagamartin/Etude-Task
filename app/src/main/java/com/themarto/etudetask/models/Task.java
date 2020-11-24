@@ -1,5 +1,7 @@
 package com.themarto.etudetask.models;
 
+import com.themarto.etudetask.Util;
+
 import java.util.Date;
 
 import io.realm.RealmObject;
@@ -46,9 +48,9 @@ public class Task extends RealmObject {
         String strDate = "";
         if (date != null){
             if(hasAlarm) {
-
+                strDate = Util.getDateString(date) + ", " + Util.getTimeString(date);
             } else{
-
+                strDate = Util.getTimeString(date);
             }
         }
         return strDate;

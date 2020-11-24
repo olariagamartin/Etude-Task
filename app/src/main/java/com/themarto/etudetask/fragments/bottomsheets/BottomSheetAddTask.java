@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.themarto.etudetask.R;
+import com.themarto.etudetask.Util;
 import com.themarto.etudetask.WorkManagerAlarm;
 import com.themarto.etudetask.databinding.BottomSheetAddTaskBinding;
 import com.themarto.etudetask.models.Task;
@@ -159,7 +160,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                         TransitionManager.beginDelayedTransition(binding.layoutChips);
                         binding.chipAddTaskDueDate.setVisibility(View.VISIBLE);
                         binding.btnAddTaskDueDate.setVisibility(View.GONE);
-                        binding.chipAddTaskDueDate.setText(dateToString(calendar.getTime()));
+                        binding.chipAddTaskDueDate.setText(Util.getDateString(calendar.getTime()));
 
                         enableImageButton(binding.btnAddTaskTime);
                     }
@@ -183,7 +184,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                     binding.btnAddTaskTime.setVisibility(View.GONE);
                     // todo: change format
                     binding.chipAddTaskTime
-                            .setText(String.format("%02d:%02d", hourOfDay, minute));
+                            .setText(Util.getTimeString(calendar.getTime()));
 
                 }, hour, min, false);
         timePickerDialog.show();
@@ -231,11 +232,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         btn.setEnabled(true);
         btn.setImageTintList(AppCompatResources.getColorStateList(getContext(),
                 R.color.blue_button));
-    }
-
-    private String dateToString (Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
-        return format.format(date);
     }
 
     private Data saveData (String title, String detail, int id){
