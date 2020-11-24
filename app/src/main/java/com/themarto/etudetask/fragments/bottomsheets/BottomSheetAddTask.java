@@ -36,10 +36,8 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
     private BottomSheetAddTaskBinding binding;
     private SharedViewModel viewModel;
-    private Calendar actual = Calendar.getInstance();
+    private Calendar actual;
     private Calendar calendar = Calendar.getInstance();
-
-    private boolean hasAlarm = false;
 
     public BottomSheetAddTask() { }
 
@@ -105,15 +103,11 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     }
 
     private void setBtnAddDateBehavior(){
-        binding.btnAddTaskDueDate.setOnClickListener(v -> {
-            lunchDatePicker();
-        });
+        binding.btnAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
     }
 
     private void setBtnAddTimeBehavior(){
-        binding.btnAddTaskTime.setOnClickListener(v -> {
-            lunchTimePicker();
-        });
+        binding.btnAddTaskTime.setOnClickListener(v -> lunchTimePicker());
     }
 
     private void setBtnSaveTaskBehavior(){
@@ -132,7 +126,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             binding.btnAddTaskDueDate.setVisibility(View.VISIBLE);
             binding.chipAddTaskTime.performCloseIconClick();
             disableImageButton(binding.btnAddTaskTime);
-            hasAlarm = false;
         });
 
         binding.chipAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
@@ -141,7 +134,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             TransitionManager.beginDelayedTransition(binding.layoutChips);
             binding.chipAddTaskTime.setVisibility(View.GONE);
             binding.btnAddTaskTime.setVisibility(View.VISIBLE);
-            hasAlarm = false;
         });
 
         binding.chipAddTaskTime.setOnClickListener(v -> lunchTimePicker());
@@ -149,6 +141,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     //...
 
     private void lunchDatePicker(){
+        actual = Calendar.getInstance();
         int year = actual.get(Calendar.YEAR);
         int month = actual.get(Calendar.MONTH);
         int day = actual.get(Calendar.DAY_OF_MONTH);
@@ -175,6 +168,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     }
 
     private void lunchTimePicker(){
+        actual = Calendar.getInstance();
         int hour = actual.get(Calendar.HOUR_OF_DAY);
         int min = actual.get(Calendar.MINUTE);
 
@@ -191,7 +185,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                     binding.chipAddTaskTime
                             .setText(String.format("%02d:%02d", hourOfDay, minute));
 
-                    hasAlarm = true;
                 }, hour, min, false);
         timePickerDialog.show();
     }
@@ -204,6 +197,14 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             details = binding.editTextNewTaskDetails.getText().toString();
         }
         Task nTask = new Task(title, details);
+        if(binding.chipAddTaskDueDate.getVisibility() == View.VISIBLE){
+            if(binding.chipAddTaskTime.getVisibility() == View.VISIBLE){
+                nTask.setHasAlarm(true);
+                nTask.setDate(calendar.getTime());
+            } else {
+                nTask.setDate(calendar.getTime());
+            }
+        }
         return nTask;
     }
 
@@ -246,15 +247,16 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     //...
 
     private void saveAlarm(Task task) {
-        if (hasAlarm) {
-            // TODO: verify posterior time
+        if (task.hasAlarm()) {
             long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
-            String title = viewModel.getSelectedSubject().getValue().getTitle() + ": " +
-                    viewModel.getSelectedSection().getValue().getTitle();
-            String detail = task.getTitle();
-            Data data = saveData(title, detail, 1);
-            // todo: change tag for each task
-            WorkManagerAlarm.saveAlarm(alertTime, data, "tag1");
+            if(alertTime > 0) {
+                String notificationTitle = task.getTitle();
+                String notificationDetail = viewModel.getSelectedSubject().getValue().getTitle() + " - " +
+                        viewModel.getSelectedSection().getValue().getTitle();
+                Data data = saveData(notificationTitle, notificationDetail, 1);
+                // todo: change tag for each task
+                WorkManagerAlarm.saveAlarm(alertTime, data, "tag1");
+            }
         }
     }
 }
