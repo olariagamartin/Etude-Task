@@ -148,7 +148,8 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         int day = actual.get(Calendar.DAY_OF_MONTH);
 
         // todo: change theme
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), R.style.ThemeOverlay_App_MaterialAlertDialog,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                R.style.ThemeOverlay_App_MaterialAlertDialog,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view12, int year, int month, int dayOfMonth) {
@@ -182,7 +183,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                     TransitionManager.beginDelayedTransition(binding.layoutChips);
                     binding.chipAddTaskTime.setVisibility(View.VISIBLE);
                     binding.btnAddTaskTime.setVisibility(View.GONE);
-                    // todo: change format
+
                     binding.chipAddTaskTime
                             .setText(Util.getTimeString(calendar.getTime()));
 

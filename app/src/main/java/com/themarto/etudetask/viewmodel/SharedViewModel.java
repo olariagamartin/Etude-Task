@@ -77,18 +77,11 @@ public class SharedViewModel extends AndroidViewModel {
         selectSubject(subjects.getValue().size() - 1);
     }
 
-    /**
-     * Change the title of the selected subject
-     * @param title new title for the subject
-     */
     public void changeSubjectTitle (String title) {
         Subject subject = mRepository.changeSubjectTitle(selectedSubject.getValue(), title);
         selectedSubject.setValue(subject);
     }
 
-    /**
-     * Delete the selected subject
-     */
     public boolean deleteSubject () {
         if (subjects.getValue().size() > 1) {
             mRepository.deleteSubject(selectedSubject.getValue());
@@ -98,44 +91,25 @@ public class SharedViewModel extends AndroidViewModel {
         return false;
     }
 
-    /**
-     * Add a new Section to the selected subject
-     * @param section new section to be added
-     */
     public void addSection (Section section) {
         Subject subject = mRepository.addSection(selectedSubject.getValue(), section);
         selectedSubject.setValue(subject);
     }
 
-    /**
-     * Change the title of the selected section
-     * @param title new title of the section
-     */
     public void changeSectionTitle (String title) {
         Section section = mRepository.changeSectionTitle(selectedSection.getValue(), title);
         selectedSection.setValue(section);
     }
 
-    /**
-     * Delete the selected section
-     */
     public void deleteSection () {
         mRepository.deleteSection(selectedSection.getValue());
     }
 
-    /**
-     * Add a new task to the selected section
-     * @param task new task to be added
-     */
     public void addTask (Task task) {
         Section section = mRepository.addTask(selectedSection.getValue(), task);
         selectedSection.setValue(section);
     }
 
-    /**
-     * Change the task title of the selected task
-     * @param title new title of the task
-     */
     public void updateTaskTitle(String title) {
         mRepository.updateTaskTitle(selectedTask.getValue(), title);
     }
@@ -144,9 +118,6 @@ public class SharedViewModel extends AndroidViewModel {
         mRepository.updateTaskDetails(selectedTask.getValue(), details);
     }
 
-    /**
-     * Delete selected task
-     */
     public void deleteTask () {
         // todo: extract method
         if (selectedTask.getValue().hasAlarm()){
@@ -161,10 +132,6 @@ public class SharedViewModel extends AndroidViewModel {
         selectedSection.setValue(section);
     }
 
-    /**
-     * Delete task in the position received
-     * @param position the position of the task to be deleted
-     */
     public void deleteTask (int position) {
         Section section = mRepository.deleteTask(selectedSection.getValue(), position);
         selectedSection.setValue(section);
