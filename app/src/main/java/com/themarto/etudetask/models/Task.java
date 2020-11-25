@@ -3,30 +3,43 @@ package com.themarto.etudetask.models;
 import com.themarto.etudetask.Util;
 
 import java.util.Date;
+import java.util.UUID;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class Task extends RealmObject {
+    @PrimaryKey
+    private String id;
     private String title;
     private String details;
     private Date date;
-    private boolean hasAlarm;
     private String alarmStringId;
 
     public Task(){}
 
     public Task(String title) {
+        id = UUID.randomUUID().toString();
         this.title = title;
         this.details = "";
         this.date = null;
-        hasAlarm = false;
+        this.alarmStringId = "";
     }
 
     public Task(String title, String details) {
+        id = UUID.randomUUID().toString();
         this.title = title;
         this.details = details;
         this.date = null;
-        hasAlarm = false;
+        this.alarmStringId = "";
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -48,29 +61,19 @@ public class Task extends RealmObject {
     public String getDateStr(){
         String strDate = "";
         if (date != null){
-            if(hasAlarm) {
+            if(hasAlarm()) {
                 strDate = Util.getDateString(date) + ", " + Util.getTimeString(date);
             } else{
-                strDate = Util.getTimeString(date);
+                strDate = Util.getDateString(date);
             }
         }
         return strDate;
     }
 
+    public Date getDate() { return this.date; }
+
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public void removeDate(){
-        this.date = null;
-    }
-
-    public boolean hasAlarm() {
-        return hasAlarm;
-    }
-
-    public void setHasAlarm(boolean hasAlarm) {
-        this.hasAlarm = hasAlarm;
     }
 
     public String getAlarmStringId() {
@@ -79,5 +82,9 @@ public class Task extends RealmObject {
 
     public void setAlarmStringId(String alarmStringId) {
         this.alarmStringId = alarmStringId;
+    }
+
+    public boolean hasAlarm(){
+        return (!this.alarmStringId.equals(""));
     }
 }

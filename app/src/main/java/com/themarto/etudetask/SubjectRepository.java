@@ -4,6 +4,7 @@ import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
 
+import java.util.Date;
 import java.util.List;
 
 import androidx.lifecycle.MutableLiveData;
@@ -73,15 +74,9 @@ public class SubjectRepository {
         return section;
     }
 
-    public void updateTaskTitle(Task task, String nTitle) {
+    public void updateTask(Task task) {
         realm.beginTransaction();
-        task.setTitle(nTitle);
-        realm.commitTransaction();
-    }
-
-    public void updateTaskDetails (Task task, String details) {
-        realm.beginTransaction();
-        task.setDetails(details);
+        realm.copyToRealmOrUpdate(task);
         realm.commitTransaction();
     }
 

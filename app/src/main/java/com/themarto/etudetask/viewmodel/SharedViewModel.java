@@ -7,6 +7,7 @@ import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -110,12 +111,8 @@ public class SharedViewModel extends AndroidViewModel {
         selectedSection.setValue(section);
     }
 
-    public void updateTaskTitle(String title) {
-        mRepository.updateTaskTitle(selectedTask.getValue(), title);
-    }
-
-    public void updateTaskDetails(String details) {
-        mRepository.updateTaskDetails(selectedTask.getValue(), details);
+    public void updateTask(Task task){
+        mRepository.updateTask(task);
     }
 
     public void deleteTask () {
