@@ -104,6 +104,7 @@ public class SubjectRepository {
         realm.beginTransaction();
         Task task = section.getTaskList().get(position);
         section.getTaskList().remove(position);
+        task.setAlarmStringId("");
         section.getTaskDoneList().add(task);
         realm.commitTransaction();
         return section;

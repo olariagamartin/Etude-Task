@@ -7,7 +7,6 @@ import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -85,6 +84,7 @@ public class SharedViewModel extends AndroidViewModel {
 
     public boolean deleteSubject () {
         if (subjects.getValue().size() > 1) {
+            removeNotificationsByTag(selectedSubject.getValue().getId());
             mRepository.deleteSubject(selectedSubject.getValue());
             selectedSubject.setValue(subjects.getValue().get(0));
             return true;
@@ -103,10 +103,12 @@ public class SharedViewModel extends AndroidViewModel {
     }
 
     public void deleteSection () {
+        removeNotificationsByTag(selectedSection.getValue().getId());
         mRepository.deleteSection(selectedSection.getValue());
     }
 
     public void addTask (Task task) {
+        // maybe I could try to set the notifications here
         Section section = mRepository.addTask(selectedSection.getValue(), task);
         selectedSection.setValue(section);
     }
@@ -116,11 +118,7 @@ public class SharedViewModel extends AndroidViewModel {
     }
 
     public void deleteTask () {
-        // todo: extract method
-        if (selectedTask.getValue().hasAlarm()){
-            WorkManager.getInstance(getApplication()).cancelWorkById(UUID
-                    .fromString(selectedTask.getValue().getAlarmStringId()));
-        }
+        removeTaskNotifications(selectedTask.getValue());
         mRepository.deleteTask(selectedTask.getValue());
     }
 
@@ -130,11 +128,13 @@ public class SharedViewModel extends AndroidViewModel {
     }
 
     public void deleteTask (int position) {
+        removeTaskNotifications(selectedSection.getValue().getTaskList().get(position));
         Section section = mRepository.deleteTask(selectedSection.getValue(), position);
         selectedSection.setValue(section);
     }
 
     public void setTaskDone (int position) {
+        removeTaskNotifications(selectedSection.getValue().getTaskList().get(position));
         Section section = mRepository.setTaskDone(selectedSection.getValue(), position);
         selectedSection.setValue(section);
     }
@@ -142,6 +142,17 @@ public class SharedViewModel extends AndroidViewModel {
     public void setTaskUndone (int position) {
         Section section = mRepository.setTaskUndone(getSelectedSection().getValue(), position);
         selectedSection.setValue(section);
+    }
+
+    private void removeTaskNotifications(Task task){
+        if (task.hasAlarm()){
+            WorkManager.getInstance(getApplication()).cancelWorkById(UUID
+                    .fromString(task.getAlarmStringId()));
+        }
+    }
+
+    private void removeNotificationsByTag(String tag) {
+        WorkManager.getInstance(getApplication()).cancelAllWorkByTag(tag);
     }
 
 }
