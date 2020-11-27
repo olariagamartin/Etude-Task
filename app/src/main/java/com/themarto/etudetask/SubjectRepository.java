@@ -93,14 +93,14 @@ public class SubjectRepository {
         return section;
     }
 
-    public Section deleteTask(Section section, int position){
+    public Section deleteTask(Section section, int position) {
         realm.beginTransaction();
         section.getTaskList().get(position).deleteFromRealm();
         realm.commitTransaction();
         return section;
     }
 
-    public Section setTaskDone (Section section, int position) {
+    public Section setTaskDone(Section section, int position) {
         realm.beginTransaction();
         Task task = section.getTaskList().get(position);
         section.getTaskList().remove(position);
@@ -110,17 +110,19 @@ public class SubjectRepository {
         return section;
     }
 
-    public void setTaskDone(String id){
-        Task task = realm.where(Task.class).equalTo("id", id).findFirst();
-        if(task != null){
+    public void setTaskDone(String taskId, String sectionId) {
+        Section section = realm.where(Section.class).equalTo("id", sectionId).findFirst();
+        Task task = realm.where(Task.class).equalTo("id", taskId).findFirst();
+        if(section != null && task != null){
             realm.beginTransaction();
+            section.getTaskList().remove(task);
             task.setAlarmStringId("");
-            task.setTitle("Done");
+            section.getTaskDoneList().add(task);
             realm.commitTransaction();
         }
     }
 
-    public Section setTaskUndone (Section section, int position) {
+    public Section setTaskUndone(Section section, int position) {
         realm.beginTransaction();
         Task task = section.getTaskDoneList().get(position);
         section.getTaskDoneList().remove(position);

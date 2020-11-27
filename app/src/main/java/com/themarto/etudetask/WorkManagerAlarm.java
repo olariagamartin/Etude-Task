@@ -1,6 +1,5 @@
 package com.themarto.etudetask;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,15 +9,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 
-import com.themarto.etudetask.viewmodel.SharedViewModel;
-
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -29,9 +24,11 @@ public class WorkManagerAlarm extends Worker {
 
     public final static String DATA_KEY_TITLE = "title";
     public final static String DATA_KEY_DETAIL = "detail";
-    public final static String DATA_KEY_ID = "id";
+    public final static int NOTIFICATION_ID = 0;
     public final static String TASK_ID = "task_id";
+    public final static String SECTION_ID = "section_id";
     public final static String ACTION_TASK_DONE = "com.android.etudetask.ACTION_TASK_DONE";
+    public final static String TASK_GROUP = "com.android.etudetask.TASK_GROUP";
 
     private String CHANNEL_ID = "android.EtudeTask.CHANNEL_ID";
     private static Context context;
@@ -45,12 +42,13 @@ public class WorkManagerAlarm extends Worker {
     @Override
     public Result doWork() {
 
+        // todo: set alarmStringId task parameter empty
         String title = getInputData().getString(DATA_KEY_TITLE);
         String detail = getInputData().getString(DATA_KEY_DETAIL);
-        int id = getInputData().getInt(DATA_KEY_ID, 2);
         String taskId = getInputData().getString(TASK_ID);
+        String sectionId = getInputData().getString(SECTION_ID);
 
-        lunchNotification(title, detail, id, taskId);
+        lunchNotification(title, detail, taskId, sectionId);
 
         return Result.success();
     }
@@ -78,11 +76,13 @@ public class WorkManagerAlarm extends Worker {
     }
 
     // id is for update or cancel the notification in the future
-    private void lunchNotification(String title, String detail, int id, String taskId){
+    private void lunchNotification(String title, String detail, String taskId, String sectionId){
         createNotificationChannel();
         NotificationCompat.Builder builder = new NotificationCompat.Builder
                 (context, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.ic_etude_notification)
+                .setColor(context.getResources().getColor(R.color.black))
+                .setGroup(TASK_GROUP) // todo: group notifications
                 .setContentTitle(title)
                 .setContentText(detail)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -101,7 +101,8 @@ public class WorkManagerAlarm extends Worker {
                 new IntentFilter(ACTION_TASK_DONE));
         // Intent for done button
         Intent doneIntent = new Intent(ACTION_TASK_DONE);
-        doneIntent.putExtra("task_id", taskId);
+        doneIntent.putExtra(TASK_ID, taskId);
+        doneIntent.putExtra(SECTION_ID, sectionId);
         PendingIntent donePendingIntent = PendingIntent.getBroadcast(context,
                 0, doneIntent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -113,8 +114,9 @@ public class WorkManagerAlarm extends Worker {
         // Show the notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat
                 .from(context);
+
         // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(id, builder.build());
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 
     // Receiver when done button is clicked
@@ -125,11 +127,14 @@ public class WorkManagerAlarm extends Worker {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getExtras() != null){
-                String taskId = intent.getExtras().getString(TASK_ID);
                 mRepository = new SubjectRepository();
-                mRepository.setTaskDone(taskId);
-                // todo: extract notification id in variable
-                NotificationManagerCompat.from(context).cancel(1);
+
+                String taskId = intent.getExtras().getString(TASK_ID);
+                String sectionId = intent.getExtras().getString(SECTION_ID);
+
+                mRepository.setTaskDone(taskId, sectionId);
+
+                NotificationManagerCompat.from(context).cancel(NOTIFICATION_ID);
             }
         }
     }

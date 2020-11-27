@@ -273,7 +273,7 @@ public class TaskDetailsFragment extends Fragment {
             Subject subject = viewModel.getSelectedSubject().getValue();
             Section section = viewModel.getSelectedSection().getValue();
             String notificationDetail = subject.getTitle() + " - " + section.getTitle();
-            Data data = saveData(notificationTitle, notificationDetail, 1, task.getId());
+            Data data = saveData(notificationTitle, notificationDetail, task.getId(), section.getId());
 
             String alarmStringId = WorkManagerAlarm
                     .saveAlarm(alertTime, data, section.getId(), subject.getId());
@@ -282,12 +282,13 @@ public class TaskDetailsFragment extends Fragment {
         }
     }
 
-    private Data saveData(String title, String detail, int id, String taskId) {
+    private Data saveData(String title, String detail, String taskId, String sectionId) {
         return new Data.Builder()
                 .putString("title", title)
                 .putString("detail", detail)
                 .putString("task_id", taskId)
-                .putInt("id", id).build();
+                .putString("section_id", sectionId)
+                .build();
     }
 
     @Override
