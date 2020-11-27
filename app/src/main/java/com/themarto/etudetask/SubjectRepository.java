@@ -110,6 +110,16 @@ public class SubjectRepository {
         return section;
     }
 
+    public void setTaskDone(String id){
+        Task task = realm.where(Task.class).equalTo("id", id).findFirst();
+        if(task != null){
+            realm.beginTransaction();
+            task.setAlarmStringId("");
+            task.setTitle("Done");
+            realm.commitTransaction();
+        }
+    }
+
     public Section setTaskUndone (Section section, int position) {
         realm.beginTransaction();
         Task task = section.getTaskDoneList().get(position);

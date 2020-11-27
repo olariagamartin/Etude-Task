@@ -238,10 +238,11 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                 R.color.blue_button));
     }
 
-    private Data saveData(String title, String detail, int id) {
+    private Data saveData(String title, String detail, int id, String taskId) {
         return new Data.Builder()
                 .putString("title", title)
                 .putString("detail", detail)
+                .putString("task_id", taskId)
                 .putInt("id", id).build();
     }
     //...
@@ -253,7 +254,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             Subject subject = viewModel.getSelectedSubject().getValue();
             Section section = viewModel.getSelectedSection().getValue();
             String notificationDetail = subject.getTitle() + " - " + section.getTitle();
-            Data data = saveData(notificationTitle, notificationDetail, 1);
+            Data data = saveData(notificationTitle, notificationDetail, 1, task.getId());
 
             String alarmStringId = WorkManagerAlarm
                     .saveAlarm(alertTime, data, section.getId(), subject.getId());
