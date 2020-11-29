@@ -12,7 +12,8 @@ import android.widget.EditText;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
-import com.themarto.etudetask.Util;
+import com.themarto.etudetask.utils.SwipeToDeleteCallback;
+import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.adapters.TaskAdapter;
 import com.themarto.etudetask.adapters.TaskDoneAdapter;
 import com.themarto.etudetask.databinding.FragmentTasksBinding;
@@ -28,6 +29,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -173,6 +175,12 @@ public class TasksFragment extends Fragment {
     }
 
     private void loadTasks(Section section) {
+        setupRecyclerViewToDoTasks(section);
+
+        setupRecyclerViewDoneTasks(section);
+    }
+
+    private void setupRecyclerViewToDoTasks(Section section){
         // To to tasks
         RecyclerView.LayoutManager layoutManagerTask = new LinearLayoutManager(getContext());
         TaskAdapter taskAdapter = new TaskAdapter(section.getTaskList());
@@ -191,12 +199,22 @@ public class TasksFragment extends Fragment {
             public void onTaskChecked(int position) {
                 viewModel.setTaskDone(position);
             }
+
+            @Override
+            public void onDeleteItem(int position) {
+                viewModel.deleteTask(position);
+            }
         });
         binding.recyclerViewTasks.setLayoutManager(layoutManagerTask);
         binding.recyclerViewTasks.setAdapter(taskAdapter);
         binding.recyclerViewTasks.setHasFixedSize(true);
         binding.recyclerViewTasks.setNestedScrollingEnabled(false);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new
+                SwipeToDeleteCallback(taskAdapter));
+        itemTouchHelper.attachToRecyclerView(binding.recyclerViewTasks);
+    }
 
+    private void setupRecyclerViewDoneTasks(Section section){
         // Done tasks
         RecyclerView.LayoutManager layoutManagerDone = new LinearLayoutManager(getContext());
         TaskDoneAdapter taskDoneAdapter = new TaskDoneAdapter(section.getTaskDoneList());

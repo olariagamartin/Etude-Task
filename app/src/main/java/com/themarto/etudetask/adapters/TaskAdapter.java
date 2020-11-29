@@ -7,8 +7,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.themarto.etudetask.R;
-import com.themarto.etudetask.Util;
+import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.models.Task;
+import com.themarto.etudetask.viewmodel.SharedViewModel;
 
 import java.util.List;
 
@@ -83,7 +84,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         }
     }
 
+    public void deleteItem(int position) {
+        Task deletedTask = this.taskList.get(position);
+        taskListener.onDeleteItem(position);
+    }
+
     public interface TaskListener {
-        public void onTaskChecked (int position);
+        void onTaskChecked(int position);
+        void onDeleteItem(int position);
     }
 }

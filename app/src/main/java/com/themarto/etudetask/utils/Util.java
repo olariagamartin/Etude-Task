@@ -1,4 +1,4 @@
-package com.themarto.etudetask;
+package com.themarto.etudetask.utils;
 
 import android.content.Context;
 import android.view.View;

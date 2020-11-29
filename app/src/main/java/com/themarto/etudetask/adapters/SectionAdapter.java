@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.themarto.etudetask.R;
-import com.themarto.etudetask.Util;
+import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.models.Section;
 
 import java.util.List;

@@ -14,7 +14,7 @@ import android.widget.DatePicker;
 
 import com.google.android.material.button.MaterialButton;
 import com.themarto.etudetask.R;
-import com.themarto.etudetask.Util;
+import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.WorkManagerAlarm;
 import com.themarto.etudetask.databinding.FragmentTaskDetailsBinding;
 import com.themarto.etudetask.models.Section;

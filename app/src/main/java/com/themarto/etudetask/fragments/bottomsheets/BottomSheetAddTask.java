@@ -15,7 +15,7 @@ import android.widget.ImageButton;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.themarto.etudetask.R;
-import com.themarto.etudetask.Util;
+import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.WorkManagerAlarm;
 import com.themarto.etudetask.databinding.BottomSheetAddTaskBinding;
 import com.themarto.etudetask.models.Section;
@@ -23,9 +23,7 @@ import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
 import com.themarto.etudetask.viewmodel.SharedViewModel;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

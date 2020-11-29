@@ -1,7 +1,8 @@
 package com.themarto.etudetask.models;
 
-import com.themarto.etudetask.Util;
+import com.themarto.etudetask.utils.Util;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -85,6 +86,17 @@ public class Task extends RealmObject {
     }
 
     public boolean hasAlarm(){
-        return (!this.alarmStringId.equals(""));
+        if(alarmStringId.equals("")) {
+            return false;
+        } else {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            if (calendar.getTimeInMillis() - Calendar.getInstance().getTimeInMillis() > 0){
+                return true;
+            } else {
+                alarmStringId = "";
+                return false;
+            }
+        }
     }
 }

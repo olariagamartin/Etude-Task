@@ -10,12 +10,11 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.themarto.etudetask.R;
-import com.themarto.etudetask.Util;
+import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.adapters.SubjectAdapter;
 import com.themarto.etudetask.databinding.BottomSheetSubjectsBinding;
 import com.themarto.etudetask.models.Subject;
