@@ -33,7 +33,7 @@ public class Subject extends RealmObject {
         this.title = title;
     }
 
-    public List<Section> getSectionList() {
+    public RealmList<Section> getSectionList() {
         return sectionList;
     }
 

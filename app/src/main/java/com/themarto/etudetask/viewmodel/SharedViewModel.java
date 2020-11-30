@@ -113,6 +113,11 @@ public class SharedViewModel extends AndroidViewModel {
         selectedSection.setValue(section);
     }
 
+    public void addTask (Task task, int position){
+        Section section = mRepository.addTask(selectedSection.getValue(), task, position);
+        selectedSection.setValue(section);
+    }
+
     public void updateTask(Task task){
         mRepository.updateTask(task);
     }
@@ -127,10 +132,13 @@ public class SharedViewModel extends AndroidViewModel {
         selectedSection.setValue(section);
     }
 
-    public void deleteTask (int position) {
-        removeTaskNotifications(selectedSection.getValue().getTaskList().get(position));
+    public Task deleteTask (int position) {
+        Task task = selectedSection.getValue().getTaskList().get(position);
+        Task deletedTask = task.getRealm().copyFromRealm(task);
+        removeTaskNotifications(task);
         Section section = mRepository.deleteTask(selectedSection.getValue(), position);
         selectedSection.setValue(section);
+        return deletedTask;
     }
 
     public void setTaskDone (int position) {

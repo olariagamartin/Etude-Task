@@ -35,11 +35,11 @@ public class Section extends RealmObject {
         this.title = title;
     }
 
-    public List<Task> getTaskList() {
+    public RealmList<Task> getTaskList() {
         return taskList;
     }
 
-    public List<Task> getTaskDoneList() {
+    public RealmList<Task> getTaskDoneList() {
         return taskDoneList;
     }
 

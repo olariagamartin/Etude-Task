@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.models.Task;
@@ -85,7 +86,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     public void deleteItem(int position) {
-        Task deletedTask = this.taskList.get(position);
         taskListener.onDeleteItem(position);
     }
 

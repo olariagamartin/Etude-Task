@@ -74,6 +74,13 @@ public class SubjectRepository {
         return section;
     }
 
+    public Section addTask(Section section, Task nTask, int position){
+        realm.beginTransaction();
+        section.getTaskList().add(position, nTask);
+        realm.commitTransaction();
+        return section;
+    }
+
     public void setAlarmTaskDone(String taskId){
         Task task = realm.where(Task.class).equalTo("id", taskId).findFirst();
         if (task != null){
@@ -97,7 +104,7 @@ public class SubjectRepository {
 
     public Section deleteAllCompletedTasks(Section section) {
         realm.beginTransaction();
-        section.getTaskDoneList().clear();
+        section.getTaskDoneList().deleteAllFromRealm();
         realm.commitTransaction();
         return section;
     }

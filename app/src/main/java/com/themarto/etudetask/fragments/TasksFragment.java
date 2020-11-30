@@ -12,6 +12,7 @@ import android.widget.EditText;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
+import com.themarto.etudetask.models.Task;
 import com.themarto.etudetask.utils.SwipeToDeleteCallback;
 import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.adapters.TaskAdapter;
@@ -202,7 +203,8 @@ public class TasksFragment extends Fragment {
 
             @Override
             public void onDeleteItem(int position) {
-                viewModel.deleteTask(position);
+                Task deletedTask = viewModel.deleteTask(position);
+                showUndoSnackbar(deletedTask, position);
             }
         });
         binding.recyclerViewTasks.setLayoutManager(layoutManagerTask);
@@ -210,8 +212,19 @@ public class TasksFragment extends Fragment {
         binding.recyclerViewTasks.setHasFixedSize(true);
         binding.recyclerViewTasks.setNestedScrollingEnabled(false);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new
-                SwipeToDeleteCallback(taskAdapter));
+                SwipeToDeleteCallback(taskAdapter, getContext()));
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewTasks);
+    }
+
+    private void showUndoSnackbar(Task deletedTask, int position) {
+        Snackbar snackbar = Snackbar.make(binding.getRoot(), "Task deleted",
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction("Undo", v -> undoDelete(deletedTask, position));
+        snackbar.show();
+    }
+
+    private void undoDelete(Task deletedTask, int position) {
+        viewModel.addTask(deletedTask, position);
     }
 
     private void setupRecyclerViewDoneTasks(Section section){
