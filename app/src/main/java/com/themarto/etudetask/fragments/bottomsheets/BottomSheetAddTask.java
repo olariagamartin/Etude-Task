@@ -151,7 +151,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
         // todo: change theme
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                R.style.ThemeOverlay_App_MaterialAlertDialog,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view12, int year, int month, int dayOfMonth) {
@@ -178,7 +177,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         int min = actual.get(Calendar.MINUTE);
 
         // todo: change theme
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), R.style.ThemeOverlay_App_MaterialAlertDialog,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
                 (view1, hourOfDay, minute) -> {
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calendar.set(Calendar.MINUTE, minute);
@@ -221,7 +220,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private void enableTextButton(Button btn) {
         btn.setEnabled(true);
         btn.setTextColor(getResources()
-                .getColor(R.color.blue_button));
+                .getColor(R.color.amber_600));
     }
 
     private void disableImageButton(ImageButton btn) {
@@ -233,7 +232,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private void enableImageButton(AppCompatImageButton btn) {
         btn.setEnabled(true);
         btn.setImageTintList(AppCompatResources.getColorStateList(getContext(),
-                R.color.blue_button));
+                R.color.blue_grey_dark));
     }
 
     private Data saveData(String title, String detail, String taskId, String sectionId) {

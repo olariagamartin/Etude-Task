@@ -30,7 +30,7 @@
         app:fabCradleRoundedCornerRadius="0dp"
         app:fabCradleVerticalOffset="0dp"
         app:menu="@menu/menu_bottom_app_bar"
-        android:backgroundTint="@color/white"
+        app:backgroundTint="@color/blue_grey_600"
         app:navigationIcon="@drawable/ic_menu_bottom_bar" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add"
         app:tint="@color/white"
-        app:backgroundTint="@color/black"
+        app:backgroundTint="@color/amber_600"
         app:layout_anchor="@id/bottomAppBar" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

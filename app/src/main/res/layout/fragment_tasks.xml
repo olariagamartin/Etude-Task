@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.TasksFragment">
+    tools:context=".fragments.TasksFragment"
+    android:background="@color/blue_grey_light">
 
     <include
         android:id="@+id/toolbar_task"
@@ -33,6 +34,7 @@
                 android:focusable="true"
                 android:textSize="16sp"
                 android:text="Completed"
+                android:textColor="@color/blue_grey_dark"
                 android:paddingVertical="10dp"
                 android:paddingHorizontal="15dp"
                 android:layout_marginVertical="10dp"
@@ -53,8 +55,8 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_add"
         app:tint="@color/white"
-        app:backgroundTint="@color/black"
-        app:rippleColor="@color/green1"
+        app:backgroundTint="@color/amber_600"
+        app:rippleColor="@color/amber_ligth"
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
         android:contentDescription="add new task" />

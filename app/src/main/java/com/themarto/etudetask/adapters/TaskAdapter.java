@@ -76,12 +76,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 }
             });
 
-            btnTaskDone.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    taskListener.onTaskChecked(getAdapterPosition());
-                }
-            });
+            btnTaskDone.setOnClickListener(v -> taskListener.onTaskChecked(getAdapterPosition()));
         }
     }
 

@@ -16,7 +16,7 @@
         android:text="Rename Subject"
         android:textAlignment="viewStart"
         android:textAllCaps="false"
-        android:textColor="@color/green2"
+        android:textColor="@color/blue_grey_dark"
         android:textSize="14sp" />
 
     <TextView
@@ -28,7 +28,7 @@
         android:text="Delete Subject"
         android:textAlignment="viewStart"
         android:textAllCaps="false"
-        android:textColor="@color/green2"
+        android:textColor="@color/blue_grey_dark"
         android:textSize="14sp" />
 
     <View
@@ -46,7 +46,7 @@
         android:text="Theme: Light"
         android:textAlignment="viewStart"
         android:textAllCaps="false"
-        android:textColor="@color/green2"
+        android:textColor="@color/blue_grey_dark"
         android:textSize="14sp" />
 
 </LinearLayout>

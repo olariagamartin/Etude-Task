@@ -175,7 +175,7 @@ public class SectionFragment extends Fragment {
                 } else {
                     btnSaveSection.setEnabled(true);
                     btnSaveSection.setTextColor(getResources()
-                            .getColor(R.color.blue_button));
+                            .getColor(R.color.amber_600));
                 }
             }
 

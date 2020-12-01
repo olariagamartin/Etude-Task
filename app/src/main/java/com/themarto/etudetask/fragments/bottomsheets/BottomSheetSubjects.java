@@ -111,7 +111,7 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
     private void enableButton(Button btn){
         binding.btnSaveSubject.setEnabled(true);
         binding.btnSaveSubject.setTextColor(getResources()
-                .getColor(R.color.blue_button));
+                .getColor(R.color.amber_600));
     }
 
     private void disableButton(Button btn){

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:icon="@drawable/ic_more"
+        android:orderInCategory="100"
+        android:title="Option Menu"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/rename_section"
+                android:icon="@drawable/ic_edit"
+                android:title="Rename Section" />
+
+            <item
+                android:id="@+id/delete_section"
+                android:icon="@drawable/ic_delete_outline"
+                android:title="Delete Section" />
+
+            <item
+                android:id="@+id/delete_completed_tasks"
+                android:icon="@drawable/ic_list_check"
+                android:title="Delete All Completed" />
+        </menu>
+
+    </item>
+
+
+</menu>

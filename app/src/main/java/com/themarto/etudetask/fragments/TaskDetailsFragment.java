@@ -175,7 +175,6 @@ public class TaskDetailsFragment extends Fragment {
 
         // todo: change theme
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                R.style.ThemeOverlay_App_MaterialAlertDialog,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view12, int year, int month, int dayOfMonth) {
@@ -204,7 +203,6 @@ public class TaskDetailsFragment extends Fragment {
 
         // todo: change theme
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
-                R.style.ThemeOverlay_App_MaterialAlertDialog,
                 (view1, hourOfDay, minute) -> {
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calendar.set(Calendar.MINUTE, minute);
@@ -230,7 +228,7 @@ public class TaskDetailsFragment extends Fragment {
     private void enableButton(MaterialButton btn) {
         btn.setEnabled(true);
         btn.setIconTint(AppCompatResources.getColorStateList(getContext(),
-                R.color.blue_button));
+                R.color.amber_600));
     }
 
     private void disableButton(MaterialButton btn) {

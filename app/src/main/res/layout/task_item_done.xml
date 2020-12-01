@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="0dp"
+    app:cardBackgroundColor="@android:color/transparent"
     android:layout_marginHorizontal="10dp"
     android:layout_marginVertical="3dp">
 
@@ -19,7 +20,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginStart="10dp"
             android:src="@drawable/ic_done"
-            android:tint="@color/green3"
+            android:tint="@color/blue_grey_dark"
             android:padding="15dp"
             android:background="@android:color/transparent" />
 
@@ -29,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="Repaso"
             android:layout_gravity="center"
-            android:textColor="@color/green3"
+            android:textColor="@color/blue_grey_600"
             android:textSize="15sp" />
     </LinearLayout>
 

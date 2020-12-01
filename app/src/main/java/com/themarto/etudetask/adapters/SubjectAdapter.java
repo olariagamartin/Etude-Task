@@ -52,8 +52,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         String sectionCount = sections == 1 ? sections + " section" : sections + " sections";
         holder.subjectCountSections.setText(sectionCount);
         if (position == selectedSubject){
-            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.itemBackground));
-            holder.subjectTitle.setTextColor(context.getResources().getColor(R.color.blue_button));
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.amber_ligth));
         }
     }
 
