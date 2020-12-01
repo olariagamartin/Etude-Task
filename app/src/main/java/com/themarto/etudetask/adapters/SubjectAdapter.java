@@ -48,7 +48,9 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Subject currentSubject = subjectList.get(position);
         holder.subjectTitle.setText(currentSubject.getTitle());
-        // TODO: set color if it's the current subject
+        int sections = currentSubject.getSectionList().size();
+        String sectionCount = sections == 1 ? sections + " section" : sections + " sections";
+        holder.subjectCountSections.setText(sectionCount);
         if (position == selectedSubject){
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.itemBackground));
             holder.subjectTitle.setTextColor(context.getResources().getColor(R.color.blue_button));
@@ -64,6 +66,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView subjectTitle;
+        TextView subjectCountSections;
         CardView cardView;
 
         public ViewHolder(@NonNull View itemView) {
@@ -71,6 +74,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
             // TODO: do it with view binding
             subjectTitle = itemView.findViewById(R.id.subjectTitle);
             cardView = (CardView) itemView.getRootView();
+            subjectCountSections = itemView.findViewById(R.id.subjectCountSections);
             if(mListener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
