@@ -52,7 +52,8 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         String sectionCount = sections == 1 ? sections + " section" : sections + " sections";
         holder.subjectCountSections.setText(sectionCount);
         if (position == selectedSubject){
-            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.amber_ligth));
+            holder.cardView.setCardBackgroundColor(context.getResources()
+                    .getColor(R.color.amber_ligth));
         }
     }
 
@@ -75,12 +76,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
             cardView = (CardView) itemView.getRootView();
             subjectCountSections = itemView.findViewById(R.id.subjectCountSections);
             if(mListener != null) {
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mListener.onItemClick(getAdapterPosition());
-                    }
-                });
+                itemView.setOnClickListener(v -> mListener.onItemClick(getAdapterPosition()));
             }
         }
     }

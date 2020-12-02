@@ -3,6 +3,7 @@ package com.themarto.etudetask.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.themarto.etudetask.R;
@@ -25,7 +26,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
     }
 
     // TODO: make it obligatory
-    public void setListener(Util.MyListener listener){
+    public void setListener(Util.MyListener listener) {
         mListener = listener;
     }
 
@@ -41,6 +42,14 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Section currentSection = sectionList.get(position);
         holder.sectionTitle.setText(currentSection.getTitle());
+        String tasksCount = currentSection.getTaskDoneList().size() + " of " +
+                (currentSection.getTaskDoneList().size() + currentSection.getTaskList().size());
+        holder.tasksCount.setText(tasksCount);
+        // todo: extract method
+        if (currentSection.getTaskDoneList().size() != 0 &&
+                currentSection.getTaskList().size() == 0) {
+            holder.imageSectionDone.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -50,18 +59,19 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView sectionTitle;
+        TextView tasksCount;
+        ImageView imageSectionDone;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // TODO: do it with view binding
             sectionTitle = itemView.findViewById(R.id.textViewSectionTitle);
+            tasksCount = itemView.findViewById(R.id.textViewTasksCount);
+            imageSectionDone = itemView.findViewById(R.id.imageSectionDone);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mListener != null){
-                        mListener.onItemClick(getAdapterPosition());
-                    }
+            itemView.setOnClickListener(v -> {
+                if (mListener != null) {
+                    mListener.onItemClick(getAdapterPosition());
                 }
             });
         }
