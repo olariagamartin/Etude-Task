@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.WorkManagerAlarm;
@@ -110,9 +112,7 @@ public class TaskDetailsFragment extends Fragment {
 
     private void deleteButtonBehavior() {
         binding.btnDeleteTaskDetails.setOnClickListener(v -> {
-            viewModel.deleteTask();
-            deleted = true;
-            Navigation.findNavController(v).navigateUp();
+            showDialogDeleteTask();
         });
     }
 
@@ -278,6 +278,20 @@ public class TaskDetailsFragment extends Fragment {
 
             task.setAlarmStringId(alarmStringId);
         }
+    }
+
+    public void showDialogDeleteTask() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getContext());
+        alertDialogBuilder.setTitle("Are you sure?") // TODO: add title
+                .setMessage("The task will be deleted")
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    //
+                })
+                .setPositiveButton("Delete", (dialog, which) -> { // todo: red button
+                    viewModel.deleteTask();
+                    deleted = true;
+                    Navigation.findNavController(binding.getRoot()).navigateUp();
+                }).show();
     }
 
     private Data saveData(String title, String detail, String taskId, String sectionId) {

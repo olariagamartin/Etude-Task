@@ -153,8 +153,6 @@ public class TasksFragment extends Fragment {
         bottomSheet.show(getParentFragmentManager(), "TASK_TAG");
     }
 
-    // TODO: add date and reminder
-
     public void showDialogDeleteSection() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getContext());
         alertDialogBuilder.setTitle("Are you sure?") // TODO: add title
