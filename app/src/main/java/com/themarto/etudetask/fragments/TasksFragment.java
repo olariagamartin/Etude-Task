@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -168,6 +169,9 @@ public class TasksFragment extends Fragment {
                 .setPositiveButton("Delete", (dialog, which) -> { // todo: red button
                     viewModel.deleteSection();
                     Navigation.findNavController(binding.getRoot()).navigateUp();
+                    Toast.makeText(requireContext(), "Section deleted",
+                            Toast.LENGTH_SHORT)
+                            .show();
                 }).show();
     }
 

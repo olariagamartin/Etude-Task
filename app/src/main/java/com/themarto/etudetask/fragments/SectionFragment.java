@@ -153,12 +153,14 @@ public class SectionFragment extends Fragment {
                     if (!viewModel.deleteSubject()) {
                         // Todo: extract string
                         Snackbar.make(binding.getRoot(), "You must have at least one subject",
-                                Snackbar.LENGTH_LONG)
+                                Snackbar.LENGTH_SHORT)
                                 .show();
                     } else {
-                        sharedPref.edit()
-                                .putInt("SELECTED_SUBJECT", 0)
-                                .apply();
+                        sharedPref.edit().putInt("SELECTED_SUBJECT", 0).apply();
+
+                        Toast.makeText(requireContext(), "Subject deleted",
+                                Toast.LENGTH_SHORT)
+                                .show();
                     }
                 })
                 .show();
