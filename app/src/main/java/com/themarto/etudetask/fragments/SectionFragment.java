@@ -1,5 +1,7 @@
 package com.themarto.etudetask.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -41,11 +43,15 @@ public class SectionFragment extends Fragment {
 
     private FragmentSectionBinding binding;
 
+    private SharedPreferences sharedPref;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentSectionBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+
+        sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 
         binding.fabAddSection.setOnClickListener(v -> showBottomSheetAddSection());
 
@@ -135,7 +141,7 @@ public class SectionFragment extends Fragment {
     }
 
     private void showDialogDeleteSubject() {
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getContext());
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
         alertDialogBuilder.setTitle("Delete Subject") // TODO: add title
                 .setMessage("The subject will be deleted")
                 .setNegativeButton("Cancel", (dialog, which) -> {
@@ -146,8 +152,13 @@ public class SectionFragment extends Fragment {
                     //Delete action
                     if (!viewModel.deleteSubject()) {
                         // Todo: extract string
-                        Snackbar.make(binding.getRoot(), "You must have at least one list", Snackbar.LENGTH_LONG)
+                        Snackbar.make(binding.getRoot(), "You must have at least one subject",
+                                Snackbar.LENGTH_LONG)
                                 .show();
+                    } else {
+                        sharedPref.edit()
+                                .putInt("SELECTED_SUBJECT", 0)
+                                .apply();
                     }
                 })
                 .show();

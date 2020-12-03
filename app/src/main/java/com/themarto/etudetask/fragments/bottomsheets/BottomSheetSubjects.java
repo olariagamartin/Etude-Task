@@ -89,7 +89,7 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
             if (!title.isEmpty()) {
                 saveSubject(title);
                 sharedPref.edit()
-                        .putInt("SELECTED_SIGNATURE", viewModel.getAllSubjects().getValue().size() - 1)
+                        .putInt("SELECTED_SUBJECT", viewModel.getAllSubjects().getValue().size() - 1)
                         .apply();
             }
         });
