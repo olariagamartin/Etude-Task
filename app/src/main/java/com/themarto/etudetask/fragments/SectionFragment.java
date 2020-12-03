@@ -112,8 +112,7 @@ public class SectionFragment extends Fragment {
     }
 
     private void showDialogRenameSubject() {
-        // TODO: show keyboard
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle("Rename");
         View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_title, null);
         EditText editTitle = editLayout.findViewById(R.id.edit_title_dialog);

@@ -1,6 +1,7 @@
 package com.themarto.etudetask.fragments.bottomsheets;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,9 +11,13 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.adapters.SubjectAdapter;
@@ -24,6 +29,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,7 +45,8 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
 
     private SharedPreferences sharedPref;
 
-    public BottomSheetSubjects() { }
+    public BottomSheetSubjects() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,60 +77,28 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
     }
 
     // ACTIONS
-    private void runAddSubject(){
-        showAddElements();
-        binding.editTextNewSubject.requestFocus();
-
-        binding.editTextNewSubject.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String title = s.toString();
-                if(title.isEmpty()){
-                    disableButton(binding.btnSaveSubject);
-                } else {
-                    enableButton(binding.btnSaveSubject);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+    private void runAddSubject() {
+        dismiss();
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setTitle("New Subject");
+        View newSubjectLayout = getLayoutInflater().inflate(R.layout.dialog_edit_title, null);
+        EditText subjectTitle = newSubjectLayout.findViewById(R.id.edit_title_dialog);
+        builder.setView(newSubjectLayout);
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String title = subjectTitle.getText().toString();
+            if (!title.isEmpty()) {
+                saveSubject(title);
+                sharedPref.edit()
+                        .putInt("SELECTED_SIGNATURE", viewModel.getAllSubjects().getValue().size() - 1)
+                        .apply();
             }
         });
-
-        binding.btnSaveSubject.setOnClickListener(v -> {
-            String subjectTitle = binding.editTextNewSubject.getText().toString();
-            saveSubject(subjectTitle);
-            sharedPref.edit()
-                    .putInt("SELECTED_SIGNATURE", viewModel.getAllSubjects().getValue().size() - 1 )
-                    .apply();
-            dismiss();
-        });
-
-        binding.editTextNewSubject.requestFocus();
-    }
-
-    private void enableButton(Button btn){
-        binding.btnSaveSubject.setEnabled(true);
-        binding.btnSaveSubject.setTextColor(getResources()
-                .getColor(R.color.amber_600));
-    }
-
-    private void disableButton(Button btn){
-        btn.setEnabled(false);
-        btn.setTextColor(getResources()
-                .getColor(R.color.green1));
-    }
-
-    private void showAddElements() {
-        TransitionManager.beginDelayedTransition(binding.getRoot(), new AutoTransition());
-        binding.parentViewTitle.setVisibility(View.GONE);
-        binding.parentViewAddSubject.setVisibility(View.VISIBLE);
+        builder.setNegativeButton("Cancel", ((dialog, which) -> {
+        }));
+        AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
+                .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alertDialog.show();
     }
 
     private void loadSubjects(List<Subject> subjectList) {
@@ -147,7 +122,7 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
     }
 
     // CRUD
-    private void saveSubject(String title){
+    private void saveSubject(String title) {
         Subject subject = new Subject(title);
         viewModel.addSubject(subject);
     }
