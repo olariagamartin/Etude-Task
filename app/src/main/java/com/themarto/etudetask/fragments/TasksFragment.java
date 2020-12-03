@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -24,6 +25,7 @@ import com.themarto.etudetask.viewmodel.SharedViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -132,19 +134,22 @@ public class TasksFragment extends Fragment {
 
     private void showDialogRenameSection() {
         // TODO: show keyboard
-        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(getContext());
-        dialogBuilder.setTitle("Rename");
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        builder.setTitle("Rename");
         View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_title, null);
         EditText editTitle = editLayout.findViewById(R.id.edit_title_dialog);
         editTitle.setText(viewModel.getSelectedSection().getValue().getTitle());
         editTitle.setSelection(editTitle.getText().length());
-        dialogBuilder.setView(editLayout)
+        builder.setView(editLayout)
                 .setPositiveButton("Save", (dialog, which) -> {
                     viewModel.changeSectionTitle(editTitle.getText().toString());
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {});
 
-        dialogBuilder.create().show();
+        AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
+                .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alertDialog.show();
     }
 
     // TODO: divide, maybe use a bottom sheet fragment

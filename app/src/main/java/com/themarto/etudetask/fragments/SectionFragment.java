@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -119,14 +121,18 @@ public class SectionFragment extends Fragment {
         editTitle.setSelection(editTitle.getText().length());
         builder.setView(editLayout)
                 .setPositiveButton("Save", (dialog, which) -> {
-                    if(editTitle.getText().toString().isEmpty()){
+                    if (editTitle.getText().toString().isEmpty()) {
                         Toast.makeText(getContext(), "The name cannot be empty", Toast.LENGTH_SHORT).show();
                     } else {
                         viewModel.changeSubjectTitle(editTitle.getText().toString());
                     }
                 })
-                .setNegativeButton("Cancel", (dialog, which) -> {});
-        builder.create().show();
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
+                .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alertDialog.show();
     }
 
     private void showDialogDeleteSubject() {
