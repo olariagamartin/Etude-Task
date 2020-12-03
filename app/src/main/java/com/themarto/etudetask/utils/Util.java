@@ -22,9 +22,13 @@ public class Util {
         Calendar actual = Calendar.getInstance();
         String strDate;
         myTime.setTime(time);
+        // todo: switch
         if(myTime.get(Calendar.DAY_OF_MONTH) == actual.get(Calendar.DAY_OF_MONTH)){
             strDate = "Today";
-        } else if(myTime.get(Calendar.DAY_OF_MONTH) == actual.get(Calendar.DAY_OF_MONTH) + 1){
+        } else if (myTime.get(Calendar.DAY_OF_MONTH) == actual.get(Calendar.DAY_OF_MONTH) - 1){
+            strDate = "Yesterday";
+        }
+        else if(myTime.get(Calendar.DAY_OF_MONTH) == actual.get(Calendar.DAY_OF_MONTH) + 1){
             strDate = "Tomorrow";
         } else {
             SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM", Locale.getDefault());
@@ -34,7 +38,7 @@ public class Util {
     }
 
     public static String getTimeString(Date time){
-        String srtTime = "";
+        String srtTime;
         SimpleDateFormat format = new SimpleDateFormat("h:mm a", Locale.getDefault());
         srtTime = format.format(time);
         return  srtTime;
