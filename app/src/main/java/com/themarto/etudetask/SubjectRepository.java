@@ -43,6 +43,11 @@ public class SubjectRepository {
 
     public void deleteSubject(Subject subject) {
         realm.beginTransaction();
+        for (Section section : subject.getSectionList()) {
+            section.getTaskList().deleteAllFromRealm();
+            section.getTaskDoneList().deleteAllFromRealm();
+        }
+        subject.getSectionList().deleteAllFromRealm();
         subject.deleteFromRealm();
         realm.commitTransaction();
     }
@@ -63,6 +68,8 @@ public class SubjectRepository {
 
     public void deleteSection(Section section) {
         realm.beginTransaction();
+        section.getTaskList().deleteAllFromRealm();
+        section.getTaskDoneList().deleteAllFromRealm();
         section.deleteFromRealm();
         realm.commitTransaction();
     }
