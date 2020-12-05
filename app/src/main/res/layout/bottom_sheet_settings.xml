@@ -43,6 +43,7 @@
         android:layout_height="wrap_content"
         android:paddingVertical="18dp"
         android:paddingStart="25dp"
+        android:visibility="gone"
         android:text="Theme: Light"
         android:textAlignment="viewStart"
         android:textAllCaps="false"

@@ -77,6 +77,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
     // Behavior methods
     private void setEditTextTitleBehavior() {
+        binding.editTextNewTask.requestFocus(); // required for API 28+
         binding.editTextNewTask.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

@@ -140,6 +140,7 @@ public class TasksFragment extends Fragment {
         View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_title, null);
         EditText editTitle = editLayout.findViewById(R.id.edit_title_dialog);
         editTitle.setText(viewModel.getSelectedSection().getValue().getTitle());
+        editTitle.requestFocus(); // required for API 28+
         editTitle.setSelection(editTitle.getText().length());
         builder.setView(editLayout)
                 .setPositiveButton("Save", (dialog, which) -> {

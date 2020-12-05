@@ -83,6 +83,7 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
         builder.setTitle("New Subject");
         View newSubjectLayout = getLayoutInflater().inflate(R.layout.dialog_edit_title, null);
         EditText subjectTitle = newSubjectLayout.findViewById(R.id.edit_title_dialog);
+        subjectTitle.requestFocus(); // required for API 28+
         builder.setView(newSubjectLayout);
         builder.setPositiveButton("Save", (dialog, which) -> {
             String title = subjectTitle.getText().toString();

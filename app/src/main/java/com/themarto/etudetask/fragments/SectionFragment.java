@@ -123,6 +123,7 @@ public class SectionFragment extends Fragment {
         View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_title, null);
         EditText editTitle = editLayout.findViewById(R.id.edit_title_dialog);
         editTitle.setText(viewModel.getSelectedSubject().getValue().getTitle());
+        editTitle.requestFocus(); // required for API 28+
         editTitle.setSelection(editTitle.getText().length());
         builder.setView(editLayout)
                 .setPositiveButton("Save", (dialog, which) -> {
@@ -174,6 +175,8 @@ public class SectionFragment extends Fragment {
 
         EditText sectionTitle = addSectionView.findViewById(R.id.edit_text_new_section);
         Button btnSaveSection = addSectionView.findViewById(R.id.btn_save_section);
+
+        sectionTitle.requestFocus(); // required for API 28 and higher
 
         sectionTitle.addTextChangedListener(new TextWatcher() {
             @Override
