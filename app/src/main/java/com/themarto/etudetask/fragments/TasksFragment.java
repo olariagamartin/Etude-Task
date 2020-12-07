@@ -134,7 +134,6 @@ public class TasksFragment extends Fragment {
     }
 
     private void showDialogRenameSection() {
-        // TODO: show keyboard
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle("Rename");
         View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_title, null);
@@ -154,7 +153,6 @@ public class TasksFragment extends Fragment {
         alertDialog.show();
     }
 
-    // TODO: divide, maybe use a bottom sheet fragment
     private void showBottomSheetAddTask() {
         BottomSheetAddTask bottomSheet = new BottomSheetAddTask();
         bottomSheet.show(getParentFragmentManager(), "TASK_TAG");
@@ -178,7 +176,6 @@ public class TasksFragment extends Fragment {
 
     private void deleteCompletedTasks() {
         viewModel.deleteAllCompletedTasks();
-        // Todo: study snack bar
         Snackbar.make(binding.getRoot(), "Completed tasks deleted", Snackbar.LENGTH_SHORT)
                 .show();
     }

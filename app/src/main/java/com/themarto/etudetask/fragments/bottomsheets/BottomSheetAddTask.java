@@ -150,7 +150,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         int month = actual.get(Calendar.MONTH);
         int day = actual.get(Calendar.DAY_OF_MONTH);
 
-        // todo: change theme
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -177,7 +176,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         int hour = actual.get(Calendar.HOUR_OF_DAY);
         int min = actual.get(Calendar.MINUTE);
 
-        // todo: change theme
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
                 (view1, hourOfDay, minute) -> {
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);

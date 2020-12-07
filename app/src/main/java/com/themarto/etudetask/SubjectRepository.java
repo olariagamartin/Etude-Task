@@ -88,7 +88,8 @@ public class SubjectRepository {
         return section;
     }
 
-    public void setAlarmTaskDone(String taskId){
+    public static void setAlarmTaskDone(String taskId){
+        Realm realm = Realm.getDefaultInstance();
         Task task = realm.where(Task.class).equalTo("id", taskId).findFirst();
         if (task != null){
             realm.beginTransaction();

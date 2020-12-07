@@ -42,11 +42,12 @@ public class WorkManagerAlarm extends Worker {
     @Override
     public Result doWork() {
 
-        // todo: set alarmStringId task parameter empty
         String title = getInputData().getString(DATA_KEY_TITLE);
         String detail = getInputData().getString(DATA_KEY_DETAIL);
         String taskId = getInputData().getString(TASK_ID);
         String sectionId = getInputData().getString(SECTION_ID);
+
+        SubjectRepository.setAlarmTaskDone(taskId);
 
         lunchNotification(title, detail, taskId, sectionId);
 

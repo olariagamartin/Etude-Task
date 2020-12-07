@@ -143,7 +143,7 @@ public class SectionFragment extends Fragment {
 
     private void showDialogDeleteSubject() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
-        alertDialogBuilder.setTitle("Delete Subject") // TODO: add title
+        alertDialogBuilder.setTitle("Delete Subject")
                 .setMessage("The subject will be deleted")
                 .setNegativeButton("Cancel", (dialog, which) -> {
                     //
@@ -152,7 +152,6 @@ public class SectionFragment extends Fragment {
                     // TODO: set red color
                     //Delete action
                     if (!viewModel.deleteSubject()) {
-                        // Todo: extract string
                         Snackbar.make(binding.getRoot(), "You must have at least one subject",
                                 Snackbar.LENGTH_SHORT)
                                 .show();
@@ -186,7 +185,6 @@ public class SectionFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // TODO: extract in a method (util)
                 String title = s.toString();
                 // TODO: add condition on start with ' '
                 if (title.isEmpty()) {
