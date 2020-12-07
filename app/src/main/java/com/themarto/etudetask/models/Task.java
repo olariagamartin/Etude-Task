@@ -86,17 +86,6 @@ public class Task extends RealmObject {
     }
 
     public boolean hasAlarm(){
-        if(alarmStringId.equals("")) {
-            return false;
-        } else {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-            if (calendar.getTimeInMillis() - Calendar.getInstance().getTimeInMillis() > 0){
-                return true;
-            } else {
-                alarmStringId = "";
-                return false;
-            }
-        }
+        return !alarmStringId.equals("");
     }
 }

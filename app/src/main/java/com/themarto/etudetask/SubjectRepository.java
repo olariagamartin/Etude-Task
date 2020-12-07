@@ -15,6 +15,7 @@ public class SubjectRepository {
 
     private Realm realm;
 
+    // todo: is no necessary make a live data
     private MutableLiveData<List<Subject>> allSubjects;
 
     public SubjectRepository() {
