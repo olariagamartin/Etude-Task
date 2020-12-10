@@ -13,10 +13,10 @@
         <action
             android:id="@+id/action_sectionFragment_to_tasksFragment"
             app:destination="@id/tasksFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
     <fragment
         android:id="@+id/tasksFragment"
@@ -25,7 +25,10 @@
         tools:layout="@layout/fragment_tasks" >
         <action
             android:id="@+id/action_tasksFragment_to_taskDetailsFragment"
-            app:destination="@id/taskDetailsFragment" />
+            app:destination="@id/taskDetailsFragment"
+            app:enterAnim="@anim/scale_out"
+            app:exitAnim="@anim/scale_nothing"
+            app:popExitAnim="@anim/scale_in" />
     </fragment>
     <fragment
         android:id="@+id/taskDetailsFragment"

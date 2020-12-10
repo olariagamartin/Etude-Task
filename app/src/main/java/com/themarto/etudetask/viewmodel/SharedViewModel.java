@@ -40,7 +40,7 @@ public class SharedViewModel extends AndroidViewModel {
     public void loadSubjects(){
         subjects = mRepository.getAllSubjects();
         if(subjects.getValue().isEmpty()) {
-            mRepository.addSubject(new Subject("Default")); // TODO: string
+            mRepository.addSubject(new Subject("Math")); // TODO: string
             selectSubject(0);
         }
     }
