@@ -36,6 +36,10 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.AutoTransition;
+import androidx.transition.ChangeBounds;
+import androidx.transition.ChangeClipBounds;
+import androidx.transition.TransitionManager;
 
 public class TasksFragment extends Fragment {
 
@@ -203,6 +207,7 @@ public class TasksFragment extends Fragment {
         taskAdapter.setTaskListener(new TaskAdapter.TaskListener() {
             @Override
             public void onTaskChecked(int position) {
+                TransitionManager.beginDelayedTransition(binding.getRoot(), new ChangeBounds());
                 viewModel.setTaskDone(position);
             }
 
@@ -239,6 +244,7 @@ public class TasksFragment extends Fragment {
         taskDoneAdapter.setListener(new TaskDoneAdapter.TaskDoneListener() {
             @Override
             public void onBtnDoneClick(int position) {
+                TransitionManager.beginDelayedTransition(binding.getRoot(), new ChangeBounds());
                 viewModel.setTaskUndone(position);
             }
         });
