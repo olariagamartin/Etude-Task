@@ -76,4 +76,9 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
             });
         }
     }
+
+    public interface SectionListener {
+        void onDeleteSection();
+        void onRenameSection();
+    }
 }

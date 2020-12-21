@@ -3,6 +3,7 @@ package com.themarto.etudetask.utils;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.themarto.etudetask.R;
 import com.themarto.etudetask.adapters.TaskAdapter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,7 +28,7 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
         super(0, ItemTouchHelper.LEFT);
         this.adapter = adapter;
         this.context = context;
-        this.icon = ContextCompat.getDrawable(context, R.drawable.ic_delete_outline);
+        this.icon = ContextCompat.getDrawable(context, R.drawable.ic_delete_outline_2);
         this.background = new ColorDrawable(context.getResources().getColor(R.color.red_600));
     }
 
