@@ -6,11 +6,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.models.Task;
-import com.themarto.etudetask.viewmodel.SharedViewModel;
 
 import java.util.List;
 
@@ -19,22 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
-    private List<Task> taskList;
+    private final List<Task> taskList;
 
-    private Util.MyListener mListener;
+    private final TaskListener listener;
 
-    private TaskListener taskListener;
-
-    public TaskAdapter(List<Task> taskList) {
+    public TaskAdapter(List<Task> taskList, TaskListener listener) {
         this.taskList = taskList;
-    }
-
-    public void setListener(Util.MyListener listener){
-        mListener = listener;
-    }
-
-    public void setTaskListener (TaskListener taskListener) {
-        this.taskListener = taskListener;
+        this.listener = listener;
     }
 
     @NonNull
@@ -65,26 +54,26 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            // TODO: do it with view binding
             btnTaskDone = itemView.findViewById(R.id.btn_checkbox_task);
             taskTitle = itemView.findViewById(R.id.taskTitle);
             taskDate = itemView.findViewById(R.id.taskDate);
 
             itemView.setOnClickListener(v -> {
-                if (mListener != null) {
-                    mListener.onItemClick(getAdapterPosition());
+                if (listener != null) {
+                    listener.onItemClick(getAdapterPosition());
                 }
             });
 
-            btnTaskDone.setOnClickListener(v -> taskListener.onTaskChecked(getAdapterPosition()));
+            btnTaskDone.setOnClickListener(v -> listener.onTaskChecked(getAdapterPosition()));
         }
     }
 
     public void deleteItem(int position) {
-        taskListener.onDeleteItem(position);
+        listener.onDeleteItem(position);
     }
 
     public interface TaskListener {
+        void onItemClick(int position);
         void onTaskChecked(int position);
         void onDeleteItem(int position);
     }

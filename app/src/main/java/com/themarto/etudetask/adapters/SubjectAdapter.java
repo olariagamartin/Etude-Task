@@ -18,21 +18,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHolder> {
 
-    private List<Subject> subjectList;
+    private final List<Subject> subjectList;
 
-    private Util.MyListener mListener;
+    private final SubjectListener listener;
 
     private Context context;
 
-    private int selectedSubject;
+    private final int selectedSubject;
 
-    public SubjectAdapter(List<Subject> subjectList, int selectedSubject) {
+    public SubjectAdapter(List<Subject> subjectList, int selectedSubject, SubjectListener listener) {
         this.subjectList = subjectList;
         this.selectedSubject = selectedSubject;
-    }
-
-    public void setListener(Util.MyListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     @NonNull
@@ -62,7 +59,6 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         return subjectList.size();
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView subjectTitle;
@@ -71,14 +67,17 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            // TODO: do it with view binding
             subjectTitle = itemView.findViewById(R.id.subjectTitle);
             cardView = (CardView) itemView.getRootView();
             subjectCountSections = itemView.findViewById(R.id.subjectCountSections);
-            if(mListener != null) {
-                itemView.setOnClickListener(v -> mListener.onItemClick(getAdapterPosition()));
+            if(listener != null) {
+                itemView.setOnClickListener(v -> listener.onItemClick(getAdapterPosition()));
             }
         }
+    }
+
+    public interface SubjectListener {
+        void onItemClick(int position);
     }
 
 }

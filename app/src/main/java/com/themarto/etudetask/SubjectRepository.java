@@ -15,18 +15,15 @@ public class SubjectRepository {
 
     private Realm realm;
 
-    // todo: is no necessary make a live data
-    private MutableLiveData<List<Subject>> allSubjects;
+    private RealmResults<Subject> subjects;
 
     public SubjectRepository() {
         realm = Realm.getDefaultInstance();
-        allSubjects = new MutableLiveData<>();
-        RealmResults<Subject> subjects = realm.where(Subject.class).findAll();
-        allSubjects.setValue(subjects);
+        subjects = realm.where(Subject.class).findAll();
     }
 
     public MutableLiveData<List<Subject>> getAllSubjects() {
-        return allSubjects;
+        return new MutableLiveData<>(subjects);
     }
 
     public void addSubject(Subject subject) {

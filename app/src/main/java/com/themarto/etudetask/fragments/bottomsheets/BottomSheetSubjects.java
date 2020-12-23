@@ -1,25 +1,18 @@
 package com.themarto.etudetask.fragments.bottomsheets;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.transition.AutoTransition;
-import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.themarto.etudetask.R;
-import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.adapters.SubjectAdapter;
 import com.themarto.etudetask.databinding.BottomSheetSubjectsBinding;
 import com.themarto.etudetask.models.Subject;
@@ -35,18 +28,17 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static com.themarto.etudetask.utils.Util.SELECTED_SUBJECT_KEY;
+
 public class BottomSheetSubjects extends BottomSheetDialogFragment {
 
     RecyclerView recyclerViewSubjects;
 
     private BottomSheetSubjectsBinding binding;
-
     private SharedViewModel viewModel;
-
     private SharedPreferences sharedPref;
 
-    public BottomSheetSubjects() {
-    }
+    public BottomSheetSubjects() { }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,11 +52,12 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
         binding = BottomSheetSubjectsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-
+        sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE);
         recyclerViewSubjects = binding.recyclerViewSubjects;
-
-        binding.addSubject.setOnClickListener(v -> runAddSubject());
+        binding.addSubject.setOnClickListener(v -> {
+            dismiss();
+            showDialogAddSubject();
+        });
 
         return view;
     }
@@ -72,13 +65,12 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
         viewModel.getAllSubjects().observe(this, subjectList -> loadSubjects(subjectList));
     }
 
     // ACTIONS
-    private void runAddSubject() {
-        dismiss();
+    private void showDialogAddSubject() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle("New Subject");
         View newSubjectLayout = getLayoutInflater().inflate(R.layout.dialog_edit_title, null);
@@ -90,12 +82,13 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
             if (!title.isEmpty()) {
                 saveSubject(title);
                 sharedPref.edit()
-                        .putInt("SELECTED_SUBJECT", viewModel.getAllSubjects().getValue().size() - 1)
+                        .putInt(SELECTED_SUBJECT_KEY, viewModel.getAllSubjects().getValue().size() - 1)
                         .apply();
+            } else {
+                Toast.makeText(getContext(), "The name is empty", Toast.LENGTH_SHORT).show();
             }
         });
-        builder.setNegativeButton("Cancel", ((dialog, which) -> {
-        }));
+        builder.setNegativeButton("Cancel", ((dialog, which) -> { }));
         AlertDialog alertDialog = builder.create();
         alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
                 .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -104,25 +97,17 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
 
     private void loadSubjects(List<Subject> subjectList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        int selectedSubject = sharedPref.getInt("SELECTED_SUBJECT", 0);
-        SubjectAdapter subjectAdapter = new SubjectAdapter(subjectList, selectedSubject);
-        subjectAdapter.setListener(new Util.MyListener() {
-            @Override
-            public void onItemClick(int position) {
-                SharedPreferences.Editor editor = sharedPref.edit();
-                // todo: extract string
-                editor.putInt("SELECTED_SUBJECT", position);
-                editor.apply();
-                viewModel.selectSubject(position);
-                dismiss();
-            }
+        int selectedSubject = sharedPref.getInt(SELECTED_SUBJECT_KEY, 0);
+        SubjectAdapter subjectAdapter = new SubjectAdapter(subjectList, selectedSubject, position -> {
+            sharedPref.edit().putInt(SELECTED_SUBJECT_KEY, position).apply();
+            viewModel.selectSubject(position);
+            dismiss();
         });
         recyclerViewSubjects.setLayoutManager(layoutManager);
         recyclerViewSubjects.setAdapter(subjectAdapter);
         recyclerViewSubjects.setHasFixedSize(true);
     }
 
-    // CRUD
     private void saveSubject(String title) {
         Subject subject = new Subject(title);
         viewModel.addSubject(subject);

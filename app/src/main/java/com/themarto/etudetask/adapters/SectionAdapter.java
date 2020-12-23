@@ -3,6 +3,7 @@ package com.themarto.etudetask.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,15 +20,11 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
 
     private List<Section> sectionList;
 
-    private Util.MyListener mListener;
+    private SectionListener listener;
 
-    public SectionAdapter(List<Section> sectionList) {
+    public SectionAdapter(List<Section> sectionList, SectionListener listener) {
         this.sectionList = sectionList;
-    }
-
-    // TODO: make it obligatory
-    public void setListener(Util.MyListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     @NonNull
@@ -45,7 +42,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
         String tasksCount = currentSection.getTaskDoneList().size() + " of " +
                 (currentSection.getTaskDoneList().size() + currentSection.getTaskList().size());
         holder.tasksCount.setText(tasksCount);
-        // todo: extract method
+
         if (currentSection.getTaskDoneList().size() != 0 &&
                 currentSection.getTaskList().size() == 0) {
             holder.imageSectionDone.setVisibility(View.VISIBLE);
@@ -64,21 +61,20 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            // TODO: do it with view binding
             sectionTitle = itemView.findViewById(R.id.textViewSectionTitle);
             tasksCount = itemView.findViewById(R.id.textViewTasksCount);
             imageSectionDone = itemView.findViewById(R.id.imageSectionDone);
 
             itemView.setOnClickListener(v -> {
-                if (mListener != null) {
-                    mListener.onItemClick(getAdapterPosition());
+                if (listener != null) {
+                    listener.onItemClick(getAdapterPosition());
                 }
             });
         }
     }
 
     public interface SectionListener {
-        void onDeleteSection();
-        void onRenameSection();
+        void onItemClick(int position);
+        // Todo: add delete and edit
     }
 }

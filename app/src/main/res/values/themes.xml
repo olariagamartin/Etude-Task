@@ -16,6 +16,8 @@
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
 
         <item name="colorControlNormal">@color/white</item>
+
+        <item name="android:navigationBarColor">@color/blue_grey_dark</item>
     </style>
 
     <style name="timePicker">

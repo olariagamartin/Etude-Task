@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.themarto.etudetask.databinding.ActivityMainBinding;
+import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.viewmodel.SharedViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,8 +31,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         viewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
 
-        // TODO: extract string
-        viewModel.setStartSubject(sharedPref.getInt("SELECTED_SUBJECT", 0));
+        viewModel.setStartSubject(sharedPref.getInt(Util.SELECTED_SUBJECT_KEY, 0));
     }
 
 }

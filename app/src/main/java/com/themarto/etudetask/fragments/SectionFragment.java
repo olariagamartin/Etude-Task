@@ -37,12 +37,12 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static com.themarto.etudetask.utils.Util.SELECTED_SUBJECT_KEY;
+
 public class SectionFragment extends Fragment {
 
     private SharedViewModel viewModel;
-
     private FragmentSectionBinding binding;
-
     private SharedPreferences sharedPref;
 
     @Override
@@ -51,25 +51,7 @@ public class SectionFragment extends Fragment {
         binding = FragmentSectionBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-
-        binding.fabAddSection.setOnClickListener(v -> showBottomSheetAddSection());
-
-        // Show list of Subjects
-        binding.bottomAppBar.setNavigationOnClickListener(v -> {
-            BottomSheetSubjects bottomSheet = new BottomSheetSubjects();
-            // bottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme);
-            bottomSheet.show(getParentFragmentManager(), "SUBJECT_TAG");
-        });
-
-        //
-        binding.bottomAppBar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.more_actions) {
-                lunchBottomSheetDialogSettings();
-                return true;
-            }
-            return false;
-        });
+        sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE);
 
         return view;
     }
@@ -86,14 +68,29 @@ public class SectionFragment extends Fragment {
     }
 
     private void setViewBehavior(Subject subject) {
-        // take it in another method
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbarSection.topAppBar);
-        String title = viewModel.getSelectedSubject().getValue().getTitle();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(title);
+        setAppBarTitle(subject);
+        binding.fabAddSection.setOnClickListener(v -> showBottomSheetAddSection());
+        binding.bottomAppBar.setNavigationOnClickListener(v -> {
+            BottomSheetSubjects bottomSheet = new BottomSheetSubjects();
+            bottomSheet.show(getParentFragmentManager(), "SUBJECT_TAG");
+        });
+        binding.bottomAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.more_actions) {
+                lunchBottomSheetDialogSettings();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void setAppBarTitle(Subject subject){
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(binding.toolbarSection.topAppBar);
+        String title = subject.getTitle();
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(title);
     }
 
     private void lunchBottomSheetDialogSettings() {
-        BottomSheetDialog settings = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
+        BottomSheetDialog settings = new BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme);
 
         View settingsView = LayoutInflater.from(getContext())
                 .inflate(R.layout.bottom_sheet_settings, null);
@@ -108,8 +105,9 @@ public class SectionFragment extends Fragment {
             settings.dismiss();
         });
 
+        // Not implemented yet
         settingsView.findViewById(R.id.settings_theme).setOnClickListener(v -> {
-            Snackbar.make(getView(), "Theme", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(binding.getRoot(), "Theme", Snackbar.LENGTH_SHORT).show();
             settings.dismiss();
         });
 
@@ -128,13 +126,12 @@ public class SectionFragment extends Fragment {
         builder.setView(editLayout)
                 .setPositiveButton("Save", (dialog, which) -> {
                     if (editTitle.getText().toString().isEmpty()) {
-                        Toast.makeText(getContext(), "The name cannot be empty", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "The name is empty", Toast.LENGTH_SHORT).show();
                     } else {
                         viewModel.changeSubjectTitle(editTitle.getText().toString());
                     }
                 })
-                .setNegativeButton("Cancel", (dialog, which) -> {
-                });
+                .setNegativeButton("Cancel", (dialog, which) -> { });
         AlertDialog alertDialog = builder.create();
         alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
                 .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -145,29 +142,27 @@ public class SectionFragment extends Fragment {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
         alertDialogBuilder.setTitle("Delete Subject")
                 .setMessage("The subject will be deleted")
-                .setNegativeButton("Cancel", (dialog, which) -> {
-                    //
-                })
-                .setPositiveButton("Delete", (dialog, which) -> {
-                    // TODO: set red color
-                    //Delete action
-                    if (!viewModel.deleteSubject()) {
-                        Snackbar.make(binding.getRoot(), "You must have at least one subject",
-                                Snackbar.LENGTH_SHORT)
-                                .show();
-                    } else {
-                        sharedPref.edit().putInt("SELECTED_SUBJECT", 0).apply();
-
-                        Toast.makeText(requireContext(), "Subject deleted",
-                                Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                })
+                .setNegativeButton("Cancel", (dialog, which) -> { })
+                .setPositiveButton("Delete", (dialog, which) -> runDeleteSubject())
                 .show();
     }
 
+    private void runDeleteSubject(){
+        if (!viewModel.deleteSubject()) {
+            Snackbar.make(binding.getRoot(), "You must have at least one subject",
+                    Snackbar.LENGTH_SHORT)
+                    .show();
+        } else {
+            sharedPref.edit().putInt(SELECTED_SUBJECT_KEY, 0).apply();
+
+            Toast.makeText(requireContext(), "Subject deleted",
+                    Toast.LENGTH_SHORT)
+                    .show();
+        }
+    }
+
     private void showBottomSheetAddSection() {
-        BottomSheetDialog addSectionDialog = new BottomSheetDialog(getContext(), R.style.DialogStyle);
+        BottomSheetDialog addSectionDialog = new BottomSheetDialog(requireContext(), R.style.DialogStyle);
 
         View addSectionView = LayoutInflater.from(getContext())
                 .inflate(R.layout.bottom_sheet_add_section, null);
@@ -177,16 +172,14 @@ public class SectionFragment extends Fragment {
 
         sectionTitle.requestFocus(); // required for API 28 and higher
 
+        // text behavior
         sectionTitle.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String title = s.toString();
-                // TODO: add condition on start with ' '
                 if (title.isEmpty()) {
                     btnSaveSection.setEnabled(false);
                     btnSaveSection.setTextColor(getResources()
@@ -199,9 +192,7 @@ public class SectionFragment extends Fragment {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) { }
         });
 
         btnSaveSection.setOnClickListener(v -> {
@@ -221,12 +212,13 @@ public class SectionFragment extends Fragment {
 
     private void loadSections(List<Section> sectionList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        SectionAdapter sectionAdapter = new SectionAdapter(sectionList);
-        sectionAdapter.setListener(position -> {
-            // TODO: goto method
-            viewModel.selectSection(position);
-            NavDirections action = SectionFragmentDirections.actionSectionFragmentToTasksFragment();
-            Navigation.findNavController(getView()).navigate(action);
+        SectionAdapter sectionAdapter = new SectionAdapter(sectionList, new SectionAdapter.SectionListener() {
+            @Override
+            public void onItemClick(int position) {
+                viewModel.selectSection(position);
+                NavDirections action = SectionFragmentDirections.actionSectionFragmentToTasksFragment();
+                Navigation.findNavController(binding.getRoot()).navigate(action);
+            }
         });
         binding.recyclerViewSections.setAdapter(sectionAdapter);
         binding.recyclerViewSections.setLayoutManager(layoutManager);

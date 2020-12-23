@@ -14,7 +14,6 @@ import android.widget.DatePicker;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.WorkManagerAlarm;
@@ -39,12 +38,14 @@ import androidx.work.WorkManager;
 
 public class TaskDetailsFragment extends Fragment {
 
-    // maybe i could try to save changes and in onPause method save them all
-
     private SharedViewModel viewModel;
     private FragmentTaskDetailsBinding binding;
     private Task currentTask;
+    /* because the updates are made in onPause() method we need to know
+    if the delete button has been clicked */
     private boolean deleted = false;
+    /* one calendar is used to store date and time for the notification
+    and other is used to get the actual date and time */
     private Calendar actual = Calendar.getInstance();
     private Calendar calendar = Calendar.getInstance();
 
@@ -89,20 +90,17 @@ public class TaskDetailsFragment extends Fragment {
         }
     }
 
-    // maybe change and send task
     private void setViewBehavior() {
         backButtonBehavior();
         deleteButtonBehavior();
-        taskTitleBehavior();
         btnAddDateBehavior();
         btnAddTimeBehavior();
         chipsBehavior();
     }
 
     private void backButtonBehavior() {
-        binding.btnArrowBackTaskDetails.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigateUp();
-        });
+        binding.btnArrowBackTaskDetails.setOnClickListener(v ->
+                Navigation.findNavController(v).navigateUp());
     }
 
     private void topTitle() {
@@ -111,28 +109,7 @@ public class TaskDetailsFragment extends Fragment {
     }
 
     private void deleteButtonBehavior() {
-        binding.btnDeleteTaskDetails.setOnClickListener(v -> {
-            showDialogDeleteTask();
-        });
-    }
-
-    private void taskTitleBehavior() {
-        binding.editTextTaskTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+        binding.btnDeleteTaskDetails.setOnClickListener(v -> showDialogDeleteTask());
     }
 
     private void btnAddDateBehavior() {
@@ -173,7 +150,6 @@ public class TaskDetailsFragment extends Fragment {
         int month = actual.get(Calendar.MONTH);
         int day = actual.get(Calendar.DAY_OF_MONTH);
 
-        // todo: change theme
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -183,17 +159,19 @@ public class TaskDetailsFragment extends Fragment {
                         calendar.set(Calendar.MONTH, month);
                         calendar.set(Calendar.YEAR, year);
 
-                        // todo: extract method
-                        TransitionManager.beginDelayedTransition(binding.layoutChipsTaskDetails);
-                        binding.chipDueDateTaskDetails.setVisibility(View.VISIBLE);
-                        binding.btnDueDateTaskDetails.setVisibility(View.GONE);
-
-                        binding.chipDueDateTaskDetails.setText(Util.getDateString(calendar.getTime()));
-
-                        enableButton(binding.btnNotificationTaskDetails);
+                        notifyDateSet();
                     }
                 }, year, month, day);
         datePickerDialog.show();
+    }
+
+    private void notifyDateSet(){
+        switchVisibility(binding.btnDueDateTaskDetails, binding.chipDueDateTaskDetails,
+                binding.layoutChipsTaskDetails);
+
+        binding.chipDueDateTaskDetails.setText(Util.getDateString(calendar.getTime()));
+
+        enableButton(binding.btnNotificationTaskDetails);
     }
 
     private void lunchTimePicker() {
@@ -201,39 +179,46 @@ public class TaskDetailsFragment extends Fragment {
         int hour = actual.get(Calendar.HOUR_OF_DAY);
         int min = actual.get(Calendar.MINUTE);
 
-        // todo: change theme
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
                 (view1, hourOfDay, minute) -> {
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calendar.set(Calendar.MINUTE, minute);
 
-                    TransitionManager.beginDelayedTransition(binding.layoutChipsTaskDetails);
-                    binding.chipNotificationTaskDetails.setVisibility(View.VISIBLE);
-                    binding.btnNotificationTaskDetails.setVisibility(View.GONE);
-
-                    binding.chipNotificationTaskDetails
-                            .setText(Util.getTimeString(calendar.getTime()));
+                    notifyTimeSet();
 
                 }, hour, min, false);
         timePickerDialog.show();
     }
 
-    // refactor method
-    private void switchVisibility(View visible, View notVisible, View viewGroup) {
+    private void notifyTimeSet(){
+        switchVisibility(binding.btnNotificationTaskDetails, binding.chipNotificationTaskDetails,
+                binding.layoutChipsTaskDetails);
+
+        binding.chipNotificationTaskDetails
+                .setText(Util.getTimeString(calendar.getTime()));
+    }
+
+    /**
+     * Change the visibility of passed views
+     * @param visible the view is visible and will be gone
+     * @param gone the view is gone and will be visible
+     * @param viewGroup the content group of the views
+     */
+    private void switchVisibility(View visible, View gone, View viewGroup) {
         TransitionManager.beginDelayedTransition((ViewGroup) viewGroup, new AutoTransition());
         visible.setVisibility(View.GONE);
-        notVisible.setVisibility(View.VISIBLE);
+        gone.setVisibility(View.VISIBLE);
     }
 
     private void enableButton(MaterialButton btn) {
         btn.setEnabled(true);
-        btn.setIconTint(AppCompatResources.getColorStateList(getContext(),
-                R.color.amber_600));
+        btn.setIconTint(AppCompatResources.getColorStateList(requireContext(),
+                R.color.blue_grey_dark));
     }
 
     private void disableButton(MaterialButton btn) {
         btn.setEnabled(false);
-        btn.setIconTint(AppCompatResources.getColorStateList(getContext(),
+        btn.setIconTint(AppCompatResources.getColorStateList(requireContext(),
                 R.color.green3));
     }
 
@@ -242,10 +227,8 @@ public class TaskDetailsFragment extends Fragment {
         updatedTask.setDetails(binding.editTextTaskDescription.getText().toString());
         updatedTask.setId(currentTask.getId());
 
-        if (currentTask.hasAlarm()) {
-            WorkManager.getInstance(getContext()).cancelWorkById(UUID
-                    .fromString(currentTask.getAlarmStringId()));
-        }
+        deleteAlarm(currentTask);
+
         // i need to find a better way (really!)
         if (binding.chipDueDateTaskDetails.getVisibility() == View.VISIBLE) {
             updatedTask.setDate(calendar.getTime());
@@ -264,6 +247,13 @@ public class TaskDetailsFragment extends Fragment {
         return taskTitle;
     }
 
+    private void deleteAlarm(Task task) {
+        if(task.hasAlarm()) {
+            WorkManager.getInstance(requireContext()).cancelWorkById(UUID
+                    .fromString(task.getAlarmStringId()));
+        }
+    }
+
     private void saveAlarm(Task task) {
         long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
         if (alertTime > 0) {
@@ -271,10 +261,10 @@ public class TaskDetailsFragment extends Fragment {
             Subject subject = viewModel.getSelectedSubject().getValue();
             Section section = viewModel.getSelectedSection().getValue();
             String notificationDetail = subject.getTitle() + " - " + section.getTitle();
-            Data data = saveData(notificationTitle, notificationDetail, task.getId(), section.getId());
+            Data data = Util.saveNotificationData(notificationTitle, notificationDetail, task.getId(), section.getId());
 
             String alarmStringId = WorkManagerAlarm
-                    .saveAlarm(alertTime, data, section.getId(), subject.getId());
+                    .saveAlarm(alertTime, data, section.getId(), subject.getId(), requireContext());
 
             task.setAlarmStringId(alarmStringId);
         }
@@ -282,25 +272,14 @@ public class TaskDetailsFragment extends Fragment {
 
     public void showDialogDeleteTask() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getContext());
-        alertDialogBuilder.setTitle("Are you sure?") // TODO: add title
+        alertDialogBuilder.setTitle("Are you sure?")
                 .setMessage("The task will be deleted")
-                .setNegativeButton("Cancel", (dialog, which) -> {
-                    //
-                })
-                .setPositiveButton("Delete", (dialog, which) -> { // todo: red button
+                .setNegativeButton("Cancel", (dialog, which) -> { })
+                .setPositiveButton("Delete", (dialog, which) -> {
                     viewModel.deleteTask();
                     deleted = true;
                     Navigation.findNavController(binding.getRoot()).navigateUp();
                 }).show();
-    }
-
-    private Data saveData(String title, String detail, String taskId, String sectionId) {
-        return new Data.Builder()
-                .putString("title", title)
-                .putString("detail", detail)
-                .putString("task_id", taskId)
-                .putString("section_id", sectionId)
-                .build();
     }
 
     @Override

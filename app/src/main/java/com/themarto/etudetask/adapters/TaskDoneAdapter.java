@@ -23,11 +23,8 @@ public class TaskDoneAdapter extends RecyclerView.Adapter<TaskDoneAdapter.ViewHo
 
     private TaskDoneListener listener;
 
-    public TaskDoneAdapter(List<Task> taskDoneList) {
+    public TaskDoneAdapter(List<Task> taskDoneList, TaskDoneListener listener) {
         this.taskDoneList = taskDoneList;
-    }
-
-    public void setListener(TaskDoneListener listener) {
         this.listener = listener;
     }
 
@@ -68,6 +65,6 @@ public class TaskDoneAdapter extends RecyclerView.Adapter<TaskDoneAdapter.ViewHo
     }
 
     public interface TaskDoneListener {
-        public void onBtnDoneClick(int position);
+        void onBtnDoneClick(int position);
     }
 }

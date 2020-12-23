@@ -9,20 +9,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import androidx.work.Data;
+
 public class Util {
 
-    public static void hideSoftKeyboard (View view, Context context){
-        InputMethodManager imm = (InputMethodManager)
-                context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-    }
+    public static final String SELECTED_SUBJECT_KEY = "SELECTED_SUBJECT";
 
+    // todo: comment
     public static String getDateString(Date time) {
         Calendar myTime = Calendar.getInstance();
         Calendar actual = Calendar.getInstance();
         String strDate;
         myTime.setTime(time);
-        // todo: switch
+
         if(myTime.get(Calendar.DAY_OF_MONTH) == actual.get(Calendar.DAY_OF_MONTH)){
             strDate = "Today";
         } else if (myTime.get(Calendar.DAY_OF_MONTH) == actual.get(Calendar.DAY_OF_MONTH) - 1){
@@ -37,6 +36,7 @@ public class Util {
         return strDate;
     }
 
+    // todo: comment
     public static String getTimeString(Date time){
         String srtTime;
         SimpleDateFormat format = new SimpleDateFormat("h:mm a", Locale.getDefault());
@@ -44,7 +44,12 @@ public class Util {
         return  srtTime;
     }
 
-    public interface MyListener {
-        void onItemClick(int position);
+    public static Data saveNotificationData(String title, String details, String taskId, String sectionId){
+        return new Data.Builder()
+                .putString("title", title)
+                .putString("detail", details)
+                .putString("task_id", taskId)
+                .putString("section_id", sectionId)
+                .build();
     }
 }

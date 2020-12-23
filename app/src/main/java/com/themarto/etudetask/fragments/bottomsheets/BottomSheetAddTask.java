@@ -40,8 +40,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private Calendar actual;
     private Calendar calendar = Calendar.getInstance();
 
-    public BottomSheetAddTask() {
-    }
+    public BottomSheetAddTask() { }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,13 +79,11 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         binding.editTextNewTask.requestFocus(); // required for API 28+
         binding.editTextNewTask.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String title = s.toString();
-                // TODO: add condition on start with ' '
                 if (title.isEmpty()) {
                     disableTextButton(binding.btnSaveTask);
                 } else {
@@ -95,8 +92,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-            }
+            public void afterTextChanged(Editable s) { }
         });
     }
 
@@ -159,16 +155,20 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                         calendar.set(Calendar.MONTH, month);
                         calendar.set(Calendar.YEAR, year);
 
-                        TransitionManager.beginDelayedTransition(binding.layoutChips);
-                        binding.chipAddTaskDueDate.setVisibility(View.VISIBLE);
-                        binding.btnAddTaskDueDate.setVisibility(View.GONE);
-
-                        binding.chipAddTaskDueDate.setText(Util.getDateString(calendar.getTime()));
-
-                        enableImageButton(binding.btnAddTaskTime);
+                        notifyDateSet();
                     }
                 }, year, month, day);
         datePickerDialog.show();
+    }
+
+    private void notifyDateSet() {
+        TransitionManager.beginDelayedTransition(binding.layoutChips);
+        binding.chipAddTaskDueDate.setVisibility(View.VISIBLE);
+        binding.btnAddTaskDueDate.setVisibility(View.GONE);
+
+        binding.chipAddTaskDueDate.setText(Util.getDateString(calendar.getTime()));
+
+        enableImageButton(binding.btnAddTaskTime);
     }
 
     private void lunchTimePicker() {
@@ -181,17 +181,26 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calendar.set(Calendar.MINUTE, minute);
 
-                    TransitionManager.beginDelayedTransition(binding.layoutChips);
-                    binding.chipAddTaskTime.setVisibility(View.VISIBLE);
-                    binding.btnAddTaskTime.setVisibility(View.GONE);
-
-                    binding.chipAddTaskTime
-                            .setText(Util.getTimeString(calendar.getTime()));
+                    notifyTimeSet();
 
                 }, hour, min, false);
         timePickerDialog.show();
     }
 
+    private void notifyTimeSet(){
+        TransitionManager.beginDelayedTransition(binding.layoutChips);
+        binding.chipAddTaskTime.setVisibility(View.VISIBLE);
+        binding.btnAddTaskTime.setVisibility(View.GONE);
+
+        binding.chipAddTaskTime
+                .setText(Util.getTimeString(calendar.getTime()));
+    }
+
+    /**
+     * Gathers all loaded data and loads it into a Task object.
+     * If an alarm was set then is saved.
+     * @return the Task with all data
+     */
     private Task getTask() {
         String title = binding.editTextNewTask.getText().toString();
         String details = "";
@@ -209,7 +218,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         return nTask;
     }
 
-    // todo: maybe util methods
     private void disableTextButton(Button btn) {
         btn.setEnabled(false);
         btn.setTextColor(getResources()
@@ -224,25 +232,15 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
     private void disableImageButton(ImageButton btn) {
         btn.setEnabled(false);
-        btn.setImageTintList(AppCompatResources.getColorStateList(getContext(),
+        btn.setImageTintList(AppCompatResources.getColorStateList(requireContext(),
                 R.color.green1));
     }
 
     private void enableImageButton(AppCompatImageButton btn) {
         btn.setEnabled(true);
-        btn.setImageTintList(AppCompatResources.getColorStateList(getContext(),
+        btn.setImageTintList(AppCompatResources.getColorStateList(requireContext(),
                 R.color.blue_grey_dark));
     }
-
-    private Data saveData(String title, String detail, String taskId, String sectionId) {
-        return new Data.Builder()
-                .putString("title", title)
-                .putString("detail", detail)
-                .putString("task_id", taskId)
-                .putString("section_id", sectionId)
-                .build();
-    }
-    //...
 
     private void saveAlarm(Task task) {
         long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
@@ -251,10 +249,10 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             Subject subject = viewModel.getSelectedSubject().getValue();
             Section section = viewModel.getSelectedSection().getValue();
             String notificationDetail = subject.getTitle() + " - " + section.getTitle();
-            Data data = saveData(notificationTitle, notificationDetail, task.getId(), section.getId());
+            Data data = Util.saveNotificationData(notificationTitle, notificationDetail, task.getId(), section.getId());
 
             String alarmStringId = WorkManagerAlarm
-                    .saveAlarm(alertTime, data, section.getId(), subject.getId());
+                    .saveAlarm(alertTime, data, section.getId(), subject.getId(), requireContext());
 
             task.setAlarmStringId(alarmStringId);
         }
