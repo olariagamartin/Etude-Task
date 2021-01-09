@@ -21,7 +21,7 @@ import com.themarto.etudetask.databinding.BottomSheetAddTaskBinding;
 import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
-import com.themarto.etudetask.viewmodel.SharedViewModel;
+import com.themarto.etudetask.data.SharedViewModel;
 
 import java.util.Calendar;
 
@@ -211,7 +211,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         Task nTask = new Task(title, details);
         if (binding.chipAddTaskDueDate.getVisibility() == View.VISIBLE) {
             if (binding.chipAddTaskTime.getVisibility() == View.VISIBLE) {
-                saveAlarm(nTask);
+                // saveAlarm(nTask);
             }
             nTask.setDate(calendar.getTime());
         }
@@ -242,7 +242,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                 R.color.blue_grey_dark));
     }
 
-    private void saveAlarm(Task task) {
+    /*private void saveAlarm(Task task) {
         long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
         if (alertTime > 0) {
             String notificationTitle = task.getTitle();
@@ -256,5 +256,5 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
             task.setAlarmStringId(alarmStringId);
         }
-    }
+    }*/
 }

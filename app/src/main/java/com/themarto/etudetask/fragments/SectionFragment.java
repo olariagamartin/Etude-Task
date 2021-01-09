@@ -22,7 +22,7 @@ import com.themarto.etudetask.databinding.FragmentSectionBinding;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetSubjects;
 import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
-import com.themarto.etudetask.viewmodel.SharedViewModel;
+import com.themarto.etudetask.data.SharedViewModel;
 
 import java.util.List;
 
@@ -118,7 +118,7 @@ public class SectionFragment extends Fragment {
     private void showDialogRenameSubject() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle("Rename");
-        View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_title, null);
+        View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_subject, null);
         EditText editTitle = editLayout.findViewById(R.id.edit_title_dialog);
         editTitle.setText(viewModel.getSelectedSubject().getValue().getTitle());
         editTitle.requestFocus(); // required for API 28+
@@ -128,7 +128,7 @@ public class SectionFragment extends Fragment {
                     if (editTitle.getText().toString().isEmpty()) {
                         Toast.makeText(getContext(), "The name is empty", Toast.LENGTH_SHORT).show();
                     } else {
-                        viewModel.changeSubjectTitle(editTitle.getText().toString());
+                        // viewModel.changeSubjectTitle(editTitle.getText().toString());
                     }
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> { });
@@ -143,11 +143,11 @@ public class SectionFragment extends Fragment {
         alertDialogBuilder.setTitle("Delete Subject")
                 .setMessage("The subject will be deleted")
                 .setNegativeButton("Cancel", (dialog, which) -> { })
-                .setPositiveButton("Delete", (dialog, which) -> runDeleteSubject())
+                //.setPositiveButton("Delete", (dialog, which) -> runDeleteSubject())
                 .show();
     }
 
-    private void runDeleteSubject(){
+    /*private void runDeleteSubject(){
         if (!viewModel.deleteSubject()) {
             Snackbar.make(binding.getRoot(), "You must have at least one subject",
                     Snackbar.LENGTH_SHORT)
@@ -159,7 +159,7 @@ public class SectionFragment extends Fragment {
                     Toast.LENGTH_SHORT)
                     .show();
         }
-    }
+    }*/
 
     private void showBottomSheetAddSection() {
         BottomSheetDialog addSectionDialog = new BottomSheetDialog(requireContext(), R.style.DialogStyle);
@@ -207,7 +207,7 @@ public class SectionFragment extends Fragment {
 
     private void addNewSection(String title) {
         Section section = new Section(title);
-        viewModel.addSection(section);
+        //viewModel.addSection(section);
     }
 
     private void loadSections(List<Section> sectionList) {
@@ -215,7 +215,7 @@ public class SectionFragment extends Fragment {
         SectionAdapter sectionAdapter = new SectionAdapter(sectionList, new SectionAdapter.SectionListener() {
             @Override
             public void onItemClick(int position) {
-                viewModel.selectSection(position);
+                // viewModel.selectSection(position);
                 NavDirections action = SectionFragmentDirections.actionSectionFragmentToTasksFragment();
                 Navigation.findNavController(binding.getRoot()).navigate(action);
             }

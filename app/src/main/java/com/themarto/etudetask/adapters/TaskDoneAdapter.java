@@ -59,12 +59,12 @@ public class TaskDoneAdapter extends RecyclerView.Adapter<TaskDoneAdapter.ViewHo
             taskTitle.setPaintFlags(taskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
             if(listener != null) {
-                btnTaskDone.setOnClickListener(v -> listener.onBtnDoneClick(getAdapterPosition()));
+                btnTaskDone.setOnClickListener(v -> listener.onBtnDoneClick(taskDoneList.get(getAdapterPosition())));
             }
         }
     }
 
     public interface TaskDoneListener {
-        void onBtnDoneClick(int position);
+        void onBtnDoneClick(Task task);
     }
 }

@@ -1,4 +1,4 @@
-package com.themarto.etudetask;
+package com.themarto.etudetask.data;
 
 import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
@@ -19,11 +19,11 @@ public class SubjectRepository {
 
     public SubjectRepository() {
         realm = Realm.getDefaultInstance();
-        subjects = realm.where(Subject.class).findAll();
+        subjects = realm.where(Subject.class).sort("title").findAll();
     }
 
-    public MutableLiveData<List<Subject>> getAllSubjects() {
-        return new MutableLiveData<>(subjects);
+    public List<Subject> getAllSubjects() {
+        return subjects;
     }
 
     public void addSubject(Subject subject) {
@@ -32,58 +32,18 @@ public class SubjectRepository {
         realm.commitTransaction();
     }
 
-    public Subject changeSubjectTitle(Subject subject, String nTitle) {
+    public Subject updateSubject(Subject subject){
         realm.beginTransaction();
-        subject.setTitle(nTitle);
+        Subject updateSubject = realm.copyToRealmOrUpdate(subject);
         realm.commitTransaction();
-        return subject;
+        return updateSubject;
     }
 
     public void deleteSubject(Subject subject) {
         realm.beginTransaction();
-        for (Section section : subject.getSectionList()) {
-            section.getTaskList().deleteAllFromRealm();
-            section.getTaskDoneList().deleteAllFromRealm();
-        }
-        subject.getSectionList().deleteAllFromRealm();
+        subject.getTasks().deleteAllFromRealm();
         subject.deleteFromRealm();
         realm.commitTransaction();
-    }
-
-    public Subject addSection(Subject subject, Section nSection) {
-        realm.beginTransaction();
-        subject.getSectionList().add(nSection);
-        realm.commitTransaction();
-        return subject;
-    }
-
-    public Section changeSectionTitle(Section section, String nTitle) {
-        realm.beginTransaction();
-        section.setTitle(nTitle);
-        realm.commitTransaction();
-        return section;
-    }
-
-    public void deleteSection(Section section) {
-        realm.beginTransaction();
-        section.getTaskList().deleteAllFromRealm();
-        section.getTaskDoneList().deleteAllFromRealm();
-        section.deleteFromRealm();
-        realm.commitTransaction();
-    }
-
-    public Section addTask(Section section, Task nTask) {
-        realm.beginTransaction();
-        section.getTaskList().add(nTask);
-        realm.commitTransaction();
-        return section;
-    }
-
-    public Section addTask(Section section, Task nTask, int position){
-        realm.beginTransaction();
-        section.getTaskList().add(position, nTask);
-        realm.commitTransaction();
-        return section;
     }
 
     public static void setAlarmTaskDone(String taskId){
@@ -94,6 +54,20 @@ public class SubjectRepository {
             task.setAlarmStringId("");
             realm.commitTransaction();
         }
+    }
+
+    public Subject  addTask(Subject subject, Task nTask) {
+        realm.beginTransaction();
+        subject.getTasks().add(nTask);
+        realm.commitTransaction();
+        return subject;
+    }
+
+    public Subject addTask(Subject subject, Task nTask, int position){
+        realm.beginTransaction();
+        subject.getTasks().add(position, nTask);
+        realm.commitTransaction();
+        return subject;
     }
 
     public void updateTask(Task task) {
@@ -122,14 +96,11 @@ public class SubjectRepository {
         return section;
     }
 
-    public Section setTaskDone(Section section, int position) {
+    public void setTaskDone(Task task) {
         realm.beginTransaction();
-        Task task = section.getTaskList().get(position);
-        section.getTaskList().remove(position);
+        task.setDone(true);
         task.setAlarmStringId("");
-        section.getTaskDoneList().add(task);
         realm.commitTransaction();
-        return section;
     }
 
     public void setTaskDone(String taskId, String sectionId) {
@@ -144,13 +115,9 @@ public class SubjectRepository {
         }
     }
 
-    public Section setTaskUndone(Section section, int position) {
+    public void setTaskUndone(Task task) {
         realm.beginTransaction();
-        Task task = section.getTaskDoneList().get(position);
-        section.getTaskDoneList().remove(position);
-        section.getTaskList().add(task);
+        task.setDone(false);
         realm.commitTransaction();
-        return section;
     }
-
 }

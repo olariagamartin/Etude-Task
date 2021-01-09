@@ -3,8 +3,6 @@ package com.themarto.etudetask.fragments;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
@@ -21,7 +19,7 @@ import com.themarto.etudetask.databinding.FragmentTaskDetailsBinding;
 import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
-import com.themarto.etudetask.viewmodel.SharedViewModel;
+import com.themarto.etudetask.data.SharedViewModel;
 
 import java.util.Calendar;
 import java.util.UUID;
@@ -104,8 +102,8 @@ public class TaskDetailsFragment extends Fragment {
     }
 
     private void topTitle() {
-        String title = viewModel.getSelectedSection().getValue().getTitle();
-        binding.topTitleTaskDetails.setText(title);
+        // String title = viewModel.getSelectedSection().getValue().getTitle();
+        // binding.topTitleTaskDetails.setText(title);
     }
 
     private void deleteButtonBehavior() {
@@ -233,7 +231,7 @@ public class TaskDetailsFragment extends Fragment {
         if (binding.chipDueDateTaskDetails.getVisibility() == View.VISIBLE) {
             updatedTask.setDate(calendar.getTime());
             if(binding.chipNotificationTaskDetails.getVisibility() == View.VISIBLE) {
-                saveAlarm(updatedTask);
+                //saveAlarm(updatedTask);
             }
         }
         viewModel.updateTask(updatedTask);
@@ -254,7 +252,7 @@ public class TaskDetailsFragment extends Fragment {
         }
     }
 
-    private void saveAlarm(Task task) {
+    /*private void saveAlarm(Task task) {
         long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
         if (alertTime > 0) {
             String notificationTitle = task.getTitle();
@@ -268,7 +266,7 @@ public class TaskDetailsFragment extends Fragment {
 
             task.setAlarmStringId(alarmStringId);
         }
-    }
+    }*/
 
     public void showDialogDeleteTask() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getContext());

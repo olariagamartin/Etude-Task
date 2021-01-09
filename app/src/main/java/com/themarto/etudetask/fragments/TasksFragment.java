@@ -14,15 +14,19 @@ import android.widget.Toast;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
+import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
 import com.themarto.etudetask.utils.SwipeToDeleteCallback;
-import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.adapters.TaskAdapter;
 import com.themarto.etudetask.adapters.TaskDoneAdapter;
 import com.themarto.etudetask.databinding.FragmentTasksBinding;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetAddTask;
 import com.themarto.etudetask.models.Section;
-import com.themarto.etudetask.viewmodel.SharedViewModel;
+import com.themarto.etudetask.data.SharedViewModel;
+import com.themarto.etudetask.utils.Util;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,12 +41,14 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.ChangeBounds;
+import androidx.transition.ChangeClipBounds;
 import androidx.transition.TransitionManager;
 
 public class TasksFragment extends Fragment {
 
     private FragmentTasksBinding binding;
     private SharedViewModel viewModel;
+    private Subject currentSubject;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,14 +61,40 @@ public class TasksFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
+        viewModel.getSelectedSubject().observe(getViewLifecycleOwner(), new Observer<Subject>() {
+            @Override
+            public void onChanged(Subject subject) {
+                currentSubject = subject;
+                setupRecyclerViewDoneTasks(Util.getDoneTasks(subject.getTasks()));
+                setupRecyclerViewToDoTasks(Util.getToDoTasks(subject.getTasks()));
+                setToolbarBehavior();
+            }
+        });
+
+        binding.fabAddTask.setOnClickListener(v -> showBottomSheetAddTask());
+
+        /*viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
         viewModel.getSelectedSection().observe(getViewLifecycleOwner(), new Observer<Section>() {
             @Override
             public void onChanged(Section section) {
-                // todo: use a currentSection variable
                 loadTasks(section);
                 setViewBehavior(section);
             }
-        });
+        });*/
+    }
+
+    private void setToolbarBehavior(){
+        binding.toolbarTask.topAppBar.setNavigationIcon(R.drawable.ic_arrow_back);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbarTask.topAppBar);
+        String title = currentSubject.getTitle();
+        binding.toolbarTask.toolbarLayout.setTitle(title);
+        setHasOptionsMenu(true);
+    }
+
+    private void setTasksCompletedTitleBehavior(){
+        String completedTasksCount = getString(R.string.completed_tasks_count,
+                Util.getDoneTasks(currentSubject.getTasks()).size());
+        binding.tasksDoneText.setText(completedTasksCount);
     }
 
     private void setViewBehavior(Section section) {
@@ -122,11 +154,11 @@ public class TasksFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.rename_section:
-                showDialogRenameSection();
+            case R.id.rename_subject:
+                showDialogEditSubject();
                 return true;
-            case R.id.delete_section:
-                showDialogDeleteSection();
+            case R.id.delete_subject:
+                showDialogDeleteSubject();
                 return true;
             case R.id.delete_completed_tasks:
                 deleteCompletedTasks();
@@ -139,17 +171,19 @@ public class TasksFragment extends Fragment {
         }
     }
 
-    private void showDialogRenameSection() {
+    private void showDialogEditSubject() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle("Rename");
-        View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_title, null);
+        View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_subject, null);
         EditText editTitle = editLayout.findViewById(R.id.edit_title_dialog);
-        editTitle.setText(viewModel.getSelectedSection().getValue().getTitle());
+        editTitle.setText(currentSubject.getTitle());
         editTitle.requestFocus(); // required for API 28+
         editTitle.setSelection(editTitle.getText().length());
         builder.setView(editLayout)
                 .setPositiveButton("Save", (dialog, which) -> {
-                    viewModel.changeSectionTitle(editTitle.getText().toString());
+                    Subject updateSubject = new Subject(editTitle.getText().toString());
+                    updateSubject.setId(currentSubject.getId());
+                    viewModel.updateSubject(updateSubject);
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {});
 
@@ -164,34 +198,33 @@ public class TasksFragment extends Fragment {
         bottomSheet.show(getParentFragmentManager(), "TASK_TAG");
     }
 
-    public void showDialogDeleteSection() {
+    public void showDialogDeleteSubject() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
         alertDialogBuilder.setTitle("Are you sure?")
-                .setMessage("The section will be deleted")
+                .setMessage("The subject will be deleted")
                 .setNegativeButton("Cancel", (dialog, which) -> { })
                 .setPositiveButton("Delete", (dialog, which) -> {
-                    viewModel.deleteSection();
                     Navigation.findNavController(binding.getRoot()).navigateUp();
-                    Toast.makeText(requireContext(), "Section deleted", Toast.LENGTH_SHORT)
-                            .show();
+                    viewModel.deleteSubject();
+                    Toast.makeText(requireContext(), "Subject deleted", Toast.LENGTH_SHORT).show();
                 }).show();
     }
 
     private void deleteCompletedTasks() {
-        viewModel.deleteAllCompletedTasks();
+        // viewModel.deleteAllCompletedTasks();
         Snackbar.make(binding.getRoot(), "Completed tasks deleted", Snackbar.LENGTH_SHORT)
                 .show();
     }
 
     private void loadTasks(Section section) {
-        setupRecyclerViewToDoTasks(section);
-        setupRecyclerViewDoneTasks(section);
+        // setupRecyclerViewToDoTasks(section);
+        // setupRecyclerViewDoneTasks(section);
     }
 
-    private void setupRecyclerViewToDoTasks(Section section){
+    private void setupRecyclerViewToDoTasks(List<Task> toDoTasks){
         // To do tasks
         RecyclerView.LayoutManager layoutManagerTask = new LinearLayoutManager(getContext());
-        TaskAdapter taskAdapter = new TaskAdapter(section.getTaskList(), getTaskListener());
+        TaskAdapter taskAdapter = new TaskAdapter(toDoTasks, getTaskListener());
 
         binding.recyclerViewTasks.setLayoutManager(layoutManagerTask);
         binding.recyclerViewTasks.setAdapter(taskAdapter);
@@ -206,42 +239,43 @@ public class TasksFragment extends Fragment {
         return new TaskAdapter.TaskListener() {
             @Override
             public void onItemClick(int position) {
-                viewModel.selectTask(position);
+                /*viewModel.selectTask(position);
                 NavDirections action = TasksFragmentDirections.actionTasksFragmentToTaskDetailsFragment();
-                Navigation.findNavController(binding.getRoot()).navigate(action);
+                Navigation.findNavController(binding.getRoot()).navigate(action);*/
             }
 
             @Override
-            public void onTaskChecked(int position) {
+            public void onTaskChecked(Task task) {
                 TransitionManager.beginDelayedTransition(binding.getRoot(), new ChangeBounds());
-                viewModel.setTaskDone(position);
+                viewModel.setTaskDone(task);
             }
 
             @Override
-            public void onDeleteItem(int position) {
-                Task deletedTask = viewModel.deleteTask(position);
-                showUndoSnackbar(deletedTask, position);
+            public void onDeleteTask(Task task) {
+                Task deletedTask = viewModel.deleteTask(task);
+                showUndoSnackbar(deletedTask);
             }
         };
     }
 
-    private void showUndoSnackbar(Task deletedTask, int position) {
+    private void showUndoSnackbar(Task deletedTask) {
         Snackbar snackbar = Snackbar.make(binding.getRoot(), "Task deleted",
                 Snackbar.LENGTH_LONG);
-        snackbar.setAction("Undo", v -> undoDelete(deletedTask, position));
+        snackbar.setAction("Undo", v -> undoDelete(deletedTask));
         snackbar.show();
     }
 
-    private void undoDelete(Task deletedTask, int position) {
-        viewModel.addTask(deletedTask, position);
+    private void undoDelete(Task deletedTask) {
+        TransitionManager.beginDelayedTransition(binding.recyclerViewTasks, new ChangeBounds());
+        viewModel.addTask(deletedTask);
     }
 
-    private void setupRecyclerViewDoneTasks(Section section){
+    private void setupRecyclerViewDoneTasks(List<Task> doneTasks){
         // Done tasks
         RecyclerView.LayoutManager layoutManagerDone = new LinearLayoutManager(getContext());
-        TaskDoneAdapter taskDoneAdapter = new TaskDoneAdapter(section.getTaskDoneList(), position -> {
+        TaskDoneAdapter taskDoneAdapter = new TaskDoneAdapter(doneTasks, task -> {
             TransitionManager.beginDelayedTransition(binding.getRoot(), new ChangeBounds());
-            viewModel.setTaskUndone(position);
+            viewModel.setTaskUndone(task);
         });
         binding.recyclerViewDoneTasks.setLayoutManager(layoutManagerDone);
         binding.recyclerViewDoneTasks.setAdapter(taskDoneAdapter);

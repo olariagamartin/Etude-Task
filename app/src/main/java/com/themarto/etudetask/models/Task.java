@@ -15,6 +15,7 @@ public class Task extends RealmObject {
     private String title;
     private String details;
     private Date date;
+    private boolean done;
     private String alarmStringId;
 
     public Task(){}
@@ -24,6 +25,7 @@ public class Task extends RealmObject {
         this.title = title;
         this.details = "";
         this.date = null;
+        this.done = false;
         this.alarmStringId = "";
     }
 
@@ -32,6 +34,7 @@ public class Task extends RealmObject {
         this.title = title;
         this.details = details;
         this.date = null;
+        this.done = false;
         this.alarmStringId = "";
     }
 
@@ -79,6 +82,14 @@ public class Task extends RealmObject {
 
     public String getAlarmStringId() {
         return alarmStringId;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 
     public void setAlarmStringId(String alarmStringId) {

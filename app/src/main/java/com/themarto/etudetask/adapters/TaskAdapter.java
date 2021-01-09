@@ -1,5 +1,6 @@
 package com.themarto.etudetask.adapters;
 
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,17 +65,25 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 }
             });
 
-            btnTaskDone.setOnClickListener(v -> listener.onTaskChecked(getAdapterPosition()));
+            btnTaskDone.setOnClickListener(v -> listener.onTaskChecked(taskList.get(getAdapterPosition())));
+
+            itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+                @Override
+                public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                    menu.setHeaderTitle(taskList.get(getAdapterPosition()).getTitle());
+                }
+            });
         }
     }
 
-    public void deleteItem(int position) {
-        listener.onDeleteItem(position);
+    public void deleteTask(int position) {
+        Task task = taskList.get(position);
+        listener.onDeleteTask(task);
     }
 
     public interface TaskListener {
         void onItemClick(int position);
-        void onTaskChecked(int position);
-        void onDeleteItem(int position);
+        void onTaskChecked(Task task);
+        void onDeleteTask(Task task);
     }
 }

@@ -1,7 +1,10 @@
 package com.themarto.etudetask.adapters;
 
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -24,11 +27,8 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
 
     private Context context;
 
-    private final int selectedSubject;
-
-    public SubjectAdapter(List<Subject> subjectList, int selectedSubject, SubjectListener listener) {
+    public SubjectAdapter(List<Subject> subjectList, SubjectListener listener) {
         this.subjectList = subjectList;
-        this.selectedSubject = selectedSubject;
         this.listener = listener;
     }
 
@@ -48,10 +48,6 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         int sections = currentSubject.getSectionList().size();
         String sectionCount = sections == 1 ? sections + " section" : sections + " sections";
         holder.subjectCountSections.setText(sectionCount);
-        if (position == selectedSubject){
-            holder.cardView.setCardBackgroundColor(context.getResources()
-                    .getColor(R.color.amber_ligth));
-        }
     }
 
     @Override
@@ -59,7 +55,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         return subjectList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
         TextView subjectTitle;
         TextView subjectCountSections;
@@ -73,11 +69,32 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
             if(listener != null) {
                 itemView.setOnClickListener(v -> listener.onItemClick(getAdapterPosition()));
             }
+
+            itemView.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.setHeaderTitle(subjectList.get(getAdapterPosition()).getTitle());
+            MenuItem editSubject = menu.add("Edit Subject");
+            MenuItem deleteSubject = menu.add("Delete Subject");
+
+            editSubject.setOnMenuItemClickListener(item -> {
+                listener.onEditSubjectClick(getAdapterPosition());
+                return true;
+            });
+
+            deleteSubject.setOnMenuItemClickListener(item -> {
+                listener.onDeleteSubjectClick(getAdapterPosition());
+                return true;
+            });
         }
     }
 
     public interface SubjectListener {
         void onItemClick(int position);
+        void onEditSubjectClick(int position);
+        void onDeleteSubjectClick(int position);
     }
 
 }

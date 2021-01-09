@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/sectionFragment">
+    app:startDestination="@id/subjectFragment">
 
     <fragment
         android:id="@+id/sectionFragment"
@@ -35,4 +35,13 @@
         android:name="com.themarto.etudetask.fragments.TaskDetailsFragment"
         android:label="fragment_task_details"
         tools:layout="@layout/fragment_task_details" />
+    <fragment
+        android:id="@+id/subjectFragment"
+        android:name="com.themarto.etudetask.fragments.SubjectFragment"
+        android:label="fragment_subject"
+        tools:layout="@layout/fragment_subject" >
+        <action
+            android:id="@+id/action_subjectFragment_to_tasksFragment"
+            app:destination="@id/tasksFragment" />
+    </fragment>
 </navigation>

@@ -16,7 +16,7 @@ import com.themarto.etudetask.R;
 import com.themarto.etudetask.adapters.SubjectAdapter;
 import com.themarto.etudetask.databinding.BottomSheetSubjectsBinding;
 import com.themarto.etudetask.models.Subject;
-import com.themarto.etudetask.viewmodel.SharedViewModel;
+import com.themarto.etudetask.data.SharedViewModel;
 
 import java.util.List;
 
@@ -66,14 +66,14 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
-        viewModel.getAllSubjects().observe(this, subjectList -> loadSubjects(subjectList));
+        //viewModel.getAllSubjects().observe(this, subjectList -> loadSubjects(subjectList));
     }
 
     // ACTIONS
     private void showDialogAddSubject() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle("New Subject");
-        View newSubjectLayout = getLayoutInflater().inflate(R.layout.dialog_edit_title, null);
+        View newSubjectLayout = getLayoutInflater().inflate(R.layout.dialog_edit_subject, null);
         EditText subjectTitle = newSubjectLayout.findViewById(R.id.edit_title_dialog);
         subjectTitle.requestFocus(); // required for API 28+
         builder.setView(newSubjectLayout);
@@ -95,10 +95,10 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
         alertDialog.show();
     }
 
-    private void loadSubjects(List<Subject> subjectList) {
+    /*private void loadSubjects(List<Subject> subjectList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         int selectedSubject = sharedPref.getInt(SELECTED_SUBJECT_KEY, 0);
-        SubjectAdapter subjectAdapter = new SubjectAdapter(subjectList, selectedSubject, position -> {
+        SubjectAdapter subjectAdapter = new SubjectAdapter(subjectList, position -> {
             sharedPref.edit().putInt(SELECTED_SUBJECT_KEY, position).apply();
             viewModel.selectSubject(position);
             dismiss();
@@ -106,7 +106,7 @@ public class BottomSheetSubjects extends BottomSheetDialogFragment {
         recyclerViewSubjects.setLayoutManager(layoutManager);
         recyclerViewSubjects.setAdapter(subjectAdapter);
         recyclerViewSubjects.setHasFixedSize(true);
-    }
+    }*/
 
     private void saveSubject(String title) {
         Subject subject = new Subject(title);

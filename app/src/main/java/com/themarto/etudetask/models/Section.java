@@ -1,6 +1,5 @@
 package com.themarto.etudetask.models;
 
-import java.util.List;
 import java.util.UUID;
 
 import io.realm.RealmList;

@@ -5,16 +5,21 @@ import java.util.UUID;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class Subject extends RealmObject {
-    private String title;
-    private RealmList<Section> sectionList;
+    @PrimaryKey
     private String id;
+    private String title;
+    // todo: delete
+    private RealmList<Section> sectionList;
+    private RealmList<Task> tasks;
 
     public Subject(){}
 
     public Subject(String title) {
         this.title = title;
+        this.tasks = new RealmList<>();
         sectionList = new RealmList<>();
         this.id = UUID.randomUUID().toString();
     }
@@ -23,6 +28,14 @@ public class Subject extends RealmObject {
         this.title = title;
         this.sectionList = sectionList;
         this.id = UUID.randomUUID().toString();
+    }
+
+    public RealmList<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(RealmList<Task> tasks) {
+        this.tasks = tasks;
     }
 
     public String getTitle() {
@@ -43,5 +56,9 @@ public class Subject extends RealmObject {
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -9,14 +9,14 @@
         app:showAsAction="always">
         <menu>
             <item
-                android:id="@+id/rename_section"
+                android:id="@+id/rename_subject"
                 android:icon="@drawable/ic_edit"
-                android:title="Rename Section" />
+                android:title="Rename Subject" />
 
             <item
-                android:id="@+id/delete_section"
+                android:id="@+id/delete_subject"
                 android:icon="@drawable/ic_delete_outline"
-                android:title="Delete Section" />
+                android:title="Delete Subject" />
 
             <item
                 android:id="@+id/delete_completed_tasks"
