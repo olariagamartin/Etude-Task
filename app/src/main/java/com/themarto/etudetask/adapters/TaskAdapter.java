@@ -61,7 +61,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
-                    listener.onItemClick(getAdapterPosition());
+                    listener.onItemClick(taskList.get(getAdapterPosition()));
                 }
             });
 
@@ -82,7 +82,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     public interface TaskListener {
-        void onItemClick(int position);
+        void onItemClick(Task task);
         void onTaskChecked(Task task);
         void onDeleteTask(Task task);
     }

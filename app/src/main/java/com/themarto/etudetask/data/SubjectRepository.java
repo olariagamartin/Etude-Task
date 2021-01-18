@@ -76,10 +76,12 @@ public class SubjectRepository {
         realm.commitTransaction();
     }
 
-    public void deleteTask(Task task) {
+    public Task deleteTask(Task task) {
         realm.beginTransaction();
+        Task deletedTask = realm.copyFromRealm(task);
         task.deleteFromRealm();
         realm.commitTransaction();
+        return deletedTask;
     }
 
     public Section deleteAllCompletedTasks(Section section) {

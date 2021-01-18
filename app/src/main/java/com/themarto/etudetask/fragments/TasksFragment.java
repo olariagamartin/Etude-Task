@@ -1,5 +1,6 @@
 package com.themarto.etudetask.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
+import com.themarto.etudetask.fragments.bottomsheets.BottomSheetTaskDetails;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
 import com.themarto.etudetask.utils.SwipeToDeleteCallback;
@@ -33,6 +35,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
@@ -73,14 +76,6 @@ public class TasksFragment extends Fragment {
 
         binding.fabAddTask.setOnClickListener(v -> showBottomSheetAddTask());
 
-        /*viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
-        viewModel.getSelectedSection().observe(getViewLifecycleOwner(), new Observer<Section>() {
-            @Override
-            public void onChanged(Section section) {
-                loadTasks(section);
-                setViewBehavior(section);
-            }
-        });*/
     }
 
     private void setToolbarBehavior(){
@@ -195,7 +190,7 @@ public class TasksFragment extends Fragment {
 
     private void showBottomSheetAddTask() {
         BottomSheetAddTask bottomSheet = new BottomSheetAddTask();
-        bottomSheet.show(getParentFragmentManager(), "TASK_TAG");
+        bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
     }
 
     public void showDialogDeleteSubject() {
@@ -230,18 +225,18 @@ public class TasksFragment extends Fragment {
         binding.recyclerViewTasks.setAdapter(taskAdapter);
         binding.recyclerViewTasks.setHasFixedSize(true);
         binding.recyclerViewTasks.setNestedScrollingEnabled(false);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new
+        /*ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new
                 SwipeToDeleteCallback(taskAdapter, getContext()));
-        itemTouchHelper.attachToRecyclerView(binding.recyclerViewTasks);
+        itemTouchHelper.attachToRecyclerView(binding.recyclerViewTasks);*/
     }
 
     private TaskAdapter.TaskListener getTaskListener () {
         return new TaskAdapter.TaskListener() {
             @Override
-            public void onItemClick(int position) {
-                /*viewModel.selectTask(position);
-                NavDirections action = TasksFragmentDirections.actionTasksFragmentToTaskDetailsFragment();
-                Navigation.findNavController(binding.getRoot()).navigate(action);*/
+            public void onItemClick(Task task) {
+                viewModel.selectTask(task);
+                BottomSheetTaskDetails taskDetails = new BottomSheetTaskDetails();
+                taskDetails.show(getParentFragmentManager(), taskDetails.getTag());
             }
 
             @Override

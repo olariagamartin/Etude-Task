@@ -18,7 +18,14 @@ public class Task extends RealmObject {
     private boolean done;
     private String alarmStringId;
 
-    public Task(){}
+    public Task(){
+        id = UUID.randomUUID().toString();
+        this.title = "";
+        this.details = "";
+        this.date = null;
+        this.done = false;
+        this.alarmStringId = "";
+    }
 
     public Task(String title) {
         id = UUID.randomUUID().toString();

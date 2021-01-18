@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.utils.Util;
@@ -100,7 +101,13 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         binding.btnAddTaskDetails.setOnClickListener(v -> {
             binding.editTextNewTaskDetails.setVisibility(View.VISIBLE);
             binding.editTextNewTaskDetails.requestFocus();
+            setBottomSheetExtended();
         });
+    }
+
+    private void setBottomSheetExtended(){
+        View bottomSheetInternal = getDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     private void setBtnAddDateBehavior() {
