@@ -7,20 +7,29 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
+import com.themarto.etudetask.adapters.SubtaskAdapter;
 import com.themarto.etudetask.data.SharedViewModel;
 import com.themarto.etudetask.databinding.BottomSheetTaskDetailsBinding;
 import com.themarto.etudetask.models.Subject;
+import com.themarto.etudetask.models.Subtask;
 import com.themarto.etudetask.models.Task;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.ChangeBounds;
 import androidx.transition.TransitionManager;
 
@@ -54,7 +63,6 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         currentTask = viewModel.getSelectedTask().getValue();
         setupViewsBehavior();
-        // setBottomSheetExtended();
         /*viewModel.getSelectedTask().observe(getViewLifecycleOwner(), new Observer<Task>() {
             @Override
             public void onChanged(Task task) {
@@ -110,9 +118,31 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void setupSubtasks(){
-        // todo: setup recycler view
-        binding.btnAddSubtask.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Add subtask", Toast.LENGTH_SHORT).show();
+        loadSubtasks(currentTask.getSubtasks());
+        setupAddSubtask();
+    }
+
+    private void loadSubtasks(List<Subtask> subtaskList){
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
+        SubtaskAdapter adapter = new SubtaskAdapter(subtaskList);
+        binding.recyclerViewSubtasks.setLayoutManager(layoutManager);
+        binding.recyclerViewSubtasks.setAdapter(adapter);
+    }
+
+    private void setupAddSubtask(){
+        binding.editTextAddSubtask.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    String subtaskTitle = binding.editTextAddSubtask.getText().toString();
+                    if(!subtaskTitle.isEmpty()) {
+                        viewModel.addSubtask(new Subtask(subtaskTitle));
+                        // todo: clean edit text
+                    }
+                    return true;
+                }
+                return false;
+            }
         });
     }
 
@@ -159,5 +189,10 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         View bottomSheetInternal = getDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet);
         BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_EXPANDED);
     }
-    
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
 }

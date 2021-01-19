@@ -1,6 +1,5 @@
 package com.themarto.etudetask.models;
 
-import java.util.List;
 import java.util.UUID;
 
 import io.realm.RealmList;
@@ -13,29 +12,32 @@ public class Subject extends RealmObject {
     private String title;
     // todo: delete
     private RealmList<Section> sectionList;
-    private RealmList<Task> tasks;
+    private RealmList<Task> taskList;
 
-    public Subject(){}
+    public Subject(){
+        this.title = "";
+        this.taskList = new RealmList<>();
+        this.id = UUID.randomUUID().toString();
+    }
 
     public Subject(String title) {
         this.title = title;
-        this.tasks = new RealmList<>();
-        sectionList = new RealmList<>();
+        this.taskList = new RealmList<>();
         this.id = UUID.randomUUID().toString();
     }
 
-    public Subject(String title, RealmList<Section> sectionList) {
+    public Subject(String title, RealmList<Task> taskList) {
         this.title = title;
-        this.sectionList = sectionList;
+        this.taskList = taskList;
         this.id = UUID.randomUUID().toString();
     }
 
-    public RealmList<Task> getTasks() {
-        return tasks;
+    public RealmList<Task> getTaskList() {
+        return taskList;
     }
 
-    public void setTasks(RealmList<Task> tasks) {
-        this.tasks = tasks;
+    public void setTaskList(RealmList<Task> taskList) {
+        this.taskList = taskList;
     }
 
     public String getTitle() {

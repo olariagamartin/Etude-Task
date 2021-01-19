@@ -5,6 +5,7 @@ import android.app.Application;
 import com.themarto.etudetask.data.SubjectRepository;
 import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
+import com.themarto.etudetask.models.Subtask;
 import com.themarto.etudetask.models.Task;
 
 import java.util.List;
@@ -123,6 +124,11 @@ public class SharedViewModel extends AndroidViewModel {
     public void setTaskUndone(Task task) {
         mRepository.setTaskUndone(task);
         selectedSubject.setValue(selectedSubject.getValue());
+    }
+
+    public void addSubtask(Subtask subtask){
+        Task task = mRepository.addSubtask(selectedTask.getValue(), subtask);
+        selectedTask.setValue(task);
     }
 
     private void removeTaskNotifications(Task task) {

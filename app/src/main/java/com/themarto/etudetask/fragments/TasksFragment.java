@@ -1,6 +1,5 @@
 package com.themarto.etudetask.fragments;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +17,6 @@ import com.themarto.etudetask.R;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetTaskDetails;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
-import com.themarto.etudetask.utils.SwipeToDeleteCallback;
 import com.themarto.etudetask.adapters.TaskAdapter;
 import com.themarto.etudetask.adapters.TaskDoneAdapter;
 import com.themarto.etudetask.databinding.FragmentTasksBinding;
@@ -27,7 +25,6 @@ import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.data.SharedViewModel;
 import com.themarto.etudetask.utils.Util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -35,16 +32,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.ChangeBounds;
-import androidx.transition.ChangeClipBounds;
 import androidx.transition.TransitionManager;
 
 public class TasksFragment extends Fragment {
@@ -68,8 +61,8 @@ public class TasksFragment extends Fragment {
             @Override
             public void onChanged(Subject subject) {
                 currentSubject = subject;
-                setupRecyclerViewDoneTasks(Util.getDoneTasks(subject.getTasks()));
-                setupRecyclerViewToDoTasks(Util.getToDoTasks(subject.getTasks()));
+                setupRecyclerViewDoneTasks(Util.getDoneTasks(subject.getTaskList()));
+                setupRecyclerViewToDoTasks(Util.getToDoTasks(subject.getTaskList()));
                 setToolbarBehavior();
             }
         });
@@ -88,19 +81,12 @@ public class TasksFragment extends Fragment {
 
     private void setTasksCompletedTitleBehavior(){
         String completedTasksCount = getString(R.string.completed_tasks_count,
-                Util.getDoneTasks(currentSubject.getTasks()).size());
+                Util.getDoneTasks(currentSubject.getTaskList()).size());
         binding.tasksDoneText.setText(completedTasksCount);
     }
 
     private void setViewBehavior(Section section) {
         onScrollBehavior();
-
-        // Toolbar behavior
-        binding.toolbarTask.topAppBar.setNavigationIcon(R.drawable.ic_arrow_back);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbarTask.topAppBar);
-        String title = section.getTitle();
-        binding.toolbarTask.toolbarLayout.setTitle(title);
-        setHasOptionsMenu(true);
 
         // Tasks completed title
         String completedTasksCount = getString(R.string.completed_tasks_count, section.getTaskDoneList().size());
@@ -176,7 +162,7 @@ public class TasksFragment extends Fragment {
         editTitle.setSelection(editTitle.getText().length());
         builder.setView(editLayout)
                 .setPositiveButton("Save", (dialog, which) -> {
-                    Subject updateSubject = new Subject(editTitle.getText().toString());
+                    Subject updateSubject = new Subject(editTitle.getText().toString(), currentSubject.getTaskList());
                     updateSubject.setId(currentSubject.getId());
                     viewModel.updateSubject(updateSubject);
                 })
@@ -205,15 +191,11 @@ public class TasksFragment extends Fragment {
                 }).show();
     }
 
+    // todo
     private void deleteCompletedTasks() {
         // viewModel.deleteAllCompletedTasks();
         Snackbar.make(binding.getRoot(), "Completed tasks deleted", Snackbar.LENGTH_SHORT)
                 .show();
-    }
-
-    private void loadTasks(Section section) {
-        // setupRecyclerViewToDoTasks(section);
-        // setupRecyclerViewDoneTasks(section);
     }
 
     private void setupRecyclerViewToDoTasks(List<Task> toDoTasks){

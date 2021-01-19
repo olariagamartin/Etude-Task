@@ -110,44 +110,45 @@
             android:layout_marginHorizontal="16dp"
             android:background="@color/green2"
             android:layout_marginTop="12dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="14dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginVertical="4dp"
+            android:layout_marginHorizontal="14dp">
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:visibility="gone"
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="18dp"
-                android:background="@android:color/transparent"
-                android:padding="4dp"
-                android:src="@drawable/ic_sub_right" />
+                app:srcCompat="@drawable/ic_sub_right"
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="22dp"
+                android:layout_marginVertical="8dp"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginHorizontal="20dp"
-                android:id="@+id/recycler_view_subtasks"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
+                android:orientation="vertical"
+                android:layout_marginHorizontal="4dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_subtasks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/edit_text_add_subtask"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Add subtask"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:background="@android:color/transparent" />
+
+            </LinearLayout>
 
         </LinearLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_add_subtask"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="14dp"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:text="Subtask"
-            app:icon="@drawable/ic_add"
-            app:iconTint="@color/blue_button"
-            android:textColor="@color/blue_button"
-            android:textAlignment="textStart"
-            android:paddingStart="60dp"
-            android:textAllCaps="false"/>
 
         <View
             android:layout_width="match_parent"
@@ -167,7 +168,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:layout_marginStart="18dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="6dp"
                 android:background="@android:color/transparent"
                 android:padding="4dp"

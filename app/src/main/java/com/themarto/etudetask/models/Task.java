@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -14,6 +15,7 @@ public class Task extends RealmObject {
     private String id;
     private String title;
     private String details;
+    private RealmList<Subtask> subtasks;
     private Date date;
     private boolean done;
     private String alarmStringId;
@@ -22,6 +24,7 @@ public class Task extends RealmObject {
         id = UUID.randomUUID().toString();
         this.title = "";
         this.details = "";
+        this.subtasks = new RealmList<>();
         this.date = null;
         this.done = false;
         this.alarmStringId = "";
@@ -31,6 +34,7 @@ public class Task extends RealmObject {
         id = UUID.randomUUID().toString();
         this.title = title;
         this.details = "";
+        this.subtasks = new RealmList<>();
         this.date = null;
         this.done = false;
         this.alarmStringId = "";
@@ -40,6 +44,7 @@ public class Task extends RealmObject {
         id = UUID.randomUUID().toString();
         this.title = title;
         this.details = details;
+        this.subtasks = new RealmList<>();
         this.date = null;
         this.done = false;
         this.alarmStringId = "";
@@ -67,6 +72,14 @@ public class Task extends RealmObject {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public RealmList<Subtask> getSubtasks() {
+        return subtasks;
+    }
+
+    public void setSubtasks(RealmList<Subtask> subtasks) {
+        this.subtasks = subtasks;
     }
 
     public String getDateStr(){
