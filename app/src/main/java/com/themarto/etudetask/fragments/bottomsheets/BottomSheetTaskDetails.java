@@ -1,15 +1,14 @@
 package com.themarto.etudetask.fragments.bottomsheets;
 
-import android.content.Context;
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,8 +29,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.transition.ChangeBounds;
-import androidx.transition.TransitionManager;
 
 public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
 
@@ -44,6 +41,12 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        return super.onCreateDialog(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,7 +55,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                setBottomSheetExtended();
+                setupBottomSheet();
             }
         });
         return binding.getRoot();
@@ -81,7 +84,6 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         setupSubtasks();
         setupAddNote();
         setupDeleteButton();
-        setupSaveButton();
     }
 
     private void setupSubject(Subject subject){
@@ -151,19 +153,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void setupDeleteButton(){
-        binding.btnDeleteTask.setOnClickListener(v -> {
-            viewModel.deleteTask();
-            dismiss();
-            // todo: show alert dialog
-            //showUndoSnackbar(deletedTask);
-        });
-    }
 
-    private void setupSaveButton(){
-        binding.btnSaveTask.setOnClickListener(v -> {
-            viewModel.updateTask(getTask());
-            dismiss();
-        });
     }
 
     private void showUndoSnackbar(Task deletedTask) {
@@ -185,9 +175,12 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         return  updatedTask;
     }
 
-    private void setBottomSheetExtended(){
+    private void setupBottomSheet(){
         View bottomSheetInternal = getDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet);
-        BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_EXPANDED);
+        BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight((Resources.getSystem().getDisplayMetrics().heightPixels) / 2);
+        binding.extraSpace.setMinimumHeight((Resources.getSystem().getDisplayMetrics().heightPixels) / 2);
+        BottomSheetBehavior.from(bottomSheetInternal).setFitToContents(false);
+        BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override

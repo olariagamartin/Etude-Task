@@ -45,9 +45,8 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Subject currentSubject = subjectList.get(position);
         holder.subjectTitle.setText(currentSubject.getTitle());
-        int sections = currentSubject.getSectionList().size();
-        String sectionCount = sections == 1 ? sections + " section" : sections + " sections";
-        holder.subjectCountSections.setText(sectionCount);
+        String taskCount = currentSubject.getDoneSize() + " of " + currentSubject.getTaskList().size();
+        holder.subjectCountSections.setText(taskCount);
     }
 
     @Override

@@ -84,7 +84,7 @@ public class SectionFragment extends Fragment {
     }
 
     private void setAppBarTitle(Subject subject){
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(binding.toolbarSection.topAppBar);
+        //((AppCompatActivity) requireActivity()).setSupportActionBar(binding.toolbarSection.topAppBar);
         String title = subject.getTitle();
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(title);
     }

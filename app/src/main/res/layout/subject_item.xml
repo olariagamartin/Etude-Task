@@ -5,25 +5,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:focusable="true"
-    android:layout_marginHorizontal="10dp"
-    app:cardCornerRadius="20dp"
+    app:cardCornerRadius="0dp"
     app:cardElevation="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginHorizontal="24dp"
         android:orientation="horizontal">
+
+        <View
+            android:id="@+id/subject_color_item"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/subject_color"
+            android:backgroundTint="@color/red_600" />
 
         <TextView
             android:id="@+id/subjectTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="70"
-            android:layout_marginHorizontal="45dp"
-            android:layout_marginVertical="15dp"
-            android:textColor="@color/blue_grey_dark"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="20dp"
+            android:textColor="@color/green2"
             android:text="Calculus"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/subjectCountSections"

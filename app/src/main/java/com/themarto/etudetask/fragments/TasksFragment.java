@@ -64,6 +64,7 @@ public class TasksFragment extends Fragment {
                 setupRecyclerViewDoneTasks(Util.getDoneTasks(subject.getTaskList()));
                 setupRecyclerViewToDoTasks(Util.getToDoTasks(subject.getTaskList()));
                 setToolbarBehavior();
+                setupDoneTask();
             }
         });
 
@@ -77,11 +78,31 @@ public class TasksFragment extends Fragment {
         String title = currentSubject.getTitle();
         binding.toolbarTask.toolbarLayout.setTitle(title);
         setHasOptionsMenu(true);
+        binding.toolbarTask.toolbarLayout.setOnClickListener(v -> showDialogEditSubject());
     }
 
-    private void setTasksCompletedTitleBehavior(){
-        String completedTasksCount = getString(R.string.completed_tasks_count,
-                Util.getDoneTasks(currentSubject.getTaskList()).size());
+    private void setupDoneTask(){
+        setTasksCompletedTitle();
+        // Done tasks behavior
+        if (currentSubject.getDoneSize() == 0) {
+            binding.tasksDoneText.setVisibility(View.GONE);
+            // binding.recyclerViewDoneTasks.setVisibility(View.GONE);
+        } else {
+            binding.tasksDoneText.setVisibility(View.VISIBLE);
+            // binding.recyclerViewDoneTasks.setVisibility(View.VISIBLE);
+
+            binding.tasksDoneText.setOnClickListener(v -> {
+                if (binding.recyclerViewDoneTasks.getVisibility() == View.VISIBLE) {
+                    binding.recyclerViewDoneTasks.setVisibility(View.GONE);
+                } else {
+                    binding.recyclerViewDoneTasks.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+    }
+
+    private void setTasksCompletedTitle(){
+        String completedTasksCount = getString(R.string.completed_tasks_count, currentSubject.getDoneSize());
         binding.tasksDoneText.setText(completedTasksCount);
     }
 
@@ -191,9 +212,8 @@ public class TasksFragment extends Fragment {
                 }).show();
     }
 
-    // todo
     private void deleteCompletedTasks() {
-        // viewModel.deleteAllCompletedTasks();
+        viewModel.deleteAllCompletedTasks();
         Snackbar.make(binding.getRoot(), "Completed tasks deleted", Snackbar.LENGTH_SHORT)
                 .show();
     }

@@ -8,128 +8,122 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginVertical="8dp"
+        android:id="@+id/linearLayoutSubjectTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="16dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="14dp"
-            android:layout_marginVertical="8dp"
-            android:orientation="horizontal">
-
-            <View
-                android:id="@+id/subject_color_task_details"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="4dp"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/subject_color"
-                android:backgroundTint="@color/red_600" />
-
-            <TextView
-                android:id="@+id/text_subject_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:text="Math"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="14dp"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/btn_checkbox_task_details"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/ic_checkmark_circle"
-                android:backgroundTint="@color/green3" />
-
-            <EditText
-                android:id="@+id/edit_text_task_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/transparent"
-                android:text="My Task"
-                android:textColor="@color/blue_grey_dark"
-                android:textSize="24sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="14dp"
-            android:layout_marginVertical="8dp"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/btn_task_flag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:background="@android:color/transparent"
-                android:padding="4dp"
-                android:src="@drawable/ic_flag_outline" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/btn_task_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:background="@android:color/transparent"
-                android:padding="4dp"
-                android:src="@drawable/ic_calendar_check" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/btn_task_notification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:background="@android:color/transparent"
-                android:padding="4dp"
-                android:src="@drawable/ic_notifications_none" />
-        </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent">
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginHorizontal="16dp"
-            android:background="@color/green2"
-            android:layout_marginTop="12dp"/>
+            android:id="@+id/subject_color_task_details"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/subject_color"
+            android:backgroundTint="@color/red_600"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/text_subject_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Math"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutTaskTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="14dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutSubjectTitle">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_checkbox_task_details"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/ic_checkmark_circle"
+            android:backgroundTint="@color/green3" />
+
+        <EditText
+            android:id="@+id/edit_text_task_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginVertical="4dp"
-            android:layout_marginHorizontal="14dp">
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:text="My Task"
+            android:textColor="@color/blue_grey_dark"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="14dp"
+        android:layout_marginVertical="4dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutTaskTitle">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_task_flag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:background="@android:color/transparent"
+            android:padding="8dp"
+            android:src="@drawable/ic_flag_outline" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_task_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:background="@android:color/transparent"
+            android:padding="8dp"
+            android:src="@drawable/ic_calendar_check" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_task_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:padding="8dp"
+            android:src="@drawable/ic_notifications_none" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutSubtasks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="4dp"
+        android:paddingVertical="8dp"
+        android:layout_marginHorizontal="14dp"
+        app:layout_constraintTop_toBottomOf="@+id/lineSeparator">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_sub_right"
+                android:padding="4dp"
                 android:layout_marginStart="22dp"
-                android:layout_marginEnd="22dp"
                 android:layout_marginVertical="8dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_gravity="center_vertical"
                 android:layout_marginHorizontal="4dp">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -141,91 +135,61 @@
                     android:id="@+id/edit_text_add_subtask"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:padding="4dp"
                     android:hint="Add subtask"
+                    android:textSize="16sp"
                     android:inputType="text"
                     android:imeOptions="actionDone"
                     android:background="@android:color/transparent" />
 
             </LinearLayout>
 
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginHorizontal="16dp"
-            android:background="@color/green2"
-            android:layout_marginBottom="12dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="14dp"
-            android:layout_marginVertical="8dp"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="6dp"
-                android:background="@android:color/transparent"
-                android:padding="4dp"
-                android:src="@drawable/ic_details" />
-
-            <EditText
-                android:id="@+id/edit_text_task_note"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@android:color/transparent"
-                android:layout_marginVertical="10dp"
-                android:gravity="top"
-                android:hint="@string/add_note" />
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout5"
+        android:id="@+id/linearLayoutAddNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="14dp"
+        android:layout_marginVertical="4dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutButtons">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_delete_task"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="0dp"
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="49"
-            android:text="@string/delete_task"
-            android:textColor="@color/green2"
-            app:icon="@drawable/ic_delete_outline"
-            app:iconGravity="textStart"
-            app:iconPadding="16dp"
-            app:iconTint="@color/red_600" />
-
-        <View
-            android:layout_width="0.1dp"
-            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="24dp"
             android:layout_gravity="center_vertical"
-            android:background="@color/green2" />
+            android:background="@android:color/transparent"
+            android:padding="4dp"
+            android:src="@drawable/ic_details" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_save_task"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/edit_text_task_note"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="49"
-            android:text="@string/save"
-            android:textColor="@color/green2"
-            app:icon="@drawable/ic_done"
-            app:iconGravity="textStart"
-            app:iconPadding="16dp"
-            app:iconTint="@color/blue_button" />
+            android:background="@android:color/transparent"
+            android:layout_marginVertical="10dp"
+            android:paddingVertical="4dp"
+            android:gravity="top"
+            android:hint="@string/add_note" />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/lineSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/green3"
+        android:layout_marginVertical="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutAddNote"/>
+
+    <View
+        android:id="@+id/extraSpace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutSubtasks"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

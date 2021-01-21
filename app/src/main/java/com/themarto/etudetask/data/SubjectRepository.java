@@ -4,10 +4,14 @@ import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Subtask;
 import com.themarto.etudetask.models.Task;
+import com.themarto.etudetask.utils.Util;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class SubjectRepository {
@@ -78,16 +82,22 @@ public class SubjectRepository {
     public Task deleteTask(Task task) {
         realm.beginTransaction();
         Task deletedTask = realm.copyFromRealm(task);
+        // todo: verify if deletedTask contains subtasks
+        task.getSubtasks().deleteAllFromRealm();
         task.deleteFromRealm();
         realm.commitTransaction();
         return deletedTask;
     }
 
-    public Section deleteAllCompletedTasks(Section section) {
-        realm.beginTransaction();
-        section.getTaskDoneList().deleteAllFromRealm();
-        realm.commitTransaction();
-        return section;
+    public Subject deleteAllCompletedTasks(Subject subject) {
+        List<Task> doneTasks = new ArrayList<>();
+        for (Task task : subject.getTaskList()) {
+            if (task.isDone()) doneTasks.add(task);
+                // I have problems when delete the task here
+        }
+        for(Task task : doneTasks)
+            deleteTask(task);
+        return subject;
     }
 
     public Section deleteTask(Section section, int position) {

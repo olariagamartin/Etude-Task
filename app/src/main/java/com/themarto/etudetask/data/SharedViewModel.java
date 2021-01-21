@@ -104,8 +104,8 @@ public class SharedViewModel extends AndroidViewModel {
     }
 
     public void deleteAllCompletedTasks() {
-        // Section section = mRepository.deleteAllCompletedTasks(selectedSection.getValue());
-        // selectedSection.setValue(section);
+        Subject subject = mRepository.deleteAllCompletedTasks(selectedSubject.getValue());
+        selectedSubject.setValue(subject);
     }
 
     public Task deleteTask(Task task) {

@@ -4,9 +4,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
@@ -22,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -64,8 +67,12 @@ public class SubjectFragment extends Fragment {
     }
 
     private void setupAppBar(String title) {
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(binding.subjectToolbar);
-        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(title);
+        AppCompatActivity activity = ((AppCompatActivity) requireActivity());
+        activity.setSupportActionBar(binding.subjectToolbar);
+        activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        activity.getSupportActionBar().setCustomView(R.layout.custom_toolbar);
+        TextView toolbarTitle = activity.getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
+        toolbarTitle.setText(title);
     }
 
     @Override

@@ -32,6 +32,14 @@ public class Subject extends RealmObject {
         this.id = UUID.randomUUID().toString();
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public RealmList<Task> getTaskList() {
         return taskList;
     }
@@ -56,11 +64,12 @@ public class Subject extends RealmObject {
         this.sectionList = sectionList;
     }
 
-    public String getId() {
-        return id;
+    public int getDoneSize(){
+        int doneCount = 0;
+        for(Task task : taskList){
+            if(task.isDone()) doneCount++;
+        }
+        return doneCount;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 }
