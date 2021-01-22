@@ -14,10 +14,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.utils.Util;
-import com.themarto.etudetask.WorkManagerAlarm;
 import com.themarto.etudetask.databinding.FragmentTaskDetailsBinding;
-import com.themarto.etudetask.models.Section;
-import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
 import com.themarto.etudetask.data.SharedViewModel;
 
@@ -31,7 +28,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-import androidx.work.Data;
 import androidx.work.WorkManager;
 
 public class TaskDetailsFragment extends Fragment {
@@ -137,7 +133,7 @@ public class TaskDetailsFragment extends Fragment {
     }
 
     private void taskDescription() {
-        String details = currentTask.getDetails();
+        String details = currentTask.getNote();
         binding.editTextTaskDescription
                 .setText(details);
     }
@@ -222,7 +218,7 @@ public class TaskDetailsFragment extends Fragment {
 
     private void commitChanges() {
         Task updatedTask = new Task(getTitle());
-        updatedTask.setDetails(binding.editTextTaskDescription.getText().toString());
+        updatedTask.setNote(binding.editTextTaskDescription.getText().toString());
         updatedTask.setId(currentTask.getId());
 
         deleteAlarm(currentTask);

@@ -50,7 +50,8 @@ public class SharedViewModel extends AndroidViewModel {
     }
 
     public void selectTask(Task task){
-        selectedTask.setValue(task);
+        Task unmanagedTask = task.getRealm().copyFromRealm(task);
+        selectedTask.setValue(unmanagedTask);
     }
 
     public LiveData<Task> getSelectedTask() {
@@ -92,7 +93,11 @@ public class SharedViewModel extends AndroidViewModel {
     }
 
     public void updateTask(Task task) {
-        mRepository.updateTask(task);
+        selectedTask.setValue(task);
+    }
+
+    public void commitTaskChanges(){
+        mRepository.updateTask(selectedTask.getValue());
         selectedSubject.setValue(selectedSubject.getValue());
     }
 

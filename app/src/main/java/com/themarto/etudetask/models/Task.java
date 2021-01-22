@@ -2,7 +2,6 @@ package com.themarto.etudetask.models;
 
 import com.themarto.etudetask.utils.Util;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,7 +13,7 @@ public class Task extends RealmObject {
     @PrimaryKey
     private String id;
     private String title;
-    private String details;
+    private String note;
     private RealmList<Subtask> subtasks;
     private Date date;
     private boolean done;
@@ -23,7 +22,7 @@ public class Task extends RealmObject {
     public Task(){
         id = UUID.randomUUID().toString();
         this.title = "";
-        this.details = "";
+        this.note = "";
         this.subtasks = new RealmList<>();
         this.date = null;
         this.done = false;
@@ -33,17 +32,17 @@ public class Task extends RealmObject {
     public Task(String title) {
         id = UUID.randomUUID().toString();
         this.title = title;
-        this.details = "";
+        this.note = "";
         this.subtasks = new RealmList<>();
         this.date = null;
         this.done = false;
         this.alarmStringId = "";
     }
 
-    public Task(String title, String details) {
+    public Task(String title, String note) {
         id = UUID.randomUUID().toString();
         this.title = title;
-        this.details = details;
+        this.note = note;
         this.subtasks = new RealmList<>();
         this.date = null;
         this.done = false;
@@ -66,12 +65,12 @@ public class Task extends RealmObject {
         this.title = title;
     }
 
-    public String getDetails() {
-        return details;
+    public String getNote() {
+        return note;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public RealmList<Subtask> getSubtasks() {

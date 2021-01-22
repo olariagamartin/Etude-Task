@@ -23,6 +23,7 @@ import com.themarto.etudetask.databinding.BottomSheetTaskDetailsBinding;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Subtask;
 import com.themarto.etudetask.models.Task;
+import com.themarto.etudetask.utils.MyTextWatcher;
 
 import java.util.List;
 
@@ -95,20 +96,10 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
 
     private void setupTaskTitle(){
         binding.editTextTaskTitle.setText(currentTask.getTitle());
-        binding.editTextTaskTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //Toast.makeText(requireContext(), "before", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //Toast.makeText(requireContext(), "on", Toast.LENGTH_SHORT).show();
-            }
-
+        binding.editTextTaskTitle.addTextChangedListener(new MyTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                Toast.makeText(requireContext(), "after", Toast.LENGTH_SHORT).show();
+                currentTask.setTitle(s.toString());
             }
         });
         binding.btnCheckboxTaskDetails.setOnClickListener(v -> {
@@ -156,7 +147,8 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
                 if(actionId == EditorInfo.IME_ACTION_DONE){
                     String subtaskTitle = binding.editTextAddSubtask.getText().toString();
                     if(!subtaskTitle.isEmpty()) {
-                        viewModel.addSubtask(new Subtask(subtaskTitle));
+                        currentTask.getSubtasks().add(new Subtask(subtaskTitle));
+                        viewModel.updateTask(currentTask);
                         binding.editTextAddSubtask.setText("");
                     }
                     return true;
@@ -167,7 +159,13 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void setupAddNote(){
-        binding.editTextTaskNote.setText(currentTask.getDetails());
+        binding.editTextTaskNote.setText(currentTask.getNote());
+        binding.editTextTaskNote.addTextChangedListener(new MyTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                currentTask.setNote(s.toString());
+            }
+        });
     }
 
     private void setupDeleteButton(){
@@ -201,15 +199,16 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         Task updatedTask = new Task();
         updatedTask.setId(currentTask.getId());
         updatedTask.setTitle(binding.editTextTaskTitle.getText().toString());
-        updatedTask.setDetails(binding.editTextTaskNote.getText().toString());
+        updatedTask.setNote(binding.editTextTaskNote.getText().toString());
         updatedTask.setSubtasks(currentTask.getSubtasks());
         // todo: flag, date, notification
         return  updatedTask;
     }
 
     private void saveChanges(){
-        Task taskUpdated = getTaskUpdated();
-        viewModel.updateTask(taskUpdated);
+        /*Task taskUpdated = getTaskUpdated();
+        viewModel.updateTask(taskUpdated);*/
+        viewModel.commitTaskChanges();
     }
 
     @Override
