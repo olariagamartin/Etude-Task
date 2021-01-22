@@ -85,17 +85,17 @@ public class TasksFragment extends Fragment {
         setTasksCompletedTitle();
         // Done tasks behavior
         if (currentSubject.getDoneSize() == 0) {
-            binding.tasksDoneText.setVisibility(View.GONE);
-            // binding.recyclerViewDoneTasks.setVisibility(View.GONE);
+            binding.tasksDoneHeader.setVisibility(View.INVISIBLE);
         } else {
-            binding.tasksDoneText.setVisibility(View.VISIBLE);
-            // binding.recyclerViewDoneTasks.setVisibility(View.VISIBLE);
+            binding.tasksDoneHeader.setVisibility(View.VISIBLE);
 
-            binding.tasksDoneText.setOnClickListener(v -> {
+            binding.tasksDoneHeader.setOnClickListener(v -> {
                 if (binding.recyclerViewDoneTasks.getVisibility() == View.VISIBLE) {
                     binding.recyclerViewDoneTasks.setVisibility(View.GONE);
+                    binding.doneTasksHeaderIcon.setImageResource(R.drawable.ic_keyboard_arrow_down);
                 } else {
                     binding.recyclerViewDoneTasks.setVisibility(View.VISIBLE);
+                    binding.doneTasksHeaderIcon.setImageResource(R.drawable.ic_keyboard_arrow_up);
                 }
             });
         }

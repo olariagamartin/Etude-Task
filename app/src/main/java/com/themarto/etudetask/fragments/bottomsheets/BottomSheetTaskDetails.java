@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +38,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     private BottomSheetTaskDetailsBinding binding;
     private SharedViewModel viewModel;
     private Task currentTask;
+    private boolean isDeleted = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,15 +68,13 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        currentTask = viewModel.getSelectedTask().getValue();
-        setupViewsBehavior();
-        /*viewModel.getSelectedTask().observe(getViewLifecycleOwner(), new Observer<Task>() {
+        viewModel.getSelectedTask().observe(getViewLifecycleOwner(), new Observer<Task>() {
             @Override
             public void onChanged(Task task) {
                 currentTask = task;
                 setupViewsBehavior();
             }
-        });*/
+        });
     }
 
     private void setupViewsBehavior(){
@@ -93,6 +95,22 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
 
     private void setupTaskTitle(){
         binding.editTextTaskTitle.setText(currentTask.getTitle());
+        binding.editTextTaskTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //Toast.makeText(requireContext(), "before", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //Toast.makeText(requireContext(), "on", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Toast.makeText(requireContext(), "after", Toast.LENGTH_SHORT).show();
+            }
+        });
         binding.btnCheckboxTaskDetails.setOnClickListener(v -> {
             Toast.makeText(requireContext(), "done", Toast.LENGTH_SHORT).show();
         });
@@ -139,7 +157,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
                     String subtaskTitle = binding.editTextAddSubtask.getText().toString();
                     if(!subtaskTitle.isEmpty()) {
                         viewModel.addSubtask(new Subtask(subtaskTitle));
-                        // todo: clean edit text
+                        binding.editTextAddSubtask.setText("");
                     }
                     return true;
                 }
@@ -149,11 +167,15 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void setupAddNote(){
-
+        binding.editTextTaskNote.setText(currentTask.getDetails());
     }
 
     private void setupDeleteButton(){
-
+        binding.btnDeleteTask.setOnClickListener(v -> {
+            isDeleted = true;
+            viewModel.deleteTask();
+            dismiss();
+        });
     }
 
     private void showUndoSnackbar(Task deletedTask) {
@@ -167,20 +189,35 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         viewModel.addTask(deletedTask);
     }
 
-    private Task getTask(){
-        Task updatedTask = new Task();
-        updatedTask.setId(currentTask.getId());
-        updatedTask.setTitle(binding.editTextTaskTitle.getText().toString());
-        updatedTask.setDetails(binding.editTextTaskNote.getText().toString());
-        return  updatedTask;
-    }
-
     private void setupBottomSheet(){
         View bottomSheetInternal = getDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet);
         BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight((Resources.getSystem().getDisplayMetrics().heightPixels) / 2);
         binding.extraSpace.setMinimumHeight((Resources.getSystem().getDisplayMetrics().heightPixels) / 2);
         BottomSheetBehavior.from(bottomSheetInternal).setFitToContents(false);
         BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+    private Task getTaskUpdated(){
+        Task updatedTask = new Task();
+        updatedTask.setId(currentTask.getId());
+        updatedTask.setTitle(binding.editTextTaskTitle.getText().toString());
+        updatedTask.setDetails(binding.editTextTaskNote.getText().toString());
+        updatedTask.setSubtasks(currentTask.getSubtasks());
+        // todo: flag, date, notification
+        return  updatedTask;
+    }
+
+    private void saveChanges(){
+        Task taskUpdated = getTaskUpdated();
+        viewModel.updateTask(taskUpdated);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(!isDeleted) {
+            saveChanges();
+        }
     }
 
     @Override
