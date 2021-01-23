@@ -23,6 +23,8 @@ import com.themarto.etudetask.databinding.FragmentTasksBinding;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetAddTask;
 import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.data.SharedViewModel;
+import com.themarto.etudetask.utils.MyItemTouchHelper;
+import com.themarto.etudetask.utils.SwipeToDeleteCallback;
 import com.themarto.etudetask.utils.Util;
 
 import java.util.List;
@@ -35,6 +37,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.ChangeBounds;
@@ -45,6 +48,7 @@ public class TasksFragment extends Fragment {
     private FragmentTasksBinding binding;
     private SharedViewModel viewModel;
     private Subject currentSubject;
+    MyItemTouchHelper itemTouchHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +60,7 @@ public class TasksFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        itemTouchHelper = new MyItemTouchHelper();
         viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
         viewModel.getSelectedSubject().observe(getViewLifecycleOwner(), new Observer<Subject>() {
             @Override
@@ -227,9 +232,8 @@ public class TasksFragment extends Fragment {
         binding.recyclerViewTasks.setAdapter(taskAdapter);
         binding.recyclerViewTasks.setHasFixedSize(true);
         binding.recyclerViewTasks.setNestedScrollingEnabled(false);
-        /*ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new
-                SwipeToDeleteCallback(taskAdapter, getContext()));
-        itemTouchHelper.attachToRecyclerView(binding.recyclerViewTasks);*/
+        itemTouchHelper.setCallback(new SwipeToDeleteCallback(taskAdapter, getContext()));
+        itemTouchHelper.attachToRecyclerView(binding.recyclerViewTasks);
     }
 
     private TaskAdapter.TaskListener getTaskListener () {

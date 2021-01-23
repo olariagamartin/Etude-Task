@@ -42,6 +42,10 @@
         tools:layout="@layout/fragment_subject" >
         <action
             android:id="@+id/action_subjectFragment_to_tasksFragment"
-            app:destination="@id/tasksFragment" />
+            app:destination="@id/tasksFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
 </navigation>

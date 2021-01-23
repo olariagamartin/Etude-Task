@@ -81,10 +81,11 @@ public class SubjectRepository {
 
     public Task deleteTask(Task task) {
         realm.beginTransaction();
-        Task deletedTask = realm.copyFromRealm(task);
-        // todo: verify if deletedTask contains subtasks
-        task.getSubtasks().deleteAllFromRealm();
-        task.deleteFromRealm();
+        // todo: verify if deletedTask contains subtasks, remove notification
+        Task nTask = realm.copyToRealmOrUpdate(task);
+        Task deletedTask = realm.copyFromRealm(nTask);
+        nTask.getSubtasks().deleteAllFromRealm();
+        nTask.deleteFromRealm();
         realm.commitTransaction();
         return deletedTask;
     }

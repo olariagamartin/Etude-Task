@@ -17,9 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHolder> {
 
     private List<Subtask> subtaskList;
+    private SubtaskListener listener;
 
     public SubtaskAdapter(List<Subtask> subtaskList) {
         this.subtaskList = subtaskList;
+    }
+
+    public void setListener(SubtaskListener listener){
+        this.listener = listener;
     }
 
     @NonNull
@@ -55,6 +60,16 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
             doneBtn = itemView.findViewById(R.id.btn_checkbox_subtask);
             editTextTitle = itemView.findViewById(R.id.subtask_title);
             deleteBtn = itemView.findViewById(R.id.btn_delete_subtask);
+
+            if (listener != null){
+                doneBtn.setOnClickListener(v -> listener.onDoneSubtask(getAdapterPosition()));
+            }
         }
+    }
+
+    public interface SubtaskListener{
+        void onDoneSubtask(int position);
+        void onDeleteSubtask(int position);
+        void afterEditTitle(int position);
     }
 }
