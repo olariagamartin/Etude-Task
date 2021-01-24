@@ -136,6 +136,29 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     private void loadSubtasks(List<Subtask> subtaskList){
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         SubtaskAdapter adapter = new SubtaskAdapter(subtaskList);
+        adapter.setListener(new SubtaskAdapter.SubtaskListener() {
+            @Override
+            public void onDoneSubtask(int position) {
+                currentTask.getSubtasks().get(position).setDone(true);
+                viewModel.updateTask(currentTask);
+            }
+
+            @Override
+            public void onDeleteSubtask(int position) {
+                currentTask.getSubtasks().remove(position);
+                viewModel.updateTask(currentTask);
+            }
+
+            @Override
+            public TextWatcher afterEditTitle(int position) {
+                return new MyTextWatcher() {
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        currentTask.getSubtasks().get(position).setTitle(s.toString());
+                    }
+                };
+            }
+        });
         binding.recyclerViewSubtasks.setLayoutManager(layoutManager);
         binding.recyclerViewSubtasks.setAdapter(adapter);
     }
@@ -176,17 +199,6 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         });
     }
 
-    private void showUndoSnackbar(Task deletedTask) {
-        Snackbar snackbar = Snackbar.make(binding.getRoot(), "Task deleted",
-                Snackbar.LENGTH_LONG);
-        snackbar.setAction("Undo", v -> undoDelete(deletedTask));
-        snackbar.show();
-    }
-
-    private void undoDelete(Task deletedTask) {
-        viewModel.addTask(deletedTask);
-    }
-
     private void setupBottomSheet(){
         View bottomSheetInternal = getDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet);
         BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight((Resources.getSystem().getDisplayMetrics().heightPixels) / 2);
@@ -205,9 +217,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         return  updatedTask;
     }
 
-    private void saveChanges(){
-        /*Task taskUpdated = getTaskUpdated();
-        viewModel.updateTask(taskUpdated);*/
+    private void commitChanges(){
         viewModel.commitTaskChanges();
     }
 
@@ -215,7 +225,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     public void onPause() {
         super.onPause();
         if(!isDeleted) {
-            saveChanges();
+            commitChanges();
         }
     }
 
