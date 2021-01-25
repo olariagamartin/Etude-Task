@@ -53,12 +53,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     app:tint="@color/gray2"
-                    android:src="@drawable/ic_keyboard_arrow_up" />
+                    android:src="@drawable/ic_keyboard_arrow_down" />
 
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewDoneTasks"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
