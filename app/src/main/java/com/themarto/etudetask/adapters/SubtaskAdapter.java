@@ -1,5 +1,7 @@
 package com.themarto.etudetask.adapters;
 
+import android.content.Context;
+import android.graphics.Paint;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -15,12 +17,14 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHolder> {
 
     private List<Subtask> subtaskList;
     private SubtaskListener listener;
+    private Context context;
 
     public SubtaskAdapter(List<Subtask> subtaskList) {
         this.subtaskList = subtaskList;
@@ -33,7 +37,8 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        context = parent.getContext();
+        View view = LayoutInflater.from(context)
                 .inflate(R.layout.subtask_item, parent, false);
         return new SubtaskAdapter.ViewHolder(view);
     }
@@ -43,8 +48,9 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         Subtask subtask  = subtaskList.get(position);
         holder.editTextTitle.setText(subtask.getTitle());
         if (subtask.isDone()){
-            holder.doneBtn.setImageResource(R.drawable.ic_done);
-            // todo: set text color
+            holder.doneBtn.setImageResource(R.drawable.ic_checkmark_in_circle);
+            //holder.editTextTitle.setTextColor(ContextCompat.getColor(context, R.color.green3));
+            holder.editTextTitle.setPaintFlags(holder.editTextTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
         holder.bind(position);
     }
@@ -69,7 +75,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
 
         public void bind(int position) {
             if (listener != null){
-                doneBtn.setOnClickListener(v -> listener.onDoneSubtask(position));
+                doneBtn.setOnClickListener(v -> listener.onDoneClick(position));
                 editTextTitle.addTextChangedListener(listener.afterEditTitle(position));
                 deleteBtn.setOnClickListener(v -> listener.onDeleteSubtask(position));
             }
@@ -77,7 +83,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
     }
 
     public interface SubtaskListener {
-        void onDoneSubtask(int position);
+        void onDoneClick(int position);
         void onDeleteSubtask(int position);
         TextWatcher afterEditTitle(int position);
     }

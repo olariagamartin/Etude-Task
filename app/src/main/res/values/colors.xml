@@ -21,4 +21,11 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
+    <array name="subject_colors">
+        <item>#F48FB1</item>
+        <item>#A5D6A7</item>
+        <item>#CE93D8</item>
+        <item>#81D4FA</item>
+    </array>
 </resources>

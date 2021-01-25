@@ -138,8 +138,12 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         SubtaskAdapter adapter = new SubtaskAdapter(subtaskList);
         adapter.setListener(new SubtaskAdapter.SubtaskListener() {
             @Override
-            public void onDoneSubtask(int position) {
-                currentTask.getSubtasks().get(position).setDone(true);
+            public void onDoneClick(int position) {
+                Subtask subtask = currentTask.getSubtasks().get(position);
+                if(subtask.isDone())
+                    subtask.setDone(false);
+                else
+                    subtask.setDone(true);
                 viewModel.updateTask(currentTask);
             }
 
