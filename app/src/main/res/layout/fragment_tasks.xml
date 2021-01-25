@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.TasksFragment"
-    android:background="@color/blue_grey_light">
+    android:background="@color/white">
 
     <include
         android:id="@+id/toolbar_task"

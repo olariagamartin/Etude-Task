@@ -213,7 +213,7 @@ public class TaskDetailsFragment extends Fragment {
     private void disableButton(MaterialButton btn) {
         btn.setEnabled(false);
         btn.setIconTint(AppCompatResources.getColorStateList(requireContext(),
-                R.color.green3));
+                R.color.gray3));
     }
 
     private void commitChanges() {

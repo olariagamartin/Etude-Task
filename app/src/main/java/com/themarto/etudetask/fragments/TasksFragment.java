@@ -1,4 +1,4 @@
-package com.themarto.etudetask.fragments;
+    package com.themarto.etudetask.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,6 +33,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -82,6 +83,8 @@ public class TasksFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbarTask.topAppBar);
         String title = currentSubject.getTitle();
         binding.toolbarTask.toolbarLayout.setTitle(title);
+        binding.toolbarTask.toolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(requireContext(), R.color.subject_red));
+        binding.toolbarTask.toolbarLayout.setExpandedTitleColor(ContextCompat.getColor(requireContext(), R.color.subject_red));
         setHasOptionsMenu(true);
         binding.toolbarTask.toolbarLayout.setOnClickListener(v -> showDialogEditSubject());
     }

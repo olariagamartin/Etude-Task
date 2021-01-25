@@ -9,9 +9,9 @@
     <color name="amber_ligth_50">#80FFE54C</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="green1">#c2c2c2</color>
-    <color name="green2">#222222</color>
-    <color name="green3">#8d8d8d</color>
+    <color name="gray1">#c2c2c2</color>
+    <color name="gray2">#222222</color>
+    <color name="gray3">#8d8d8d</color>
     <color name="blue_button">#4C8CF5</color>
     <color name="itemBackground">#340077C2</color>
     <color name="red_600">#e53935</color>
@@ -21,6 +21,11 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
+    <color name="subject_red">#F48FB1</color>
+    <color name="subject_purple">#ce93d8</color>
+    <color name="subject_blue">#90caf9</color>
+    <color name="subject_green">#a5d6a7</color>
 
     <array name="subject_colors">
         <item>#F48FB1</item>

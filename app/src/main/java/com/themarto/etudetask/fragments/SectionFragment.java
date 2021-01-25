@@ -183,7 +183,7 @@ public class SectionFragment extends Fragment {
                 if (title.isEmpty()) {
                     btnSaveSection.setEnabled(false);
                     btnSaveSection.setTextColor(getResources()
-                            .getColor(R.color.green1));
+                            .getColor(R.color.gray1));
                 } else {
                     btnSaveSection.setEnabled(true);
                     btnSaveSection.setTextColor(getResources()

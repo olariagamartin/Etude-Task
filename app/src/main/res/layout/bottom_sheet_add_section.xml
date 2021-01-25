@@ -29,7 +29,7 @@
         android:textAllCaps="false"
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="20dp"
-        android:textColor="@color/green1"
+        android:textColor="@color/gray1"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_gravity="right"/>
 

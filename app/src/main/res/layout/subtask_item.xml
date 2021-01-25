@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_checkmark_circle"
             android:background="@android:color/transparent"
-            android:tint="@color/green3"
+            android:tint="@color/gray3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +40,7 @@
             android:src="@drawable/ic_close_small"
             android:padding="8dp"
             android:background="@android:color/transparent"
-            android:tint="@color/green3"
+            android:tint="@color/gray3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

@@ -78,7 +78,7 @@
             android:layout_gravity="right"
             android:text="Due date"
             android:textAllCaps="false"
-            android:textColor="@color/green3"
+            android:textColor="@color/gray3"
             android:textSize="16sp"
             app:icon="@drawable/ic_calendar_check"
             app:iconTint="@color/blue_grey_600" />
@@ -94,7 +94,7 @@
             android:visibility="gone"
             app:chipBackgroundColor="@color/white"
             app:chipStrokeWidth="0.5dp"
-            app:closeIconTint="@color/green3"
+            app:closeIconTint="@color/gray3"
             app:iconStartPadding="8dp"
             app:chipIcon="@drawable/ic_calendar_check"
             app:chipIconTint="@color/amber_600"
@@ -108,10 +108,10 @@
             android:layout_marginStart="10dp"
             android:text="Remind me"
             android:textAllCaps="false"
-            android:textColor="@color/green3"
+            android:textColor="@color/gray3"
             android:textSize="16sp"
             app:icon="@drawable/ic_notifications_none"
-            app:iconTint="@color/green1"/>
+            app:iconTint="@color/gray1"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_notification_task_details"
@@ -125,7 +125,7 @@
             android:visibility="gone"
             app:chipBackgroundColor="@color/white"
             app:chipStrokeWidth="0.5dp"
-            app:closeIconTint="@color/green3"
+            app:closeIconTint="@color/gray3"
             app:iconStartPadding="8dp"
             app:chipIcon="@drawable/ic_notifications_none"
             app:chipIconTint="@color/amber_600"
