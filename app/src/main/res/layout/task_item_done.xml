@@ -20,7 +20,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginStart="10dp"
             android:src="@drawable/ic_done"
-            android:tint="@color/blue_grey_dark"
+            android:tint="@color/gray3"
             android:padding="15dp"
             android:background="@android:color/transparent" />
 
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="Repaso"
             android:layout_gravity="center"
-            android:textColor="@color/blue_grey_600"
+            android:textColor="@color/gray3"
             android:textSize="15sp" />
     </LinearLayout>
 

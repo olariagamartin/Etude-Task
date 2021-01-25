@@ -107,6 +107,10 @@ public class TasksFragment extends Fragment {
                 }
             });
         }
+
+        // with this I fix the bus when enter and show all tasks, when there's too much and you
+        // need to scroll to the end, doesn't show the last task
+        binding.tasksDoneHeader.performClick();
     }
 
     private void setTasksCompletedTitle(){
