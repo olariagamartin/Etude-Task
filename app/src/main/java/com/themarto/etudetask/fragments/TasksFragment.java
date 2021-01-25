@@ -34,6 +34,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -73,8 +74,7 @@ public class TasksFragment extends Fragment {
                 setupDoneTask();
             }
         });
-
-        binding.fabAddTask.setOnClickListener(v -> showBottomSheetAddTask());
+        setupFAB();
 
     }
 
@@ -111,6 +111,20 @@ public class TasksFragment extends Fragment {
         // with this I fix the bus when enter and show all tasks, when there's too much and you
         // need to scroll to the end, doesn't show the last task
         binding.tasksDoneHeader.performClick();
+    }
+
+    private void setupFAB(){
+        binding.fabAddTask.setOnClickListener(v -> showBottomSheetAddTask());
+        binding.nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if ((scrollY - oldScrollY) > 0 && binding.fabAddTask.getVisibility() == View.VISIBLE) {
+                    binding.fabAddTask.hide();
+                } else if ((scrollY - oldScrollY) < 0 && binding.fabAddTask.getVisibility() != View.VISIBLE) {
+                    binding.fabAddTask.show();
+                }
+            }
+        });
     }
 
     private void setTasksCompletedTitle(){
