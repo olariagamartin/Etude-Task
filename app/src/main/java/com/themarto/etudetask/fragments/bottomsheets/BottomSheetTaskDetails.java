@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.adapters.SubtaskAdapter;
 import com.themarto.etudetask.data.SharedViewModel;
@@ -31,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -197,9 +199,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
 
     private void setupDeleteButton(){
         binding.btnDeleteTask.setOnClickListener(v -> {
-            isDeleted = true;
-            viewModel.deleteTask();
-            dismiss();
+            showDialogDeleteTask();
         });
     }
 
@@ -219,6 +219,18 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         updatedTask.setSubtasks(currentTask.getSubtasks());
         // todo: flag, date, notification
         return  updatedTask;
+    }
+
+    private void showDialogDeleteTask() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
+        alertDialogBuilder.setTitle("Are you sure?")
+                .setMessage("The subject will be deleted")
+                .setNegativeButton("Cancel", (dialog, which) -> { })
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    isDeleted = true;
+                    viewModel.deleteTask();
+                    dismiss();
+                }).show();
     }
 
     private void commitChanges(){

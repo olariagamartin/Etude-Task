@@ -169,7 +169,6 @@ public class SubjectFragment extends Fragment {
                 .setMessage("The subject will be deleted")
                 .setNegativeButton("Cancel", (dialog, which) -> { })
                 .setPositiveButton("Delete", (dialog, which) -> {
-                    Navigation.findNavController(binding.getRoot()).navigateUp();
                     viewModel.deleteSubject(position);
                     Toast.makeText(requireContext(), "Subject deleted", Toast.LENGTH_SHORT).show();
                 }).show();
