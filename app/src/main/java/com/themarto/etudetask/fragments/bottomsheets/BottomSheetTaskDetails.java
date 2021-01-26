@@ -224,7 +224,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     private void showDialogDeleteTask() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
         alertDialogBuilder.setTitle("Are you sure?")
-                .setMessage("The subject will be deleted")
+                .setMessage("The task will be deleted")
                 .setNegativeButton("Cancel", (dialog, which) -> { })
                 .setPositiveButton("Delete", (dialog, which) -> {
                     isDeleted = true;
