@@ -18,7 +18,6 @@ public class WorkManagerAlarm extends Worker {
     public final static String DATA_KEY_TITLE = "title";
     public final static String DATA_KEY_DETAIL = "detail";
     public final static String TASK_ID = "task_id";
-    public final static String SECTION_ID = "section_id";
 
     private Context context;
 
@@ -34,19 +33,18 @@ public class WorkManagerAlarm extends Worker {
         String title = getInputData().getString(DATA_KEY_TITLE);
         String detail = getInputData().getString(DATA_KEY_DETAIL);
         String taskId = getInputData().getString(TASK_ID);
-        String sectionId = getInputData().getString(SECTION_ID);
 
         SubjectRepository.setAlarmTaskDone(taskId);
 
         MyNotificationManager manager = new MyNotificationManager(context);
-        manager.lunchNotification(title, detail, taskId, sectionId);
+        manager.lunchNotification(title, detail, taskId);
 
         return Result.success();
     }
 
-    public static String saveAlarm(long duration, Data data, String tag1, String tag2, Context context){
+    public static String saveAlarm(long duration, Data data, String tag, Context context){
         OneTimeWorkRequest alarm = new OneTimeWorkRequest.Builder(WorkManagerAlarm.class)
-                .setInitialDelay(duration, TimeUnit.MILLISECONDS).addTag(tag1).addTag(tag2)
+                .setInitialDelay(duration, TimeUnit.MILLISECONDS).addTag(tag)
                 .setInputData(data).build();
         String alarmStringId = alarm.getId().toString();
         WorkManager instance = WorkManager.getInstance(context);

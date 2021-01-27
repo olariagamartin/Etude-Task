@@ -57,6 +57,7 @@ public class SubjectRepository {
             task.setAlarmStringId("");
             realm.commitTransaction();
         }
+        realm.close();
     }
 
     public Subject  addTask(Subject subject, Task nTask) {
@@ -115,16 +116,16 @@ public class SubjectRepository {
         realm.commitTransaction();
     }
 
-    public void setTaskDone(String taskId, String sectionId) {
-        Section section = realm.where(Section.class).equalTo("id", sectionId).findFirst();
+    public static void setTaskDone(String taskId) {
+        Realm realm = Realm.getDefaultInstance();
         Task task = realm.where(Task.class).equalTo("id", taskId).findFirst();
-        if(section != null && task != null){
+        if(task != null){
             realm.beginTransaction();
-            section.getTaskList().remove(task);
             task.setAlarmStringId("");
-            section.getTaskDoneList().add(task);
+            task.setDone(true);
             realm.commitTransaction();
         }
+        realm.close();
     }
 
     public void setTaskUndone(Task task) {

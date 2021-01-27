@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +15,11 @@ import android.widget.ImageButton;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.themarto.etudetask.R;
-import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.WorkManagerAlarm;
-import com.themarto.etudetask.databinding.BottomSheetAddTaskBinding;
-import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
+import com.themarto.etudetask.utils.MyTextWatcher;
+import com.themarto.etudetask.utils.Util;
+import com.themarto.etudetask.databinding.BottomSheetAddTaskBinding;
 import com.themarto.etudetask.models.Task;
 import com.themarto.etudetask.data.SharedViewModel;
 
@@ -66,7 +65,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
     private void setViewsBehavior() {
         setEditTextTitleBehavior();
-        setBtnAddDetailsBehavior();
+        setBtnAddNoteBehavior();
         setBtnAddDateBehavior();
         setBtnAddTimeBehavior();
         setBtnSaveTaskBehavior();
@@ -78,12 +77,9 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     // Behavior methods
     private void setEditTextTitleBehavior() {
         binding.editTextNewTask.requestFocus(); // required for API 28+
-        binding.editTextNewTask.addTextChangedListener(new TextWatcher() {
+        binding.editTextNewTask.addTextChangedListener(new MyTextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void afterTextChanged(Editable s) {
                 String title = s.toString();
                 if (title.isEmpty()) {
                     disableTextButton(binding.btnSaveTask);
@@ -91,13 +87,10 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                     enableTextButton(binding.btnSaveTask);
                 }
             }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
         });
     }
 
-    private void setBtnAddDetailsBehavior() {
+    private void setBtnAddNoteBehavior() {
         binding.btnAddTaskDetails.setOnClickListener(v -> {
             binding.editTextNewTaskDetails.setVisibility(View.VISIBLE);
             binding.editTextNewTaskDetails.requestFocus();
@@ -218,7 +211,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         Task nTask = new Task(title, details);
         if (binding.chipAddTaskDueDate.getVisibility() == View.VISIBLE) {
             if (binding.chipAddTaskTime.getVisibility() == View.VISIBLE) {
-                // saveAlarm(nTask);
+                saveAlarm(nTask);
             }
             nTask.setDate(calendar.getTime());
         }
@@ -249,19 +242,18 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                 R.color.blue_grey_dark));
     }
 
-    /*private void saveAlarm(Task task) {
+    private void saveAlarm(Task task) {
         long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
         if (alertTime > 0) {
             String notificationTitle = task.getTitle();
             Subject subject = viewModel.getSelectedSubject().getValue();
-            Section section = viewModel.getSelectedSection().getValue();
-            String notificationDetail = subject.getTitle() + " - " + section.getTitle();
-            Data data = Util.saveNotificationData(notificationTitle, notificationDetail, task.getId(), section.getId());
+            String notificationDetail = subject.getTitle();
+            Data data = Util.saveNotificationData(notificationTitle, notificationDetail, task.getId());
 
             String alarmStringId = WorkManagerAlarm
-                    .saveAlarm(alertTime, data, section.getId(), subject.getId(), requireContext());
+                    .saveAlarm(alertTime, data, subject.getId(), requireContext());
 
             task.setAlarmStringId(alarmStringId);
         }
-    }*/
+    }
 }

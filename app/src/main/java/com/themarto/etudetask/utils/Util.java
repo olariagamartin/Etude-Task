@@ -48,12 +48,11 @@ public class Util {
         return  srtTime;
     }
 
-    public static Data saveNotificationData(String title, String details, String taskId, String sectionId){
+    public static Data saveNotificationData(String title, String details, String taskId){
         return new Data.Builder()
                 .putString("title", title)
                 .putString("detail", details)
                 .putString("task_id", taskId)
-                .putString("section_id", sectionId)
                 .build();
     }
 

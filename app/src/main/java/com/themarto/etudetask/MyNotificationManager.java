@@ -17,7 +17,6 @@ public class MyNotificationManager {
 
     public final static int NOTIFICATION_ID = 0;
     public final static String TASK_ID = "task_id";
-    public final static String SECTION_ID = "section_id";
     public final static String ACTION_TASK_DONE = "com.android.etudetask.ACTION_TASK_DONE";
     public final static String TASK_GROUP = "com.android.etudetask.TASK_GROUP";
 
@@ -29,7 +28,7 @@ public class MyNotificationManager {
     }
 
     // id is for update or cancel the notification in the future
-    public void lunchNotification(String title, String detail, String taskId, String sectionId){
+    public void lunchNotification(String title, String detail, String taskId){
         createNotificationChannel();
         NotificationCompat.Builder builder = new NotificationCompat.Builder
                 (context, CHANNEL_ID);
@@ -49,17 +48,16 @@ public class MyNotificationManager {
                 context, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
+        // Set the intent that will fire when the user taps the notification
+        builder.setContentIntent(pendingIntent);
+
         // Done button
         context.registerReceiver(new AlarmReceiver(),
                 new IntentFilter(ACTION_TASK_DONE));
         Intent doneIntent = new Intent(ACTION_TASK_DONE);
         doneIntent.putExtra(TASK_ID, taskId);
-        doneIntent.putExtra(SECTION_ID, sectionId);
         PendingIntent donePendingIntent = PendingIntent.getBroadcast(context,
                 0, doneIntent, PendingIntent.FLAG_ONE_SHOT);
-
-        // Set the intent that will fire when the user taps the notification
-        builder.setContentIntent(pendingIntent);
 
         builder.addAction(R.drawable.ic_done, "Done", donePendingIntent);
 
@@ -86,17 +84,13 @@ public class MyNotificationManager {
     // Receiver when done button is clicked
     public static class AlarmReceiver extends BroadcastReceiver {
 
-        SubjectRepository mRepository;
-
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getExtras() != null){
-                mRepository = new SubjectRepository();
 
                 String taskId = intent.getExtras().getString(TASK_ID);
-                String sectionId = intent.getExtras().getString(SECTION_ID);
 
-                mRepository.setTaskDone(taskId, sectionId);
+                SubjectRepository.setTaskDone(taskId);
 
                 NotificationManagerCompat.from(context).cancel(NOTIFICATION_ID);
             }

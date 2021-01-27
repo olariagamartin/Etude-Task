@@ -26,7 +26,7 @@ public class SwipeToDeleteCallback extends MyItemTouchHelper.SimpleCallback {
         this.adapter = adapter;
         this.context = context;
         this.icon = ContextCompat.getDrawable(context, R.drawable.ic_delete_outline_2);
-        this.background = new ColorDrawable(context.getResources().getColor(android.R.color.transparent));
+        //this.background = new ColorDrawable(context.getResources().getColor(android.R.color.transparent));
     }
 
     @Override
@@ -54,15 +54,15 @@ public class SwipeToDeleteCallback extends MyItemTouchHelper.SimpleCallback {
         int iconBottom = iconTop + icon.getIntrinsicHeight();
 
         if (dX < 0){ //swipe to left
-            background.setBounds(itemView.getRight() + (int)dX - 40, itemView.getTop(),
-                    itemView.getRight(), itemView.getBottom());
+            /*background.setBounds(itemView.getRight() + (int)dX - 40, itemView.getTop(),
+                    itemView.getRight(), itemView.getBottom());*/
             int iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
             int iconRight = itemView.getRight() - iconMargin;
             icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
-        } else {
+        } /*else {
             background.setBounds(0,0,0,0);
-        }
-        background.draw(c);
+        }*/
+        //background.draw(c);
         icon.setTint(ContextCompat.getColor(context, R.color.red_600));
         icon.draw(c);
     }
