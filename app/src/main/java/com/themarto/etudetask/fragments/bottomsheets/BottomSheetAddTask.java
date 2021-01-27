@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -66,6 +67,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private void setViewsBehavior() {
         setEditTextTitleBehavior();
         setBtnAddNoteBehavior();
+        setBtnAddFlagBehavior();
         setBtnAddDateBehavior();
         setBtnAddTimeBehavior();
         setBtnSaveTaskBehavior();
@@ -98,9 +100,8 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         });
     }
 
-    private void setBottomSheetExtended(){
-        View bottomSheetInternal = getDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet);
-        BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_EXPANDED);
+    private void setBtnAddFlagBehavior() {
+        binding.btnAddFlag.setOnClickListener(v -> showFlagSelector());
     }
 
     private void setBtnAddDateBehavior() {
@@ -216,6 +217,15 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             nTask.setDate(calendar.getTime());
         }
         return nTask;
+    }
+
+    private void setBottomSheetExtended(){
+        View bottomSheetInternal = getDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    private void showFlagSelector() {
+        Toast.makeText(requireContext(), "Flag selector", Toast.LENGTH_SHORT).show();
     }
 
     private void disableTextButton(Button btn) {
