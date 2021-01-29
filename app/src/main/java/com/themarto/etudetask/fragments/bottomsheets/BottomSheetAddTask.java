@@ -237,7 +237,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private void enableTextButton(Button btn) {
         btn.setEnabled(true);
         btn.setTextColor(getResources()
-                .getColor(R.color.amber_600));
+                .getColor(R.color.blue_button));
     }
 
     private void disableImageButton(ImageButton btn) {
@@ -249,7 +249,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private void enableImageButton(AppCompatImageButton btn) {
         btn.setEnabled(true);
         btn.setImageTintList(AppCompatResources.getColorStateList(requireContext(),
-                R.color.blue_grey_dark));
+                R.color.gray4));
     }
 
     private void saveAlarm(Task task) {
