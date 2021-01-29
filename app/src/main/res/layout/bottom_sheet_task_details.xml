@@ -213,7 +213,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="24dp"
-            android:layout_gravity="center_vertical"
+            android:layout_marginVertical="10dp"
+            android:layout_gravity="top"
             android:background="@android:color/transparent"
             android:tint="@color/gray4"
             android:padding="4dp"
@@ -226,7 +227,8 @@
             android:background="@android:color/transparent"
             android:layout_marginVertical="10dp"
             android:paddingVertical="4dp"
-            android:textColor="@color/blue_grey_dark"
+            android:layout_gravity="top"
+            android:textColor="@color/gray4"
             android:gravity="top"
             android:hint="@string/add_note" />
 
