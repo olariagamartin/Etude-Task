@@ -40,6 +40,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         Task currentTask = taskList.get(position);
         holder.taskTitle.setText(currentTask.getTitle());
         holder.taskDate.setText(currentTask.getDateStr());
+        if (!currentTask.getNote().isEmpty()) {
+            holder.taskNote.setVisibility(View.VISIBLE);
+            holder.taskNote.setText(currentTask.getNote());
+        }
     }
 
     @Override
@@ -52,12 +56,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         ImageButton btnTaskDone;
         TextView taskTitle;
         TextView taskDate;
+        TextView taskNote;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             btnTaskDone = itemView.findViewById(R.id.btn_checkbox_task);
             taskTitle = itemView.findViewById(R.id.taskTitle);
             taskDate = itemView.findViewById(R.id.taskDate);
+            taskNote = itemView.findViewById(R.id.taskNote);
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
@@ -66,13 +72,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             });
 
             btnTaskDone.setOnClickListener(v -> listener.onTaskChecked(taskList.get(getAdapterPosition())));
-
-            itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
-                @Override
-                public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                    menu.setHeaderTitle(taskList.get(getAdapterPosition()).getTitle());
-                }
-            });
         }
     }
 

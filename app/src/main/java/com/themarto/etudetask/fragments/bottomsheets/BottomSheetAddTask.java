@@ -3,6 +3,7 @@ package com.themarto.etudetask.fragments.bottomsheets;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.text.Editable;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
@@ -253,6 +254,8 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     }
 
     private void saveAlarm(Task task) {
+        // the notification will be launched just at the start of the selected minute
+        calendar.set(Calendar.SECOND, 0);
         long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
         if (alertTime > 0) {
             String notificationTitle = task.getTitle();

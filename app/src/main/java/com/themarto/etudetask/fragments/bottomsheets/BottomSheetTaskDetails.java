@@ -357,6 +357,8 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void saveAlarm(Task task) {
+        // the notification will be launched just at the start of the selected minute
+        calendar.set(Calendar.SECOND, 0);
         long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
         if (alertTime > 0) {
             String notificationTitle = task.getTitle();
