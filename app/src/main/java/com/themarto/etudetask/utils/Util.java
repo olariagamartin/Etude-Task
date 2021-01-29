@@ -1,9 +1,5 @@
 package com.themarto.etudetask.utils;
 
-import android.content.Context;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-
 import com.themarto.etudetask.models.Task;
 
 import java.text.SimpleDateFormat;
@@ -19,7 +15,11 @@ public class Util {
 
     public static final String SELECTED_SUBJECT_KEY = "SELECTED_SUBJECT";
 
-    // todo: comment
+    /**
+     * Return the date in format "Day, Month"
+     * @param time the date to get day and month
+     * @return formatted string
+     */
     public static String getDateString(Date time) {
         Calendar myTime = Calendar.getInstance();
         Calendar actual = Calendar.getInstance();
@@ -40,7 +40,11 @@ public class Util {
         return strDate;
     }
 
-    // todo: comment
+    /**
+     * Return time in format "5:35 PM"
+     * @param time the day to get hour and minute
+     * @return formatted time
+     */
     public static String getTimeString(Date time){
         String srtTime;
         SimpleDateFormat format = new SimpleDateFormat("h:mm a", Locale.getDefault());
