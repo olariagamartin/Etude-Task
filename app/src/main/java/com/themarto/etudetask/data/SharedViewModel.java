@@ -2,10 +2,7 @@ package com.themarto.etudetask.data;
 
 import android.app.Application;
 
-import com.themarto.etudetask.data.SubjectRepository;
-import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
-import com.themarto.etudetask.models.Subtask;
 import com.themarto.etudetask.models.Task;
 
 import java.util.List;
@@ -45,10 +42,6 @@ public class SharedViewModel extends AndroidViewModel {
         return selectedSubject;
     }
 
-    public void selectTask(int position) {
-        // selectedTask.setValue(task);
-    }
-
     public void selectTask(Task task){
         Task unmanagedTask = task.getRealm().copyFromRealm(task);
         selectedTask.setValue(unmanagedTask);
@@ -58,7 +51,7 @@ public class SharedViewModel extends AndroidViewModel {
         return selectedTask;
     }
 
-    // CRUD actions
+    // Create, Update, Delete
     public void addSubject(Subject newSubject) {
         mRepository.addSubject(newSubject);
         loadSubjects();
@@ -101,11 +94,10 @@ public class SharedViewModel extends AndroidViewModel {
         selectedSubject.setValue(selectedSubject.getValue());
     }
 
-    public Task deleteTask() {
+    public void deleteTask() {
         removeTaskNotifications(selectedTask.getValue());
-        Task deletedTask = mRepository.deleteTask(selectedTask.getValue());
+        mRepository.deleteTask(selectedTask.getValue());
         selectedSubject.setValue(selectedSubject.getValue());
-        return deletedTask;
     }
 
     public void deleteAllCompletedTasks() {
@@ -129,11 +121,6 @@ public class SharedViewModel extends AndroidViewModel {
     public void setTaskUndone(Task task) {
         mRepository.setTaskUndone(task);
         selectedSubject.setValue(selectedSubject.getValue());
-    }
-
-    public void addSubtask(Subtask subtask){
-        Task task = mRepository.addSubtask(selectedTask.getValue(), subtask);
-        selectedTask.setValue(task);
     }
 
     private void removeTaskNotifications(Task task) {

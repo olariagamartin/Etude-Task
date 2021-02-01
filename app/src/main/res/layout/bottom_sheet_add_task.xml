@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:background="@android:color/transparent"
-        android:hint="Add details"
+        android:hint="Add Note"
         android:textSize="14sp"
         android:paddingHorizontal="10dp"
         android:paddingVertical="10dp"

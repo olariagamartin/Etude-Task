@@ -10,8 +10,6 @@ public class Subject extends RealmObject {
     @PrimaryKey
     private String id;
     private String title;
-    // todo: delete
-    private RealmList<Section> sectionList;
     private RealmList<Task> taskList;
 
     public Subject(){
@@ -54,14 +52,6 @@ public class Subject extends RealmObject {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public RealmList<Section> getSectionList() {
-        return sectionList;
-    }
-
-    public void setSectionList(RealmList<Section> sectionList) {
-        this.sectionList = sectionList;
     }
 
     public int getDoneSize(){

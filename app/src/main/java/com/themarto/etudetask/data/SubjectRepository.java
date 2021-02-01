@@ -1,17 +1,12 @@
 package com.themarto.etudetask.data;
 
-import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.models.Subject;
-import com.themarto.etudetask.models.Subtask;
 import com.themarto.etudetask.models.Task;
-import com.themarto.etudetask.utils.Util;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class SubjectRepository {
@@ -102,13 +97,6 @@ public class SubjectRepository {
         return subject;
     }
 
-    public Section deleteTask(Section section, int position) {
-        realm.beginTransaction();
-        section.getTaskList().get(position).deleteFromRealm();
-        realm.commitTransaction();
-        return section;
-    }
-
     public void setTaskDone(Task task) {
         realm.beginTransaction();
         task.setDone(true);
@@ -132,12 +120,5 @@ public class SubjectRepository {
         realm.beginTransaction();
         task.setDone(false);
         realm.commitTransaction();
-    }
-
-    public Task addSubtask(Task task, Subtask subtask) {
-        realm.beginTransaction();
-        task.getSubtasks().add(subtask);
-        realm.commitTransaction();
-        return  task;
     }
 }

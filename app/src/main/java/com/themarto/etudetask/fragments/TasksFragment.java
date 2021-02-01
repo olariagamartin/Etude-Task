@@ -21,7 +21,6 @@ import com.themarto.etudetask.adapters.TaskAdapter;
 import com.themarto.etudetask.adapters.TaskDoneAdapter;
 import com.themarto.etudetask.databinding.FragmentTasksBinding;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetAddTask;
-import com.themarto.etudetask.models.Section;
 import com.themarto.etudetask.data.SharedViewModel;
 import com.themarto.etudetask.utils.MyItemTouchHelper;
 import com.themarto.etudetask.utils.SwipeToDeleteCallback;
@@ -128,46 +127,8 @@ public class TasksFragment extends Fragment {
         binding.tasksDoneText.setText(completedTasksCount);
     }
 
-    private void setViewBehavior(Section section) {
-        onScrollBehavior();
+    private void setViewBehavior() {
 
-        // Tasks completed title
-        String completedTasksCount = getString(R.string.completed_tasks_count, section.getTaskDoneList().size());
-        binding.tasksDoneText.setText(completedTasksCount);
-
-        // FAB behavior
-        binding.fabAddTask.setOnClickListener(v -> showBottomSheetAddTask());
-
-        // Done tasks behavior
-        if (section.getTaskDoneList().isEmpty()) {
-            binding.tasksDoneText.setVisibility(View.GONE);
-            binding.recyclerViewDoneTasks.setVisibility(View.GONE);
-        } else {
-            binding.tasksDoneText.setVisibility(View.VISIBLE);
-            binding.recyclerViewDoneTasks.setVisibility(View.VISIBLE);
-
-            binding.tasksDoneText.setOnClickListener(v -> {
-                if (binding.recyclerViewDoneTasks.getVisibility() == View.VISIBLE) {
-                    binding.recyclerViewDoneTasks.setVisibility(View.GONE);
-                } else {
-                    binding.recyclerViewDoneTasks.setVisibility(View.VISIBLE);
-                }
-            });
-        }
-    }
-
-    private void onScrollBehavior(){
-        binding.recyclerViewTasks.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0 && binding.fabAddTask.getVisibility() == View.VISIBLE) {
-                    binding.fabAddTask.hide();
-                } else if (dy < 0 && binding.fabAddTask.getVisibility() != View.VISIBLE) {
-                    binding.fabAddTask.show();
-                }
-            }
-        });
     }
 
     @Override

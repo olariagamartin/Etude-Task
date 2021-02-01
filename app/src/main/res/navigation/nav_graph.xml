@@ -6,35 +6,10 @@
     app:startDestination="@id/subjectFragment">
 
     <fragment
-        android:id="@+id/sectionFragment"
-        android:name="com.themarto.etudetask.fragments.SectionFragment"
-        android:label="fragment_section"
-        tools:layout="@layout/fragment_section">
-        <action
-            android:id="@+id/action_sectionFragment_to_tasksFragment"
-            app:destination="@id/tasksFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@anim/to_right" />
-    </fragment>
-    <fragment
         android:id="@+id/tasksFragment"
         android:name="com.themarto.etudetask.fragments.TasksFragment"
         android:label="fragment_tasks"
-        tools:layout="@layout/fragment_tasks" >
-        <action
-            android:id="@+id/action_tasksFragment_to_taskDetailsFragment"
-            app:destination="@id/taskDetailsFragment"
-            app:enterAnim="@anim/scale_out"
-            app:exitAnim="@anim/scale_nothing"
-            app:popExitAnim="@anim/scale_in" />
-    </fragment>
-    <fragment
-        android:id="@+id/taskDetailsFragment"
-        android:name="com.themarto.etudetask.fragments.TaskDetailsFragment"
-        android:label="fragment_task_details"
-        tools:layout="@layout/fragment_task_details" />
+        tools:layout="@layout/fragment_tasks" />
     <fragment
         android:id="@+id/subjectFragment"
         android:name="com.themarto.etudetask.fragments.SubjectFragment"
