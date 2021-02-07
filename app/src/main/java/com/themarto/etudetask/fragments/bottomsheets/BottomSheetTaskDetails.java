@@ -91,26 +91,45 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
             public void onChanged(Task task) {
                 currentTask = task;
                 setupViewsBehavior();
-                // todo: separate behavior from load content
                 loadData();
             }
         });
     }
 
     private void setupViewsBehavior(){
-        setupSubject(viewModel.getSelectedSubject().getValue());
         setupTaskTitle();
-        setupFlagButton();
-        setupDateButton();
-        setupNotificationButton();
-        setupChips();
-        setupSubtasks();
+        btnDoneBehavior();
+        btnFlagBehavior();
+        btnDateBehavior();
+        btnNotificationBehavior();
+        chipsBehavior();
+        setupAddSubtask();
         setupAddNote();
-        setupDeleteButton();
+        btnDeleteBehavior();
     }
 
     private void loadData() {
+        // todo: get subject from task
+        loadSubject(viewModel.getSelectedSubject().getValue());
+        loadTaskTitle();
+        loadFlag();
         loadDateAndTime();
+        loadNote();
+        loadSubtasks(currentTask.getSubtasks());
+    }
+
+    // Load Data
+    private void loadSubject(Subject subject){
+        // todo: setup color
+        binding.textSubjectTitle.setText(subject.getTitle());
+    }
+
+    private void loadTaskTitle(){
+        binding.editTextTaskTitle.setText(currentTask.getTitle());
+    }
+
+    private void loadFlag() {
+
     }
 
     private void loadDateAndTime() {
@@ -128,63 +147,8 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         }
     }
 
-    private void setupSubject(Subject subject){
-        // todo: setup color
-        binding.textSubjectTitle.setText(subject.getTitle());
-    }
-
-    private void setupTaskTitle(){
-        binding.editTextTaskTitle.setText(currentTask.getTitle());
-        binding.editTextTaskTitle.addTextChangedListener(new MyTextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                currentTask.setTitle(s.toString());
-            }
-        });
-        binding.btnCheckboxTaskDetails.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "done", Toast.LENGTH_SHORT).show();
-        });
-    }
-
-    private void setupFlagButton(){
-        // todo: show fill flag with color
-        binding.btnTaskFlag.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "show flag selector", Toast.LENGTH_SHORT).show();
-        });
-    }
-
-    private void setupDateButton(){
-        // todo: show date and time picker, show chip
-        binding.btnAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
-    }
-
-    private void setupNotificationButton(){
-        binding.btnAddTaskTime.setOnClickListener(v -> lunchTimePicker());
-    }
-
-    private void setupChips() {
-        binding.chipAddTaskDueDate.setOnCloseIconClickListener(v -> {
-            TransitionManager.beginDelayedTransition(binding.linearLayoutButtons);
-            binding.chipAddTaskDueDate.setVisibility(View.GONE);
-            binding.btnAddTaskDueDate.setVisibility(View.VISIBLE);
-            binding.chipAddTaskTime.performCloseIconClick();
-            disableImageButton(binding.btnAddTaskTime);
-        });
-
-        binding.chipAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
-
-        binding.chipAddTaskTime.setOnCloseIconClickListener(v -> {
-            TransitionManager.beginDelayedTransition(binding.linearLayoutButtons);
-            binding.chipAddTaskTime.setVisibility(View.GONE);
-            binding.btnAddTaskTime.setVisibility(View.VISIBLE);
-        });
-
-        binding.chipAddTaskTime.setOnClickListener(v -> lunchTimePicker());
-    }
-
-    private void setupSubtasks(){
-        loadSubtasks(currentTask.getSubtasks());
-        setupAddSubtask();
+    private void loadNote() {
+        binding.editTextTaskNote.setText(currentTask.getNote());
     }
 
     private void loadSubtasks(List<Subtask> subtaskList){
@@ -194,10 +158,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
             @Override
             public void onDoneClick(int position) {
                 Subtask subtask = currentTask.getSubtasks().get(position);
-                if(subtask.isDone())
-                    subtask.setDone(false);
-                else
-                    subtask.setDone(true);
+                subtask.setDone(!subtask.isDone());
                 viewModel.updateTask(currentTask);
             }
 
@@ -220,6 +181,58 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         binding.recyclerViewSubtasks.setLayoutManager(layoutManager);
         binding.recyclerViewSubtasks.setAdapter(adapter);
     }
+    //...
+
+    // Behavior
+    private void setupTaskTitle(){
+        binding.editTextTaskTitle.addTextChangedListener(new MyTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                currentTask.setTitle(s.toString());
+            }
+        });
+    }
+
+    private void btnDoneBehavior() {
+        binding.btnCheckboxTaskDetails.setOnClickListener(v -> {
+            Toast.makeText(requireContext(), "done", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void btnFlagBehavior(){
+        // todo: show fill flag with color
+        binding.btnTaskFlag.setOnClickListener(v -> {
+            Toast.makeText(requireContext(), "show flag selector", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void btnDateBehavior(){
+        binding.btnAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
+    }
+
+    private void btnNotificationBehavior(){
+        binding.btnAddTaskTime.setOnClickListener(v -> lunchTimePicker());
+    }
+
+    private void chipsBehavior() {
+        binding.chipAddTaskDueDate.setOnCloseIconClickListener(v -> {
+            TransitionManager.beginDelayedTransition(binding.linearLayoutButtons);
+            binding.chipAddTaskDueDate.setVisibility(View.GONE);
+            binding.btnAddTaskDueDate.setVisibility(View.VISIBLE);
+            binding.chipAddTaskTime.performCloseIconClick();
+            disableImageButton(binding.btnAddTaskTime);
+        });
+
+        binding.chipAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
+
+        binding.chipAddTaskTime.setOnCloseIconClickListener(v -> {
+            TransitionManager.beginDelayedTransition(binding.linearLayoutButtons);
+            binding.chipAddTaskTime.setVisibility(View.GONE);
+            binding.btnAddTaskTime.setVisibility(View.VISIBLE);
+        });
+
+        binding.chipAddTaskTime.setOnClickListener(v -> lunchTimePicker());
+    }
 
     private void setupAddSubtask(){
         binding.editTextAddSubtask.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -240,7 +253,6 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void setupAddNote(){
-        binding.editTextTaskNote.setText(currentTask.getNote());
         binding.editTextTaskNote.addTextChangedListener(new MyTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -249,7 +261,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         });
     }
 
-    private void setupDeleteButton(){
+    private void btnDeleteBehavior(){
         binding.btnDeleteTask.setOnClickListener(v -> {
             showDialogDeleteTask();
         });

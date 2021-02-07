@@ -77,13 +77,13 @@
                 android:textColor="@color/gray3"
                 android:text="Today"
                 android:textSize="12sp"
-                android:layout_marginVertical="4dp"/>
+                android:layout_marginVertical="5dp"/>
 
             <View
                 android:id="@+id/task_flag_item"
-                android:layout_width="24dp"
-                android:layout_height="6dp"
-                android:layout_marginVertical="4dp"
+                android:layout_width="22dp"
+                android:layout_height="5dp"
+                android:layout_marginVertical="5dp"
                 android:visibility="visible"
                 android:layout_gravity="end"
                 android:background="@drawable/subject_color"

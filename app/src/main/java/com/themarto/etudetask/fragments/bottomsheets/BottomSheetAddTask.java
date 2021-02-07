@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.text.Editable;
 import android.transition.TransitionManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,7 +32,10 @@ import java.util.Calendar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.work.Data;
@@ -226,6 +231,10 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     }
 
     private void showFlagSelector() {
+        // todo
+        PopupMenu popupMenu = new PopupMenu(requireContext(), binding.btnAddFlag);
+        popupMenu.inflate(R.menu.menu_toolbar_task);
+        popupMenu.show();
         Toast.makeText(requireContext(), "Flag selector", Toast.LENGTH_SHORT).show();
     }
 
