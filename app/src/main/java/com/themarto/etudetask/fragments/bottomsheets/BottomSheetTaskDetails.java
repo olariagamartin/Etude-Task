@@ -113,6 +113,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     private void loadData() {
         // todo: get subject from task
         loadSubject(viewModel.getSelectedSubject().getValue());
+        loadDoneBtn();
         loadTaskTitle();
         loadFlag();
         loadDateAndTime();
@@ -120,10 +121,18 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         loadSubtasks(currentTask.getSubtasks());
     }
 
-    // Load Data
+    // Load Data Methods
     private void loadSubject(Subject subject){
         // todo: setup color
         binding.textSubjectTitle.setText(subject.getTitle());
+    }
+
+    private void loadDoneBtn() {
+        if (currentTask.isDone()) {
+            binding.btnCheckboxTaskDetails.setImageResource(R.drawable.ic_checkmark_in_circle);
+        } else {
+            binding.btnCheckboxTaskDetails.setImageResource(R.drawable.ic_checkmark_circle);
+        }
     }
 
     private void loadTaskTitle(){
@@ -185,7 +194,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
     //...
 
-    // Behavior
+    // Behavior methods
     private void setupTaskTitle(){
         binding.editTextTaskTitle.addTextChangedListener(new MyTextWatcher() {
             @Override
@@ -209,11 +218,6 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
             binding.chipAddTaskTime.performCloseIconClick();
             viewModel.updateTask(currentTask);
         });
-        if (currentTask.isDone()) {
-            binding.btnCheckboxTaskDetails.setImageResource(R.drawable.ic_checkmark_in_circle);
-        } else {
-            binding.btnCheckboxTaskDetails.setImageResource(R.drawable.ic_checkmark_circle);
-        }
     }
 
     private void btnFlagBehavior(){
@@ -285,6 +289,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
             showDialogDeleteTask();
         });
     }
+    //...
 
     private void setupBottomSheet(){
         View bottomSheetInternal = getDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet);
@@ -379,19 +384,6 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
                 }).show();
     }
 
-    private void setupAlarm() {
-        deleteAlarm(currentTask);
-        currentTask.setDate(null);
-
-        // i need to find a better way (really!)
-        if (binding.chipAddTaskDueDate.getVisibility() == View.VISIBLE) {
-            currentTask.setDate(calendar.getTime());
-            if(binding.chipAddTaskTime.getVisibility() == View.VISIBLE) {
-                saveAlarm(currentTask);
-            }
-        }
-    }
-
     // todo: extract method in other class
     private void saveAlarm(Task task) {
         // the notification will be launched just at the start of the selected minute
@@ -410,6 +402,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         }
     }
 
+    // todo: extract method in other class
     private void deleteAlarm(Task task) {
         if(task.hasAlarm()) {
             WorkManager.getInstance(requireContext()).cancelWorkById(UUID
@@ -418,16 +411,11 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         }
     }
 
-    private void commitChanges(){
-        viewModel.commitTaskChanges();
-    }
-
     @Override
     public void onPause() {
         super.onPause();
         if(!isDeleted) {
-            //setupAlarm();
-            commitChanges();
+            viewModel.commitTaskChanges();
         }
     }
 
