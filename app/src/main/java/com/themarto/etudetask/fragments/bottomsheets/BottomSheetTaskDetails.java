@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -191,12 +193,27 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
                 currentTask.setTitle(s.toString());
             }
         });
+        if (currentTask.isDone()) {
+            binding.editTextTaskTitle.setTextColor(getResources().getColor(R.color.gray3));
+            binding.editTextTaskTitle.setPaintFlags(
+                    binding.editTextTaskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            binding.editTextTaskTitle.setTextColor(getResources().getColor(R.color.gray2));
+            binding.editTextTaskTitle.setPaintFlags(binding.editTextTaskTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+        }
     }
 
     private void btnDoneBehavior() {
         binding.btnCheckboxTaskDetails.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "done", Toast.LENGTH_SHORT).show();
+            currentTask.setDone(!currentTask.isDone());
+            binding.chipAddTaskTime.performCloseIconClick();
+            viewModel.updateTask(currentTask);
         });
+        if (currentTask.isDone()) {
+            binding.btnCheckboxTaskDetails.setImageResource(R.drawable.ic_checkmark_in_circle);
+        } else {
+            binding.btnCheckboxTaskDetails.setImageResource(R.drawable.ic_checkmark_circle);
+        }
     }
 
     private void btnFlagBehavior(){
@@ -221,6 +238,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
             binding.btnAddTaskDueDate.setVisibility(View.VISIBLE);
             binding.chipAddTaskTime.performCloseIconClick();
             disableImageButton(binding.btnAddTaskTime);
+            currentTask.setDate(null);
         });
 
         binding.chipAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
@@ -229,6 +247,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
             TransitionManager.beginDelayedTransition(binding.linearLayoutButtons);
             binding.chipAddTaskTime.setVisibility(View.GONE);
             binding.btnAddTaskTime.setVisibility(View.VISIBLE);
+            deleteAlarm(currentTask);
         });
 
         binding.chipAddTaskTime.setOnClickListener(v -> lunchTimePicker());
@@ -304,6 +323,8 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         binding.chipAddTaskDueDate.setText(Util.getDateString(calendar.getTime()));
 
         enableImageButton(binding.btnAddTaskTime);
+
+        currentTask.setDate(calendar.getTime());
     }
 
     private void lunchTimePicker() {
@@ -329,6 +350,9 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
 
         binding.chipAddTaskTime
                 .setText(Util.getTimeString(calendar.getTime()));
+
+        currentTask.setDate(calendar.getTime());
+        saveAlarm(currentTask);
     }
 
     private void disableImageButton(ImageButton btn) {
@@ -368,6 +392,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         }
     }
 
+    // todo: extract method in other class
     private void saveAlarm(Task task) {
         // the notification will be launched just at the start of the selected minute
         calendar.set(Calendar.SECOND, 0);
@@ -401,7 +426,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     public void onPause() {
         super.onPause();
         if(!isDeleted) {
-            setupAlarm();
+            //setupAlarm();
             commitChanges();
         }
     }
