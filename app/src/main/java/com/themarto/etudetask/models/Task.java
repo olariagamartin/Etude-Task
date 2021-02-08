@@ -18,6 +18,7 @@ public class Task extends RealmObject {
     private Date date;
     private boolean done;
     private String alarmStringId;
+    private Subject subject;
 
     public Task(){
         id = UUID.randomUUID().toString();
@@ -27,19 +28,10 @@ public class Task extends RealmObject {
         this.date = null;
         this.done = false;
         this.alarmStringId = "";
+        this.subject = null;
     }
 
-    public Task(String title) {
-        id = UUID.randomUUID().toString();
-        this.title = title;
-        this.note = "";
-        this.subtasks = new RealmList<>();
-        this.date = null;
-        this.done = false;
-        this.alarmStringId = "";
-    }
-
-    public Task(String title, String note) {
+    public Task(String title, String note, Subject subject) {
         id = UUID.randomUUID().toString();
         this.title = title;
         this.note = note;
@@ -47,6 +39,7 @@ public class Task extends RealmObject {
         this.date = null;
         this.done = false;
         this.alarmStringId = "";
+        this.subject = subject;
     }
 
     public String getId() {
@@ -117,5 +110,13 @@ public class Task extends RealmObject {
 
     public boolean hasAlarm(){
         return !alarmStringId.equals("");
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 }

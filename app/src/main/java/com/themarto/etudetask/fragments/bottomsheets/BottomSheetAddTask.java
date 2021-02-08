@@ -215,7 +215,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                 && !binding.editTextNewTaskDetails.getText().toString().isEmpty()) {
             details = binding.editTextNewTaskDetails.getText().toString();
         }
-        Task nTask = new Task(title, details);
+        Task nTask = new Task(title, details, viewModel.getSelectedSubject().getValue());
         if (binding.chipAddTaskDueDate.getVisibility() == View.VISIBLE) {
             if (binding.chipAddTaskTime.getVisibility() == View.VISIBLE) {
                 saveAlarm(nTask);

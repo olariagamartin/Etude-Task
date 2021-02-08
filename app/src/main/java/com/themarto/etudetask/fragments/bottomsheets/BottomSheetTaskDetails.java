@@ -111,8 +111,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void loadData() {
-        // todo: get subject from task
-        loadSubject(viewModel.getSelectedSubject().getValue());
+        loadSubject(currentTask.getSubject());
         loadDoneBtn();
         loadTaskTitle();
         loadFlag();
