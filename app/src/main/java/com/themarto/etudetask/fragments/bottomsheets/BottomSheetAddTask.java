@@ -1,5 +1,6 @@
 package com.themarto.etudetask.fragments.bottomsheets;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -47,7 +48,8 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private Calendar actual;
     private Calendar calendar = Calendar.getInstance();
 
-    public BottomSheetAddTask() { }
+    public BottomSheetAddTask() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -194,7 +196,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         timePickerDialog.show();
     }
 
-    private void notifyTimeSet(){
+    private void notifyTimeSet() {
         TransitionManager.beginDelayedTransition(binding.layoutChips);
         binding.chipAddTaskTime.setVisibility(View.VISIBLE);
         binding.btnAddTaskTime.setVisibility(View.GONE);
@@ -206,6 +208,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     /**
      * Gathers all loaded data and loads it into a Task object.
      * If an alarm was set then is saved.
+     *
      * @return the Task with all data
      */
     private Task getTask() {
@@ -225,17 +228,41 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         return nTask;
     }
 
-    private void setBottomSheetExtended(){
+    private void setBottomSheetExtended() {
         View bottomSheetInternal = getDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet);
         BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
+    @SuppressLint("RestrictedApi")
     private void showFlagSelector() {
-        // todo
         PopupMenu popupMenu = new PopupMenu(requireContext(), binding.btnAddFlag);
-        popupMenu.inflate(R.menu.menu_toolbar_task);
-        popupMenu.show();
-        Toast.makeText(requireContext(), "Flag selector", Toast.LENGTH_SHORT).show();
+        popupMenu.getMenuInflater().inflate(R.menu.menu_flag_selector, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.flag_red:
+                        Toast.makeText(requireContext(), "Red", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.flag_yellow:
+                        Toast.makeText(requireContext(), "Yellow", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.flag_blue:
+                        Toast.makeText(requireContext(), "Blue", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.flag_none:
+                        Toast.makeText(requireContext(), "None", Toast.LENGTH_SHORT).show();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        MenuPopupHelper helper = new MenuPopupHelper(requireContext(),
+                (MenuBuilder) popupMenu.getMenu(),
+                binding.btnAddFlag);
+        helper.setForceShowIcon(true);
+        helper.show();
     }
 
     private void disableTextButton(Button btn) {
