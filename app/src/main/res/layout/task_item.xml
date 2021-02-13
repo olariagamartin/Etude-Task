@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:text="Details"
                 android:textColor="@color/gray4"
-                android:visibility="visible"/>
+                android:visibility="gone"/>
 
         </LinearLayout>
 
