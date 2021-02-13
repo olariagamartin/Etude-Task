@@ -1,10 +1,12 @@
 package com.themarto.etudetask.fragments.bottomsheets;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,6 +14,7 @@ import android.text.TextWatcher;
 import android.transition.TransitionManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -42,7 +45,11 @@ import java.util.UUID;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -139,7 +146,13 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void loadFlag() {
-
+        if (currentTask.getFlagColor().equals(Util.FlagColors.NONE)) {
+            binding.btnTaskFlag.setImageResource(R.drawable.ic_flag_outline);
+            binding.btnTaskFlag.setColorFilter(ContextCompat.getColor(requireContext(), R.color.gray4));
+        } else {
+            binding.btnTaskFlag.setImageResource(R.drawable.ic_flag_fill_yellow);
+            binding.btnTaskFlag.setColorFilter(Color.parseColor(currentTask.getFlagColor()));
+        }
     }
 
     private void loadDateAndTime() {
@@ -220,10 +233,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void btnFlagBehavior(){
-        // todo: show fill flag with color
-        binding.btnTaskFlag.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "show flag selector", Toast.LENGTH_SHORT).show();
-        });
+        binding.btnTaskFlag.setOnClickListener(v -> showFlagSelector());
     }
 
     private void btnDateBehavior(){
@@ -381,6 +391,49 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
                     viewModel.deleteTask();
                     dismiss();
                 }).show();
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void showFlagSelector() {
+        PopupMenu popupMenu = new PopupMenu(requireContext(), binding.btnTaskFlag);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_flag_selector, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.flag_red:
+                        selectFlagColor(Util.FlagColors.RED);
+                        return true;
+                    case R.id.flag_yellow:
+                        selectFlagColor(Util.FlagColors.YELLOW);
+                        return true;
+                    case R.id.flag_blue:
+                        selectFlagColor(Util.FlagColors.BLUE);
+                        return true;
+                    case R.id.flag_none:
+                        selectFlagColor(Util.FlagColors.NONE);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        MenuPopupHelper helper = new MenuPopupHelper(requireContext(),
+                (MenuBuilder) popupMenu.getMenu(),
+                binding.btnTaskFlag);
+        helper.setForceShowIcon(true);
+        helper.show();
+    }
+
+    private void selectFlagColor(String rgbColor) {
+        if (rgbColor.equals(Util.FlagColors.NONE)) {
+            binding.btnTaskFlag.setImageResource(R.drawable.ic_flag_outline);
+            binding.btnTaskFlag.setColorFilter(ContextCompat.getColor(requireContext(), R.color.gray4));
+        } else {
+            binding.btnTaskFlag.setImageResource(R.drawable.ic_flag_fill_yellow);
+            binding.btnTaskFlag.setColorFilter(Color.parseColor(rgbColor));
+        }
+        currentTask.setFlagColor(rgbColor);
     }
 
     // todo: extract method in other class
