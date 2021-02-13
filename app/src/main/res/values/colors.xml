@@ -28,10 +28,4 @@
     <color name="subject_blue">#90caf9</color>
     <color name="subject_green">#a5d6a7</color>
 
-    <array name="subject_colors">
-        <item>#F48FB1</item>
-        <item>#A5D6A7</item>
-        <item>#CE93D8</item>
-        <item>#81D4FA</item>
-    </array>
 </resources>

@@ -19,6 +19,7 @@ public class Task extends RealmObject {
     private boolean done;
     private String alarmStringId;
     private Subject subject;
+    private String flagColor;
 
     public Task(){
         id = UUID.randomUUID().toString();
@@ -29,6 +30,7 @@ public class Task extends RealmObject {
         this.done = false;
         this.alarmStringId = "";
         this.subject = null;
+        this.flagColor = Util.FlagColors.NONE;
     }
 
     public Task(String title, String note, Subject subject) {
@@ -40,6 +42,7 @@ public class Task extends RealmObject {
         this.done = false;
         this.alarmStringId = "";
         this.subject = subject;
+        this.flagColor = Util.FlagColors.NONE;
     }
 
     public String getId() {
@@ -118,5 +121,13 @@ public class Task extends RealmObject {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    public String getFlagColor() {
+        return flagColor;
+    }
+
+    public void setFlagColor(String flagColor) {
+        this.flagColor = flagColor;
     }
 }

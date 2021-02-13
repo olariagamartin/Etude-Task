@@ -86,8 +86,7 @@
                 android:layout_marginVertical="5dp"
                 android:visibility="visible"
                 android:layout_gravity="end"
-                android:background="@drawable/subject_color"
-                android:backgroundTint="@color/amber_ligth" />
+                android:background="@drawable/subject_color" />
 
         </LinearLayout>
 

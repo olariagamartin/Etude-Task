@@ -77,4 +77,11 @@ public class Util {
         }
         return toDoTasks;
     }
+
+    public static class FlagColors {
+        public static String RED = "#FF1744";
+        public static String YELLOW = "#FFC400";
+        public static String BLUE = "#2979FF";
+        public static String NONE = "#000000";
+    }
 }

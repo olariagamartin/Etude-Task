@@ -3,6 +3,7 @@ package com.themarto.etudetask.fragments.bottomsheets;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.text.Editable;
@@ -37,6 +38,7 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.work.Data;
@@ -47,6 +49,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private SharedViewModel viewModel;
     private Calendar actual;
     private Calendar calendar = Calendar.getInstance();
+    private String flagColor = Util.FlagColors.NONE;
 
     public BottomSheetAddTask() {
     }
@@ -219,6 +222,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             details = binding.editTextNewTaskDetails.getText().toString();
         }
         Task nTask = new Task(title, details, viewModel.getSelectedSubject().getValue());
+        nTask.setFlagColor(flagColor);
         if (binding.chipAddTaskDueDate.getVisibility() == View.VISIBLE) {
             if (binding.chipAddTaskTime.getVisibility() == View.VISIBLE) {
                 saveAlarm(nTask);
@@ -242,16 +246,16 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.flag_red:
-                        Toast.makeText(requireContext(), "Red", Toast.LENGTH_SHORT).show();
+                        selectFlagColor(Util.FlagColors.RED);
                         return true;
                     case R.id.flag_yellow:
-                        Toast.makeText(requireContext(), "Yellow", Toast.LENGTH_SHORT).show();
+                        selectFlagColor(Util.FlagColors.YELLOW);
                         return true;
                     case R.id.flag_blue:
-                        Toast.makeText(requireContext(), "Blue", Toast.LENGTH_SHORT).show();
+                        selectFlagColor(Util.FlagColors.BLUE);
                         return true;
                     case R.id.flag_none:
-                        Toast.makeText(requireContext(), "None", Toast.LENGTH_SHORT).show();
+                        selectFlagColor(Util.FlagColors.NONE);
                         return true;
                     default:
                         return false;
@@ -263,6 +267,17 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                 binding.btnAddFlag);
         helper.setForceShowIcon(true);
         helper.show();
+    }
+
+    private void selectFlagColor(String rgbColor) {
+        if (rgbColor.equals(Util.FlagColors.NONE)) {
+            binding.btnAddFlag.setImageResource(R.drawable.ic_flag_outline);
+            binding.btnAddFlag.setColorFilter(ContextCompat.getColor(requireContext(), R.color.gray4));
+        } else {
+            binding.btnAddFlag.setImageResource(R.drawable.ic_flag_fill_yellow);
+            binding.btnAddFlag.setColorFilter(Color.parseColor(rgbColor));
+        }
+        flagColor = rgbColor;
     }
 
     private void disableTextButton(Button btn) {
