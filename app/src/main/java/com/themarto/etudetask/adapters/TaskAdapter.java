@@ -21,6 +21,7 @@ import com.themarto.etudetask.models.Task;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +50,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         Task currentTask = taskList.get(position);
         holder.taskTitle.setText(currentTask.getTitle());
         holder.taskDate.setText(currentTask.getDateStr());
+        if (currentTask.hasAlarm()) {
+            holder.notificationIcon.setVisibility(View.VISIBLE);
+        } else {
+            holder.notificationIcon.setVisibility(View.INVISIBLE);
+        }
         // if hasn't flag, the flag color doesn't appear
         if (currentTask.getFlagColor().equals(Util.FlagColors.NONE)) {
             holder.taskFlag.setVisibility(View.INVISIBLE);
@@ -83,6 +89,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         View taskFlag;
         LinearLayout layoutSubtaskCount;
         TextView textSubtaskCount;
+        AppCompatImageView notificationIcon;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -93,6 +100,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             taskFlag = itemView.findViewById(R.id.task_flag_item);
             layoutSubtaskCount = itemView.findViewById(R.id.layoutSubtaskCount);
             textSubtaskCount = itemView.findViewById(R.id.textSubtaskCount);
+            notificationIcon = itemView.findViewById(R.id.notification_icon);
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
