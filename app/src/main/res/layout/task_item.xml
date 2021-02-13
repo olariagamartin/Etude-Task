@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginVertical="8dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/linearLayoutDateAndFlag"
             app:layout_constraintStart_toEndOf="@+id/btn_checkbox_task"
@@ -88,7 +89,7 @@
             android:id="@+id/linearLayoutDateAndFlag"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_marginVertical="5dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintTop_toTopOf="parent"
@@ -99,21 +100,24 @@
                 android:id="@+id/taskDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gray3"
+                android:textColor="@color/blue_button"
                 android:text="Today"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:layout_marginVertical="5dp"/>
 
-            <View
-                android:id="@+id/task_flag_item"
-                android:layout_width="22dp"
-                android:layout_height="5dp"
-                android:layout_marginVertical="5dp"
-                android:visibility="visible"
-                android:layout_gravity="end"
-                android:background="@drawable/subject_color" />
-
         </LinearLayout>
+
+        <View
+            android:id="@+id/task_flag_item"
+            android:layout_width="22dp"
+            android:layout_height="5dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginHorizontal="16dp"
+            android:visibility="visible"
+            android:layout_gravity="end"
+            android:background="@drawable/subject_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
