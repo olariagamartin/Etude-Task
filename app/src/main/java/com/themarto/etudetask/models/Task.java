@@ -2,6 +2,7 @@ package com.themarto.etudetask.models;
 
 import com.themarto.etudetask.utils.Util;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
@@ -73,8 +74,12 @@ public class Task extends RealmObject {
         return subtasks;
     }
 
-    public void setSubtasks(RealmList<Subtask> subtasks) {
-        this.subtasks = subtasks;
+    public int subtaskDoneCount () {
+        int count = 0;
+        for (Subtask s : subtasks) {
+            count += (s.isDone()) ? 1 : 0;
+        }
+        return count;
     }
 
     public String getDateStr(){

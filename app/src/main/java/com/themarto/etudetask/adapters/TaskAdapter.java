@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.TextViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
@@ -28,8 +30,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private final List<Task> taskList;
 
     private final TaskListener listener;
-
-    private Context context;
 
     public TaskAdapter(List<Task> taskList, TaskListener listener) {
         this.taskList = taskList;
@@ -39,7 +39,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.task_item, parent, false);
         return new ViewHolder(view);
@@ -56,6 +55,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         } else { // set the color saved for the flag
             holder.taskFlag.setVisibility(View.VISIBLE);
             holder.taskFlag.getBackground().setTint(Color.parseColor(currentTask.getFlagColor()));
+        }
+        if (currentTask.getSubtasks().isEmpty()) {
+            holder.layoutSubtaskCount.setVisibility(View.GONE);
+        } else {
+            holder.layoutSubtaskCount.setVisibility(View.VISIBLE);
+            String subtaskCount = "" + currentTask.subtaskDoneCount() + " / " + currentTask.getSubtasks().size();
+            holder.textSubtaskCount.setText(subtaskCount);
         }
         if (!currentTask.getNote().isEmpty()) {
             holder.taskNote.setVisibility(View.VISIBLE);
@@ -75,6 +81,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         TextView taskDate;
         TextView taskNote;
         View taskFlag;
+        LinearLayout layoutSubtaskCount;
+        TextView textSubtaskCount;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -83,6 +91,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             taskDate = itemView.findViewById(R.id.taskDate);
             taskNote = itemView.findViewById(R.id.taskNote);
             taskFlag = itemView.findViewById(R.id.task_flag_item);
+            layoutSubtaskCount = itemView.findViewById(R.id.layoutSubtaskCount);
+            textSubtaskCount = itemView.findViewById(R.id.textSubtaskCount);
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
