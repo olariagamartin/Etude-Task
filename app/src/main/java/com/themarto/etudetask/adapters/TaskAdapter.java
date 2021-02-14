@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopeer.shadow.ShadowView;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.models.Task;
@@ -50,6 +51,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         Task currentTask = taskList.get(position);
         holder.taskTitle.setText(currentTask.getTitle());
         holder.taskDate.setText(currentTask.getDateStr());
+        // configuring first and last item for correct shadow
+        if (position == 0)
+            holder.shadowView.setShadowMarginTop(30);
+        if (position == getItemCount() - 1)
+            holder.shadowView.setShadowMarginBottom(30);
         if (currentTask.hasAlarm()) {
             holder.notificationIcon.setVisibility(View.VISIBLE);
         } else {
@@ -90,6 +96,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         LinearLayout layoutSubtaskCount;
         TextView textSubtaskCount;
         AppCompatImageView notificationIcon;
+        ShadowView shadowView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +108,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             layoutSubtaskCount = itemView.findViewById(R.id.layoutSubtaskCount);
             textSubtaskCount = itemView.findViewById(R.id.textSubtaskCount);
             notificationIcon = itemView.findViewById(R.id.notification_icon);
+            shadowView = itemView.findViewById(R.id.shadowView);
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) {

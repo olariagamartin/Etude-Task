@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.loopeer.shadow.ShadowView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginHorizontal="10dp"
-    android:layout_marginVertical="4dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="15dp"
+    android:id="@+id/shadowView"
+    app:cornerRadius="15dp"
+    app:shadowMarginBottom="4dp"
+    app:shadowMarginTop="4dp"
+    app:shadowMarginLeft="10dp"
+    app:shadowMarginRight="10dp"
+    app:shadowRadius="15dp"
     android:clickable="true"
     android:focusable="true">
 
@@ -131,4 +133,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</com.google.android.material.card.MaterialCardView>
+</com.loopeer.shadow.ShadowView>
