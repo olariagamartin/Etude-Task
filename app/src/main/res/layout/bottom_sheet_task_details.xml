@@ -93,6 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
             android:layout_marginEnd="14dp"
+            android:layout_marginVertical="4dp"
             android:tint="@color/gray4"
             android:background="@android:color/transparent"
             android:padding="8dp"
@@ -103,6 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
+            android:layout_marginVertical="4dp"
             android:background="@android:color/transparent"
             android:tint="@color/gray4"
             android:padding="8dp"
@@ -131,6 +133,7 @@
             android:layout_height="wrap_content"
             android:tint="@color/gray4"
             android:layout_marginEnd="20dp"
+            android:layout_marginVertical="4dp"
             android:background="@android:color/transparent"
             android:padding="8dp"
             android:src="@drawable/ic_notifications_none" />
