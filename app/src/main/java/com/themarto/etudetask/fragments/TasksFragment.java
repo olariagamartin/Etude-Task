@@ -158,7 +158,7 @@ public class TasksFragment extends Fragment {
 
     private void showDialogEditSubject() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle("Rename");
+        builder.setTitle("Edit");
         View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_subject, null);
         EditText editTitle = editLayout.findViewById(R.id.edit_title_dialog);
         editTitle.setText(currentSubject.getTitle());
