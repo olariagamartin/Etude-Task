@@ -57,6 +57,7 @@ public class SubjectRepository {
 
     public Subject  addTask(Subject subject, Task nTask) {
         realm.beginTransaction();
+        nTask.setSubject(subject);
         subject.getTaskList().add(nTask);
         realm.commitTransaction();
         return subject;
