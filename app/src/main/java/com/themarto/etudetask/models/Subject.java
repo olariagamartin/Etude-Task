@@ -11,23 +11,25 @@ public class Subject extends RealmObject {
     private String id;
     private String title;
     private RealmList<Task> taskList;
+    private int color;
 
     public Subject(){
+        this.id = UUID.randomUUID().toString();
         this.title = "";
         this.taskList = new RealmList<>();
-        this.id = UUID.randomUUID().toString();
     }
 
-    public Subject(String title) {
+    public Subject(String title, int color) {
+        this.id = UUID.randomUUID().toString();
         this.title = title;
         this.taskList = new RealmList<>();
-        this.id = UUID.randomUUID().toString();
+        this.color = color;
     }
 
     public Subject(String title, RealmList<Task> taskList) {
+        this.id = UUID.randomUUID().toString();
         this.title = title;
         this.taskList = taskList;
-        this.id = UUID.randomUUID().toString();
     }
 
     public String getId() {
@@ -52,6 +54,14 @@ public class Subject extends RealmObject {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     public int getDoneSize(){

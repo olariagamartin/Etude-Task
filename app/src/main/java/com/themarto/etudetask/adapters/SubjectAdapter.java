@@ -3,14 +3,12 @@ package com.themarto.etudetask.adapters;
 import android.content.Context;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.themarto.etudetask.R;
-import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.models.Subject;
 
 import java.util.List;
@@ -47,6 +45,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         holder.subjectTitle.setText(currentSubject.getTitle());
         String taskCount = currentSubject.getDoneSize() + " of " + currentSubject.getTaskList().size();
         holder.subjectCountSections.setText(taskCount);
+        holder.subjectColor.getBackground().setTint(currentSubject.getColor());
     }
 
     @Override
@@ -59,12 +58,14 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         TextView subjectTitle;
         TextView subjectCountSections;
         CardView cardView;
+        View subjectColor;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             subjectTitle = itemView.findViewById(R.id.subjectTitle);
             cardView = (CardView) itemView.getRootView();
             subjectCountSections = itemView.findViewById(R.id.subjectCountSections);
+            subjectColor = itemView.findViewById(R.id.subject_color_item);
             if(listener != null) {
                 itemView.setOnClickListener(v -> listener.onItemClick(getAdapterPosition()));
             }

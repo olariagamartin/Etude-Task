@@ -11,6 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter title"
+        android:backgroundTint="#EF9A9A"
+        android:textColor="#EF9A9A"
         android:textSize="22sp"
         android:textStyle="bold"/>
 
@@ -43,6 +45,7 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/radio_selector_color_subject"
                 android:backgroundTint="#EF9A9A"
+                android:tag="EF9A9A"
                 android:button="@android:color/transparent" />
 
             <RadioButton
@@ -51,6 +54,7 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/radio_selector_color_subject"
                 android:backgroundTint="#F48FB1"
+                android:tag="F48FB1"
                 android:button="@android:color/transparent" />
 
             <RadioButton
@@ -59,6 +63,7 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/radio_selector_color_subject"
                 android:backgroundTint="#9FA8DA"
+                android:tag="9FA8DA"
                 android:button="@android:color/transparent" />
 
             <RadioButton
@@ -67,6 +72,7 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/radio_selector_color_subject"
                 android:backgroundTint="#CE93D8"
+                android:tag="CE93D8"
                 android:button="@android:color/transparent" />
 
             <RadioButton
@@ -75,6 +81,7 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/radio_selector_color_subject"
                 android:backgroundTint="#81D4FA"
+                android:tag="81D4FA"
                 android:button="@android:color/transparent" />
 
             <RadioButton
@@ -83,6 +90,7 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/radio_selector_color_subject"
                 android:backgroundTint="#A5D6A7"
+                android:tag="A5D6A7"
                 android:button="@android:color/transparent" />
 
             <RadioButton
@@ -91,6 +99,7 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/radio_selector_color_subject"
                 android:backgroundTint="#FFE082"
+                android:tag="FFE082"
                 android:button="@android:color/transparent" />
 
             <RadioButton
@@ -99,6 +108,7 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/radio_selector_color_subject"
                 android:backgroundTint="#BCAAA4"
+                android:tag="BCAAA4"
                 android:button="@android:color/transparent" />
 
             <RadioButton
@@ -107,6 +117,7 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/radio_selector_color_subject"
                 android:backgroundTint="#B0BEC5"
+                android:tag="B0BEC5"
                 android:button="@android:color/transparent" />
         </RadioGroup>
 

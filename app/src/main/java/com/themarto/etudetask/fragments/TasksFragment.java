@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -82,8 +84,8 @@ public class TasksFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbarTask.topAppBar);
         String title = currentSubject.getTitle();
         binding.toolbarTask.toolbarLayout.setTitle(title);
-        binding.toolbarTask.toolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(requireContext(), R.color.subject_red));
-        binding.toolbarTask.toolbarLayout.setExpandedTitleColor(ContextCompat.getColor(requireContext(), R.color.subject_red));
+        binding.toolbarTask.toolbarLayout.setCollapsedTitleTextColor(currentSubject.getColor());
+        binding.toolbarTask.toolbarLayout.setExpandedTitleColor(currentSubject.getColor());
         setHasOptionsMenu(true);
         binding.toolbarTask.toolbarLayout.setOnClickListener(v -> showDialogEditSubject());
     }
@@ -164,15 +166,34 @@ public class TasksFragment extends Fragment {
         editTitle.setText(currentSubject.getTitle());
         editTitle.requestFocus(); // required for API 28+
         editTitle.setSelection(editTitle.getText().length());
+        RadioGroup colorPicker = editLayout.findViewById(R.id.radio_group_color_picker);
+        final int[] colorPicked = new int[1];
+        colorPicked[0] = currentSubject.getColor();
+        colorPicker.setOnCheckedChangeListener((group, checkedId) -> {
+            colorPicked[0] = group.findViewById(checkedId).getBackgroundTintList().getDefaultColor();
+            editTitle.setTextColor(colorPicked[0]);
+            editTitle.getBackground().setTint(colorPicked[0]);
+        });
+        // to select the color that the current subject contain
+        String radioBtnTag = Integer.toHexString(colorPicked[0]).substring(2).toUpperCase();
+        RadioButton radioBtnChecked = colorPicker.findViewWithTag(radioBtnTag);
+        colorPicker.check(radioBtnChecked.getId());
         builder.setView(editLayout)
                 .setPositiveButton("Save", (dialog, which) -> {
                     Subject updateSubject = new Subject(editTitle.getText().toString(), currentSubject.getTaskList());
                     updateSubject.setId(currentSubject.getId());
+                    updateSubject.setColor(colorPicked[0]);
                     viewModel.updateSubject(updateSubject);
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {});
 
         AlertDialog alertDialog = builder.create();
+        alertDialog.setOnShowListener(dialog -> {
+            // scroll to the position of the color of the subject
+            int x = radioBtnChecked.getLeft();
+            int y = radioBtnChecked.getTop();
+            editLayout.findViewById(R.id.horizontalScrollView).scrollTo(x, y);
+        });
         // 1: avoid cut the view when keyboard appears, 2: make the keyboard appear
         alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
                 | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);

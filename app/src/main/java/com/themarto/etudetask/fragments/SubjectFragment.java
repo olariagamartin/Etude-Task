@@ -1,5 +1,6 @@
 package com.themarto.etudetask.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -125,11 +128,20 @@ public class SubjectFragment extends Fragment {
         View newSubjectLayout = getLayoutInflater().inflate(R.layout.dialog_edit_subject, null);
         EditText subjectTitle = newSubjectLayout.findViewById(R.id.edit_title_dialog);
         subjectTitle.requestFocus(); // required for API 28+
+        RadioGroup colorPicker = newSubjectLayout.findViewById(R.id.radio_group_color_picker);
+        // variable used on lambda expression need to be final
+        final int[] colorPicked = new int[1];
+        colorPicked[0] = colorPicker.findViewById(R.id.color_default).getBackgroundTintList().getDefaultColor();
+        colorPicker.setOnCheckedChangeListener((group, checkedId) -> {
+            colorPicked[0] = group.findViewById(checkedId).getBackgroundTintList().getDefaultColor();
+            subjectTitle.setTextColor(colorPicked[0]);
+            subjectTitle.getBackground().setTint(colorPicked[0]);
+        });
         builder.setView(newSubjectLayout);
         builder.setPositiveButton("Save", (dialog, which) -> {
             String title = subjectTitle.getText().toString();
             if (!title.isEmpty()) {
-                saveSubject(title);
+                saveSubject(title, colorPicked[0]);
             } else {
                 Toast.makeText(getContext(), "The name is empty", Toast.LENGTH_SHORT).show();
             }
@@ -150,15 +162,34 @@ public class SubjectFragment extends Fragment {
         editTitle.setText(subject.getTitle());
         editTitle.requestFocus(); // required for API 28+
         editTitle.setSelection(editTitle.getText().length());
+        RadioGroup colorPicker = editLayout.findViewById(R.id.radio_group_color_picker);
+        final int[] colorPicked = new int[1];
+        colorPicked[0] = subject.getColor();
+        colorPicker.setOnCheckedChangeListener((group, checkedId) -> {
+            colorPicked[0] = group.findViewById(checkedId).getBackgroundTintList().getDefaultColor();
+            editTitle.setTextColor(colorPicked[0]);
+            editTitle.getBackground().setTint(colorPicked[0]);
+        });
+        // to select the color that the current subject contain
+        String radioBtnTag = Integer.toHexString(colorPicked[0]).substring(2).toUpperCase();
+        RadioButton radioBtnChecked = colorPicker.findViewWithTag(radioBtnTag);
+        colorPicker.check(radioBtnChecked.getId());
         builder.setView(editLayout)
                 .setPositiveButton("Save", (dialog, which) -> {
-                    Subject updateSubject = new Subject(editTitle.getText().toString());
+                    Subject updateSubject = new Subject(editTitle.getText().toString(), subject.getTaskList());
+                    updateSubject.setColor(colorPicked[0]);
                     updateSubject.setId(subject.getId());
                     viewModel.updateSubject(updateSubject);
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {});
 
         AlertDialog alertDialog = builder.create();
+        alertDialog.setOnShowListener(dialog -> {
+            // scroll to the position of the color of the subject
+            int x = radioBtnChecked.getLeft();
+            int y = radioBtnChecked.getTop();
+            editLayout.findViewById(R.id.horizontalScrollView).scrollTo(x, y);
+        });
         // 1: avoid cut the view when keyboard appears, 2: make the keyboard appear
         alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
                 | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -176,8 +207,8 @@ public class SubjectFragment extends Fragment {
                 }).show();
     }
 
-    private void saveSubject(String title) {
-        Subject subject = new Subject(title);
+    private void saveSubject(String title, int color) {
+        Subject subject = new Subject(title, color);
         viewModel.addSubject(subject);
     }
 
