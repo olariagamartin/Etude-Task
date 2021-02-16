@@ -7,11 +7,109 @@
     <EditText
         android:id="@+id/edit_title_dialog"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginVertical="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter title"
-        android:textSize="22dp"
-        android:background="@android:color/transparent" />
+        android:textSize="22sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="10dp"
+        android:text="Choose a color" />
+
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:layout_marginVertical="10dp">
+
+        <RadioGroup
+            android:id="@+id/radio_group_color_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:checkedButton="@id/color_default">
+
+            <RadioButton
+                android:id="@+id/color_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/radio_selector_color_subject"
+                android:backgroundTint="#EF9A9A"
+                android:button="@android:color/transparent" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/radio_selector_color_subject"
+                android:backgroundTint="#F48FB1"
+                android:button="@android:color/transparent" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/radio_selector_color_subject"
+                android:backgroundTint="#9FA8DA"
+                android:button="@android:color/transparent" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/radio_selector_color_subject"
+                android:backgroundTint="#CE93D8"
+                android:button="@android:color/transparent" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/radio_selector_color_subject"
+                android:backgroundTint="#81D4FA"
+                android:button="@android:color/transparent" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/radio_selector_color_subject"
+                android:backgroundTint="#A5D6A7"
+                android:button="@android:color/transparent" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/radio_selector_color_subject"
+                android:backgroundTint="#FFE082"
+                android:button="@android:color/transparent" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/radio_selector_color_subject"
+                android:backgroundTint="#BCAAA4"
+                android:button="@android:color/transparent" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/radio_selector_color_subject"
+                android:backgroundTint="#B0BEC5"
+                android:button="@android:color/transparent" />
+        </RadioGroup>
+
+    </HorizontalScrollView>
 
 </LinearLayout>

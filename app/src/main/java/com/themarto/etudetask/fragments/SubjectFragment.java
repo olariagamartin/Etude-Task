@@ -136,8 +136,9 @@ public class SubjectFragment extends Fragment {
         });
         builder.setNegativeButton("Cancel", ((dialog, which) -> { }));
         AlertDialog alertDialog = builder.create();
-        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
-                .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        // 1: avoid cut the view when keyboard appears, 2: make the keyboard appear
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+                | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         alertDialog.show();
     }
 
@@ -158,8 +159,9 @@ public class SubjectFragment extends Fragment {
                 .setNegativeButton("Cancel", (dialog, which) -> {});
 
         AlertDialog alertDialog = builder.create();
-        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
-                .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        // 1: avoid cut the view when keyboard appears, 2: make the keyboard appear
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+                | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         alertDialog.show();
     }
 
