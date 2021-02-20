@@ -99,6 +99,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
             @Override
             public void onChanged(Task task) {
                 currentTask = task;
+                //setSpaceAdded();
                 setupViewsBehavior();
                 loadData();
             }
@@ -301,11 +302,26 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     //...
 
     private void setupBottomSheet(){
+        int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         View bottomSheetInternal = getDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet);
-        BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight((Resources.getSystem().getDisplayMetrics().heightPixels) / 2);
-        binding.extraSpace.setMinimumHeight((Resources.getSystem().getDisplayMetrics().heightPixels) / 2);
+        BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(screenHeight / 2);
+        //setSpaceAdded();
         BottomSheetBehavior.from(bottomSheetInternal).setFitToContents(false);
         BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+    private void setSpaceAdded() {
+        int rootHeight = binding.getRoot().getHeight();
+        if (rootHeight > 0) {
+            int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+            int extraSpace = binding.extraSpace.getHeight();
+            int contentHeight = rootHeight - extraSpace;
+            int spaceAdded = screenHeight / 4;
+            if (contentHeight < screenHeight * 0.75) {
+                spaceAdded = (screenHeight - contentHeight) - getStatusBarHeight();
+            }
+            binding.extraSpace.setMinimumHeight(spaceAdded);
+        }
     }
 
     private void lunchDatePicker() {
@@ -461,6 +477,15 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
                     .fromString(task.getAlarmStringId()));
             task.setAlarmStringId("");
         }
+    }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     @Override
