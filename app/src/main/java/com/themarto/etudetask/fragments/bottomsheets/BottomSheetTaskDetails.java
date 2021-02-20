@@ -322,20 +322,6 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
-    private void setSpaceAdded() {
-        int rootHeight = binding.getRoot().getHeight();
-        if (rootHeight > 0) {
-            int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-            int extraSpace = binding.extraSpace.getHeight();
-            int contentHeight = rootHeight - extraSpace;
-            int spaceAdded = screenHeight / 4;
-            if (contentHeight < screenHeight * 0.75) {
-                spaceAdded = (screenHeight - contentHeight) - getStatusBarHeight();
-            }
-            binding.extraSpace.setMinimumHeight(spaceAdded);
-        }
-    }
-
     private void lunchDatePicker() {
         actual = Calendar.getInstance();
         int year = actual.get(Calendar.YEAR);

@@ -134,4 +134,7 @@ public class SharedViewModel extends AndroidViewModel {
         WorkManager.getInstance(getApplication()).cancelAllWorkByTag(tag);
     }
 
+    public void closeDB(){
+        mRepository.closeRealm();
+    }
 }

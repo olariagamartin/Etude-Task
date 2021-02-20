@@ -20,6 +20,10 @@ public class SubjectRepository {
         subjects = realm.where(Subject.class).sort("title").findAll();
     }
 
+    public void closeRealm() {
+        realm.close();
+    }
+
     public List<Subject> getAllSubjects() {
         return subjects;
     }
