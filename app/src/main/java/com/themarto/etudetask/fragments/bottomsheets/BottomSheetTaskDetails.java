@@ -65,6 +65,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     private boolean isDeleted = false;
     private Calendar actual;
     private Calendar calendar = Calendar.getInstance();
+    private final int CONTENT_HEIGHT_DEFAULT = 762;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -209,6 +210,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
 
     // Behavior methods
     private void setupTaskTitle(){
+        binding.editTextTaskTitle.setOnClickListener(v -> setStateExpanded());
         binding.editTextTaskTitle.addTextChangedListener(new MyTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -268,6 +270,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void setupAddSubtask(){
+        binding.editTextAddSubtask.setOnClickListener(v -> setStateExpanded());
         binding.editTextAddSubtask.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -286,6 +289,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void setupAddNote(){
+        binding.editTextTaskNote.setOnClickListener(v -> setStateExpanded());
         binding.editTextTaskNote.addTextChangedListener(new MyTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -305,9 +309,17 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         View bottomSheetInternal = getDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet);
         BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(screenHeight / 2);
+        int spaceAdded = (screenHeight - CONTENT_HEIGHT_DEFAULT) - getStatusBarHeight();
+        binding.extraSpace.setMinimumHeight(spaceAdded);
         //setSpaceAdded();
         BottomSheetBehavior.from(bottomSheetInternal).setFitToContents(false);
         BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+    private void setStateExpanded () {
+        // todo
+        View bottomSheetInternal = getDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     private void setSpaceAdded() {
