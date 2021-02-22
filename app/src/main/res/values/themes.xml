@@ -3,10 +3,11 @@
     <style name="Theme.EtudeTask" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/blue_grey_600</item>
-        <item name="colorPrimaryVariant">@color/blue_grey_dark</item>
-        <item name="colorPrimaryDark">@color/blue_grey_dark</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/blue_button</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorOnPrimary">@color/gray2</item>
+        <item name="android:windowLightStatusBar">true</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/amber_600</item>
         <item name="colorSecondaryVariant">@color/amber_dark</item>
