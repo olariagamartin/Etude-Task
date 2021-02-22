@@ -33,10 +33,10 @@ public class MyNotificationManager {
         NotificationCompat.Builder builder = new NotificationCompat.Builder
                 (context, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.ic_etude_notification)
-                .setColor(context.getResources().getColor(R.color.blue_grey_light))
+                .setColor(context.getResources().getColor(R.color.blue_button))
                 .setGroup(TASK_GROUP) // todo: group notifications
-                .setContentTitle(title)
-                .setContentText(detail)
+                .setContentTitle(title) // task title
+                .setContentText(detail) // subject title
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true);
 

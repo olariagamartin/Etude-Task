@@ -1,5 +1,6 @@
 package com.themarto.etudetask.utils;
 
+import com.themarto.etudetask.WorkManagerAlarm;
 import com.themarto.etudetask.models.Task;
 
 import java.text.SimpleDateFormat;
@@ -54,9 +55,9 @@ public class Util {
 
     public static Data saveNotificationData(String title, String details, String taskId){
         return new Data.Builder()
-                .putString("title", title)
-                .putString("detail", details)
-                .putString("task_id", taskId)
+                .putString(WorkManagerAlarm.DATA_KEY_TITLE, title)
+                .putString(WorkManagerAlarm.DATA_KEY_DETAIL, details)
+                .putString(WorkManagerAlarm.TASK_ID, taskId)
                 .build();
     }
 
