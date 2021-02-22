@@ -210,7 +210,11 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
 
     // Behavior methods
     private void setupTaskTitle(){
-        binding.editTextTaskTitle.setOnClickListener(v -> setStateExpanded());
+        binding.editTextTaskTitle.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus){
+                setStateExpanded();
+            }
+        });
         binding.editTextTaskTitle.addTextChangedListener(new MyTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -270,7 +274,11 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void setupAddSubtask(){
-        binding.editTextAddSubtask.setOnClickListener(v -> setStateExpanded());
+        binding.editTextAddSubtask.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                setStateExpanded();
+            }
+        });
         binding.editTextAddSubtask.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -289,7 +297,11 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void setupAddNote(){
-        binding.editTextTaskNote.setOnClickListener(v -> setStateExpanded());
+        binding.editTextTaskNote.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                setStateExpanded();
+            }
+        });
         binding.editTextTaskNote.addTextChangedListener(new MyTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -317,9 +329,10 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void setStateExpanded () {
-        // todo
         View bottomSheetInternal = getDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet);
-        BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_EXPANDED);
+        if (BottomSheetBehavior.from(bottomSheetInternal).getState() != BottomSheetBehavior.STATE_EXPANDED) {
+            BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
     }
 
     private void lunchDatePicker() {
