@@ -10,12 +10,13 @@ import android.os.Build;
 
 import com.themarto.etudetask.data.SubjectRepository;
 
+import java.util.UUID;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 public class MyNotificationManager {
 
-    public final static int NOTIFICATION_ID = 0;
     public final static String TASK_ID = "task_id";
     public final static String ACTION_TASK_DONE = "com.android.etudetask.ACTION_TASK_DONE";
     public final static String TASK_GROUP = "com.android.etudetask.TASK_GROUP";
@@ -34,7 +35,7 @@ public class MyNotificationManager {
                 (context, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.ic_etude_notification)
                 .setColor(context.getResources().getColor(R.color.blue_button))
-                .setGroup(TASK_GROUP) // todo: group notifications
+                //.setGroup(TASK_GROUP)
                 .setContentTitle(title) // task title
                 .setContentText(detail) // subject title
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -46,15 +47,15 @@ public class MyNotificationManager {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Set the intent that will fire when the user taps the notification
         builder.setContentIntent(pendingIntent);
 
         // Done button
         context.registerReceiver(new AlarmReceiver(),
-                new IntentFilter(ACTION_TASK_DONE));
-        Intent doneIntent = new Intent(ACTION_TASK_DONE);
+                new IntentFilter(ACTION_TASK_DONE + taskId));
+        Intent doneIntent = new Intent(ACTION_TASK_DONE + taskId);
         doneIntent.putExtra(TASK_ID, taskId);
         PendingIntent donePendingIntent = PendingIntent.getBroadcast(context,
                 0, doneIntent, PendingIntent.FLAG_ONE_SHOT);
@@ -66,7 +67,7 @@ public class MyNotificationManager {
                 .from(context);
 
         // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
+        notificationManager.notify(taskId.hashCode(), builder.build());
     }
 
     private void createNotificationChannel () {
@@ -92,7 +93,7 @@ public class MyNotificationManager {
 
                 SubjectRepository.setTaskDone(taskId);
 
-                NotificationManagerCompat.from(context).cancel(NOTIFICATION_ID);
+                NotificationManagerCompat.from(context).cancel(taskId.hashCode());
             }
         }
     }
