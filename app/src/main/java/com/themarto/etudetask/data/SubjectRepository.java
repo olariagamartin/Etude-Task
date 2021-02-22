@@ -42,8 +42,11 @@ public class SubjectRepository {
     }
 
     public void deleteSubject(Subject subject) {
+        int tasks = subject.getTaskList().size();
+        for(int i = 0; i < tasks; i++) {
+            deleteTask(subject.getTaskList().first());
+        }
         realm.beginTransaction();
-        subject.getTaskList().deleteAllFromRealm();
         subject.deleteFromRealm();
         realm.commitTransaction();
     }
@@ -82,11 +85,11 @@ public class SubjectRepository {
 
     public Task deleteTask(Task task) {
         realm.beginTransaction();
-        // todo: verify if deletedTask contains subtasks, remove notification
-        Task nTask = realm.copyToRealmOrUpdate(task);
-        Task deletedTask = realm.copyFromRealm(nTask);
-        nTask.getSubtasks().deleteAllFromRealm();
-        nTask.deleteFromRealm();
+        // todo: verify if deletedTask contains subtasks, remove notification string
+        Task manageTask = realm.where(Task.class).equalTo("id", task.getId()).findFirst();
+        Task deletedTask = realm.copyFromRealm(manageTask);
+        manageTask.getSubtasks().deleteAllFromRealm();
+        manageTask.deleteFromRealm();
         realm.commitTransaction();
         return deletedTask;
     }

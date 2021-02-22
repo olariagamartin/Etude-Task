@@ -496,7 +496,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         binding = null;
+        super.onDestroy();
     }
 }
