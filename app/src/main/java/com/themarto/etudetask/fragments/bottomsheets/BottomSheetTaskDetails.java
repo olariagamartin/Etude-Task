@@ -100,7 +100,6 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
             @Override
             public void onChanged(Task task) {
                 currentTask = task;
-                //setSpaceAdded();
                 setupViewsBehavior();
                 loadData();
             }
@@ -158,6 +157,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void loadDateAndTime() {
+        disableImageButton(binding.btnAddTaskTime);
         if (currentTask.getDate() != null) {
             binding.chipAddTaskDueDate.setVisibility(View.VISIBLE);
             binding.btnAddTaskDueDate.setVisibility(View.GONE);
