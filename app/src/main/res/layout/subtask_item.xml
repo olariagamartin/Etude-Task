@@ -24,7 +24,7 @@
             android:id="@+id/subtask_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="New subtask"
+            android:hint="Subtask title"
             android:inputType="textCapSentences"
             android:backgroundTint="@android:color/transparent"
             android:textColor="@color/gray2"

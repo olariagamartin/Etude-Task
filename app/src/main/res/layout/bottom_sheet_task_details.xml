@@ -78,6 +78,7 @@
                 android:inputType="textCapSentences"
                 android:background="@android:color/transparent"
                 android:text="My Task"
+                android:hint="Task title"
                 android:textColor="@color/gray2"
                 android:textSize="24sp" />
 
