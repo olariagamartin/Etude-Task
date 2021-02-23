@@ -83,6 +83,8 @@
                 android:layout_height="wrap_content"
                 android:text="Details"
                 android:textColor="@color/gray4"
+                android:linksClickable="true"
+                android:autoLink="web"
                 android:visibility="gone"/>
 
         </LinearLayout>

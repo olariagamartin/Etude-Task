@@ -75,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:inputType="textCapSentences"
+                android:inputType="textCapSentences|textMultiLine"
                 android:background="@android:color/transparent"
                 android:text="My Task"
                 android:hint="Task title"
@@ -242,7 +242,7 @@
                 android:paddingVertical="4dp"
                 android:layout_gravity="top"
                 android:textColor="@color/gray4"
-                android:inputType="textCapSentences"
+                android:inputType="textCapSentences|textMultiLine"
                 android:gravity="top"
                 android:hint="@string/add_note" />
 

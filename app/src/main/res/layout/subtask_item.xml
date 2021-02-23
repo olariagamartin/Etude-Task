@@ -25,7 +25,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Subtask title"
-            android:inputType="textCapSentences"
+            android:inputType="textCapSentences|textMultiLine"
             android:backgroundTint="@android:color/transparent"
             android:textColor="@color/gray2"
             android:textSize="16sp"
