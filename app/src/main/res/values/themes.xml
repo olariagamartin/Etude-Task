@@ -3,29 +3,21 @@
     <style name="Theme.EtudeTask" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryVariant">@color/blue_button</item>
+        <item name="colorPrimary">@color/blue_button</item>
+        <item name="colorPrimaryVariant">@color/blue_grey_600</item>
         <item name="colorPrimaryDark">@color/white</item>
         <item name="colorOnPrimary">@color/gray2</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/amber_600</item>
-        <item name="colorSecondaryVariant">@color/amber_dark</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/gray2</item>
+        <item name="colorSecondaryVariant">@color/gray3</item>
+        <item name="colorOnSecondary">@color/white</item>
 
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
 
         <item name="colorControlNormal">@color/black</item>
         <item name="android:actionMenuTextColor">@color/black</item>
 
-        <item name="colorControlNormal">@color/white</item>
-
-    </style>
-
-    <style name="timePicker">
-        <item name="colorPrimary">@color/blue_button</item>
-        <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurface">@color/black</item>
     </style>
 
     <style name="TextAppearance.App.CollapsingToolbar.Expanded" parent="TextAppearance.MaterialComponents.Headline5">
