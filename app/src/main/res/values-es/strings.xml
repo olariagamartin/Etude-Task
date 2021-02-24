@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EtudeTask</string>
+    <string name="subjects_app_bar_title">Asignaturas</string>
+    <string name="dialog_edit_subject_hint_title">Titulo</string>
+    <string name="dialog_edit_subject_choose_color_message">Elige un color</string>
+    <string name="dialog_add_subject_dialog_title">Nueva asignatura</string>
+    <string name="dialog_edit_subject_dialog_title">Editar</string>
+    <string name="text_button_cancel">Cancelar</string>
+    <string name="text_button_save">Guardar</string>
+    <string name="text_button_delete">Eliminar</string>
+    <string name="toast_message_title_empty">El título está vacio</string>
+    <string name="context_menu_subject_edit">Editar asignatura</string>
+    <string name="context_menu_subject_delete">Eliminar asignatura</string>
+    <string name="subject_item_task_count">%1$d de %2$d</string>
+    <string name="option_menu_tasks_title">Menú de opciones</string>
+    <string name="option_menu_tasks_edit_subject">Editar asignatura</string>
+    <string name="option_menu_tasks_delete_subject">Eliminar asignatura</string>
+    <string name="option_menu_tasks_delete_completed_tasks">Eliminar completas</string>
+    <string name="alert_dialog_confirmation_title">Alto ahí</string>
+    <string name="alert_dialog_delete_subject_message">La asignatura será eliminada</string>
+    <string name="toast_subject_deleted">Asignatura eliminada</string>
+    <string name="snackbar_completed_tasks_deleted">Tareas completadas eliminadas</string>
+    <string name="snackbar_undo_action">Deshacer</string>
+    <string name="snackbar_task_deleted_message">Tarea eliminada</string>
+    <string name="task_item_subtask_count">%1$d / %2$d</string>
+    <string name="date_format_today">Hoy</string>
+    <string name="date_format_yesterday">Ayer</string>
+    <string name="date_format_tomorrow">Mañana</string>
+    <string name="add_task_bottom_sheet_hint_task_title">Nueva tarea</string>
+    <string name="hint_add_note">Agregar nota</string>
+    <string name="flag_high">Alta</string>
+    <string name="flag_medium">Media</string>
+    <string name="flag_low">Baja</string>
+    <string name="flag_none">Ninguna</string>
+    <string name="task_details_task_title">Título</string>
+    <string name="hint_add_subtask">Agregar subtarea</string>
+    <string name="hint_subtask_title">Subtarea</string>
+    <string name="alert_dialog_delete_task_message">La tarea será eliminada</string>
+    <string name="add_subject_button_title">Agregar asignatura</string>
+    <string name="completed_tasks_count">Completadas (%1$d)</string>
+    <string name="notification_done_button">Listo</string>
+</resources>

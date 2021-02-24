@@ -1,30 +1,23 @@
 package com.themarto.etudetask.adapters;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.BlendMode;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.loopeer.shadow.ShadowView;
 import com.themarto.etudetask.R;
-import com.themarto.etudetask.utils.Util;
 import com.themarto.etudetask.models.Task;
+import com.themarto.etudetask.utils.Util;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.TextViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
@@ -32,6 +25,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private final List<Task> taskList;
 
     private final TaskListener listener;
+
+    private Context context;
 
     public TaskAdapter(List<Task> taskList, TaskListener listener) {
         this.taskList = taskList;
@@ -41,6 +36,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.task_item, parent, false);
         return new ViewHolder(view);
@@ -50,7 +46,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Task currentTask = taskList.get(position);
         holder.taskTitle.setText(currentTask.getTitle());
-        holder.taskDate.setText(currentTask.getDateStr());
+        holder.taskDate.setText(Util.getDateStr(currentTask.getDate(), context, currentTask.hasAlarm()));
         // configuring first and last item for correct shadow
         if (position == 0)
             holder.shadowView.setShadowMarginTop(30);
@@ -72,7 +68,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.layoutSubtaskCount.setVisibility(View.GONE);
         } else {
             holder.layoutSubtaskCount.setVisibility(View.VISIBLE);
-            String subtaskCount = "" + currentTask.subtaskDoneCount() + " / " + currentTask.getSubtasks().size();
+            String subtaskCount = context.getString(R.string.task_item_subtask_count,
+                    currentTask.subtaskDoneCount(), currentTask.getSubtasks().size());
             holder.textSubtaskCount.setText(subtaskCount);
         }
         if (!currentTask.getNote().isEmpty()) {

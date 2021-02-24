@@ -160,7 +160,7 @@ public class TasksFragment extends Fragment {
 
     private void showDialogEditSubject() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle("Edit");
+        builder.setTitle(R.string.dialog_edit_subject_dialog_title);
         View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_subject, null);
         EditText editTitle = editLayout.findViewById(R.id.edit_title_dialog);
         editTitle.setText(currentSubject.getTitle());
@@ -179,13 +179,13 @@ public class TasksFragment extends Fragment {
         RadioButton radioBtnChecked = colorPicker.findViewWithTag(radioBtnTag);
         colorPicker.check(radioBtnChecked.getId());
         builder.setView(editLayout)
-                .setPositiveButton("Save", (dialog, which) -> {
+                .setPositiveButton(R.string.text_button_save, (dialog, which) -> {
                     Subject updateSubject = new Subject(editTitle.getText().toString(), currentSubject.getTaskList());
                     updateSubject.setId(currentSubject.getId());
                     updateSubject.setColor(colorPicked[0]);
                     viewModel.updateSubject(updateSubject);
                 })
-                .setNegativeButton("Cancel", (dialog, which) -> {});
+                .setNegativeButton(R.string.text_button_cancel, (dialog, which) -> {});
 
         AlertDialog alertDialog = builder.create();
         alertDialog.setOnShowListener(dialog -> {
@@ -207,19 +207,19 @@ public class TasksFragment extends Fragment {
 
     public void showDialogDeleteSubject() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
-        alertDialogBuilder.setTitle("Are you sure?")
-                .setMessage("The subject will be deleted")
-                .setNegativeButton("Cancel", (dialog, which) -> { })
-                .setPositiveButton("Delete", (dialog, which) -> {
+        alertDialogBuilder.setTitle(R.string.alert_dialog_confirmation_title)
+                .setMessage(R.string.alert_dialog_delete_subject_message)
+                .setNegativeButton(R.string.text_button_cancel, (dialog, which) -> { })
+                .setPositiveButton(R.string.text_button_delete, (dialog, which) -> {
                     Navigation.findNavController(binding.getRoot()).navigateUp();
                     viewModel.deleteSubject();
-                    Toast.makeText(requireContext(), "Subject deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), R.string.toast_subject_deleted, Toast.LENGTH_SHORT).show();
                 }).show();
     }
 
     private void deleteCompletedTasks() {
         viewModel.deleteAllCompletedTasks();
-        Snackbar.make(binding.getRoot(), "Completed tasks deleted", Snackbar.LENGTH_SHORT)
+        Snackbar.make(binding.getRoot(), R.string.snackbar_completed_tasks_deleted, Snackbar.LENGTH_SHORT)
                 .show();
     }
 
@@ -260,9 +260,9 @@ public class TasksFragment extends Fragment {
     }
 
     private void showUndoSnackbar(Task deletedTask) {
-        Snackbar snackbar = Snackbar.make(binding.getRoot(), "Task deleted",
+        Snackbar snackbar = Snackbar.make(binding.getRoot(), R.string.snackbar_task_deleted_message,
                 Snackbar.LENGTH_LONG);
-        snackbar.setAction("Undo", v -> undoDelete(deletedTask));
+        snackbar.setAction(R.string.snackbar_undo_action, v -> undoDelete(deletedTask));
         snackbar.show();
     }
 

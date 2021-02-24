@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.adapters.SubjectAdapter;
 import com.themarto.etudetask.data.SharedViewModel;
@@ -60,17 +59,17 @@ public class SubjectFragment extends Fragment {
                 loadSubjects(subjects);
             }
         });
-        setupAppBar("Subjects");
+        setupAppBar();
         setHasOptionsMenu(true);
     }
 
-    private void setupAppBar(String title) {
+    private void setupAppBar() {
         AppCompatActivity activity = ((AppCompatActivity) requireActivity());
         activity.setSupportActionBar(binding.subjectToolbar);
         activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         activity.getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         TextView toolbarTitle = activity.getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(title);
+        toolbarTitle.setText(R.string.subjects_app_bar_title);
     }
 
     @Override
@@ -119,7 +118,7 @@ public class SubjectFragment extends Fragment {
 
     private void showDialogAddSubject() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle("New Subject");
+        builder.setTitle(R.string.dialog_add_subject_dialog_title);
         View newSubjectLayout = getLayoutInflater().inflate(R.layout.dialog_edit_subject, null);
         EditText subjectTitle = newSubjectLayout.findViewById(R.id.edit_title_dialog);
         subjectTitle.requestFocus(); // required for API 28+
@@ -133,15 +132,15 @@ public class SubjectFragment extends Fragment {
             subjectTitle.getBackground().setTint(colorPicked[0]);
         });
         builder.setView(newSubjectLayout);
-        builder.setPositiveButton("Save", (dialog, which) -> {
+        builder.setPositiveButton(R.string.text_button_save, (dialog, which) -> {
             String title = subjectTitle.getText().toString();
             if (!title.isEmpty()) {
                 saveSubject(title, colorPicked[0]);
             } else {
-                Toast.makeText(getContext(), "The name is empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.toast_message_title_empty, Toast.LENGTH_SHORT).show();
             }
         });
-        builder.setNegativeButton("Cancel", ((dialog, which) -> { }));
+        builder.setNegativeButton(R.string.text_button_cancel, ((dialog, which) -> { }));
         AlertDialog alertDialog = builder.create();
         // 1: avoid cut the view when keyboard appears, 2: make the keyboard appear
         alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
@@ -151,7 +150,7 @@ public class SubjectFragment extends Fragment {
 
     private void showDialogEditSubject(Subject subject) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle("Edit");
+        builder.setTitle(R.string.dialog_edit_subject_dialog_title);
         View editLayout = getLayoutInflater().inflate(R.layout.dialog_edit_subject, null);
         EditText editTitle = editLayout.findViewById(R.id.edit_title_dialog);
         editTitle.setText(subject.getTitle());
@@ -170,13 +169,13 @@ public class SubjectFragment extends Fragment {
         RadioButton radioBtnChecked = colorPicker.findViewWithTag(radioBtnTag);
         colorPicker.check(radioBtnChecked.getId());
         builder.setView(editLayout)
-                .setPositiveButton("Save", (dialog, which) -> {
+                .setPositiveButton(R.string.text_button_save, (dialog, which) -> {
                     Subject updateSubject = new Subject(editTitle.getText().toString(), subject.getTaskList());
                     updateSubject.setColor(colorPicked[0]);
                     updateSubject.setId(subject.getId());
                     viewModel.updateSubject(updateSubject);
                 })
-                .setNegativeButton("Cancel", (dialog, which) -> {});
+                .setNegativeButton(R.string.text_button_cancel, (dialog, which) -> {});
 
         AlertDialog alertDialog = builder.create();
         alertDialog.setOnShowListener(dialog -> {

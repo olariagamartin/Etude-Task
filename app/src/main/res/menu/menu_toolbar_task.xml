@@ -5,23 +5,23 @@
     <item
         android:icon="@drawable/ic_more"
         android:orderInCategory="100"
-        android:title="Option Menu"
+        android:title="@string/option_menu_tasks_title"
         app:showAsAction="always">
         <menu>
             <item
                 android:id="@+id/rename_subject"
                 android:icon="@drawable/ic_edit"
-                android:title="Edit Subject" />
+                android:title="@string/option_menu_tasks_edit_subject" />
 
             <item
                 android:id="@+id/delete_subject"
                 android:icon="@drawable/ic_delete_outline"
-                android:title="Delete Subject" />
+                android:title="@string/option_menu_tasks_delete_subject" />
 
             <item
                 android:id="@+id/delete_completed_tasks"
                 android:icon="@drawable/ic_list_check"
-                android:title="Delete All Completed" />
+                android:title="@string/option_menu_tasks_delete_completed_tasks" />
         </menu>
 
     </item>

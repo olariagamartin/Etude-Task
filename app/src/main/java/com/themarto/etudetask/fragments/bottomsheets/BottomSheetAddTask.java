@@ -178,7 +178,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         binding.chipAddTaskDueDate.setVisibility(View.VISIBLE);
         binding.btnAddTaskDueDate.setVisibility(View.GONE);
 
-        binding.chipAddTaskDueDate.setText(Util.getDateString(calendar.getTime()));
+        binding.chipAddTaskDueDate.setText(Util.getDateString(calendar.getTime(), requireContext()));
 
         enableImageButton(binding.btnAddTaskTime);
     }

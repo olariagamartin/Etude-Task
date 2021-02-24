@@ -1,5 +1,8 @@
 package com.themarto.etudetask.utils;
 
+import android.content.Context;
+
+import com.themarto.etudetask.R;
 import com.themarto.etudetask.WorkManagerAlarm;
 import com.themarto.etudetask.models.Task;
 
@@ -16,25 +19,42 @@ public class Util {
 
     public static final String SELECTED_SUBJECT_KEY = "SELECTED_SUBJECT";
 
+
+    public static String getDateStr(Date date, Context context, boolean hasTime) {
+        String strDate = "";
+        if (date != null){
+            if(hasTime) {
+                strDate = Util.getDateString(date, context) + ", " + Util.getTimeString(date);
+            } else{
+                strDate = Util.getDateString(date, context);
+            }
+        }
+        return strDate;
+    }
+
     /**
      * Return the date in format "Day, Month"
      * @param time the date to get day and month
      * @return formatted string
      */
-    public static String getDateString(Date time) {
+    public static String getDateString(Date time, Context context) {
         Calendar myTime = Calendar.getInstance();
         Calendar actual = Calendar.getInstance();
-        String strDate;
+        String strDate = "";
         myTime.setTime(time);
 
-        if(myTime.get(Calendar.DAY_OF_MONTH) == actual.get(Calendar.DAY_OF_MONTH)){
-            strDate = "Today";
-        } else if (myTime.get(Calendar.DAY_OF_MONTH) == actual.get(Calendar.DAY_OF_MONTH) - 1){
-            strDate = "Yesterday";
+        if (myTime.get(Calendar.MONTH) == actual.get(Calendar.MONTH)
+                && myTime.get(Calendar.YEAR) == actual.get(Calendar.YEAR)) {
+            if(myTime.get(Calendar.DAY_OF_MONTH) == actual.get(Calendar.DAY_OF_MONTH)){
+                strDate = context.getString(R.string.date_format_today);
+            } else if (myTime.get(Calendar.DAY_OF_MONTH) == actual.get(Calendar.DAY_OF_MONTH) - 1){
+                strDate = context.getString(R.string.date_format_yesterday);
+            }
+            else if(myTime.get(Calendar.DAY_OF_MONTH) == actual.get(Calendar.DAY_OF_MONTH) + 1){
+                strDate = context.getString(R.string.date_format_tomorrow);
+            }
         }
-        else if(myTime.get(Calendar.DAY_OF_MONTH) == actual.get(Calendar.DAY_OF_MONTH) + 1){
-            strDate = "Tomorrow";
-        } else {
+        else {
             SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM", Locale.getDefault());
             strDate = format.format(time);
         }

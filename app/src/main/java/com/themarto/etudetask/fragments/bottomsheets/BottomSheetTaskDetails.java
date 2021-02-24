@@ -161,7 +161,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         if (currentTask.getDate() != null) {
             binding.chipAddTaskDueDate.setVisibility(View.VISIBLE);
             binding.btnAddTaskDueDate.setVisibility(View.GONE);
-            binding.chipAddTaskDueDate.setText(Util.getDateString(currentTask.getDate()));
+            binding.chipAddTaskDueDate.setText(Util.getDateString(currentTask.getDate(), requireContext()));
             enableImageButton(binding.btnAddTaskTime);
             calendar.setTime(currentTask.getDate());
             if (currentTask.hasAlarm()) {
@@ -361,7 +361,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         binding.chipAddTaskDueDate.setVisibility(View.VISIBLE);
         binding.btnAddTaskDueDate.setVisibility(View.GONE);
 
-        binding.chipAddTaskDueDate.setText(Util.getDateString(calendar.getTime()));
+        binding.chipAddTaskDueDate.setText(Util.getDateString(calendar.getTime(), requireContext()));
 
         enableImageButton(binding.btnAddTaskTime);
 
@@ -410,10 +410,10 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
 
     private void showDialogDeleteTask() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
-        alertDialogBuilder.setTitle("Are you sure?")
-                .setMessage("The task will be deleted")
-                .setNegativeButton("Cancel", (dialog, which) -> { })
-                .setPositiveButton("Delete", (dialog, which) -> {
+        alertDialogBuilder.setTitle(R.string.alert_dialog_confirmation_title)
+                .setMessage(R.string.alert_dialog_delete_task_message)
+                .setNegativeButton(R.string.text_button_cancel, (dialog, which) -> { })
+                .setPositiveButton(R.string.text_button_delete, (dialog, which) -> {
                     isDeleted = true;
                     viewModel.deleteTask();
                     dismiss();

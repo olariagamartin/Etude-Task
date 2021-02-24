@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/flag_red"
         android:icon="@drawable/ic_flag_fill_red"
-        android:title="High" />
+        android:title="@string/flag_high" />
     <item android:id="@+id/flag_yellow"
         android:icon="@drawable/ic_flag_fill_yellow"
-        android:title="Medium" />
+        android:title="@string/flag_medium" />
     <item android:id="@+id/flag_blue"
         android:icon="@drawable/ic_flag_fill_blue"
-        android:title="Low" />
+        android:title="@string/flag_low" />
     <item android:id="@+id/flag_none"
         android:icon="@drawable/ic_flag_outline"
-        android:title="None" />
+        android:title="@string/flag_none" />
 
 </menu>

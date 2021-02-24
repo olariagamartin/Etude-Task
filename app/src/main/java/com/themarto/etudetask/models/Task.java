@@ -82,18 +82,6 @@ public class Task extends RealmObject {
         return count;
     }
 
-    public String getDateStr(){
-        String strDate = "";
-        if (date != null){
-            if(hasAlarm()) {
-                strDate = Util.getDateString(date) + ", " + Util.getTimeString(date);
-            } else{
-                strDate = Util.getDateString(date);
-            }
-        }
-        return strDate;
-    }
-
     public Date getDate() { return this.date; }
 
     public void setDate(Date date) {

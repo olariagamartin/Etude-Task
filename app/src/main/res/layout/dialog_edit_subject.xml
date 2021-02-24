@@ -10,7 +10,7 @@
         android:layout_marginVertical="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter title"
+        android:hint="@string/dialog_edit_subject_hint_title"
         android:inputType="textCapSentences|textMultiLine"
         android:backgroundTint="#EF9A9A"
         android:textColor="#EF9A9A"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="10dp"
-        android:text="Choose a color" />
+        android:text="@string/dialog_edit_subject_choose_color_message" />
 
 
     <HorizontalScrollView

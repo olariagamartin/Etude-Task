@@ -43,7 +43,8 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Subject currentSubject = subjectList.get(position);
         holder.subjectTitle.setText(currentSubject.getTitle());
-        String taskCount = currentSubject.getDoneSize() + " of " + currentSubject.getTaskList().size();
+        String taskCount = context.getString(R.string.subject_item_task_count,
+                currentSubject.getDoneSize(), currentSubject.getTaskList().size());
         holder.subjectCountSections.setText(taskCount);
         holder.subjectColor.getBackground().setTint(currentSubject.getColor());
     }
@@ -76,8 +77,8 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             menu.setHeaderTitle(subjectList.get(getAdapterPosition()).getTitle());
-            MenuItem editSubject = menu.add("Edit Subject");
-            MenuItem deleteSubject = menu.add("Delete Subject");
+            MenuItem editSubject = menu.add(R.string.context_menu_subject_edit);
+            MenuItem deleteSubject = menu.add(R.string.context_menu_subject_delete);
 
             editSubject.setOnMenuItemClickListener(item -> {
                 listener.onEditSubjectClick(getAdapterPosition());
