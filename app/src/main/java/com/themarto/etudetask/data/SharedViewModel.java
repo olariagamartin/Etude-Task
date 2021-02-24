@@ -113,7 +113,7 @@ public class SharedViewModel extends AndroidViewModel {
     }
 
     public void setTaskDone(Task task) {
-        removeNotificationsByTag(task.getAlarmStringId());
+        removeTaskNotifications(task);
         mRepository.setTaskDone(task);
         selectedSubject.setValue(selectedSubject.getValue());
     }

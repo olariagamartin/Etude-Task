@@ -85,8 +85,8 @@ public class SubjectRepository {
 
     public Task deleteTask(Task task) {
         realm.beginTransaction();
-        // todo: verify if deletedTask contains subtasks, remove notification string
         Task manageTask = realm.where(Task.class).equalTo("id", task.getId()).findFirst();
+        manageTask.setAlarmStringId("");
         Task deletedTask = realm.copyFromRealm(manageTask);
         manageTask.getSubtasks().deleteAllFromRealm();
         manageTask.deleteFromRealm();

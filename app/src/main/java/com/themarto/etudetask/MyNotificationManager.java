@@ -60,7 +60,7 @@ public class MyNotificationManager {
         PendingIntent donePendingIntent = PendingIntent.getBroadcast(context,
                 0, doneIntent, PendingIntent.FLAG_ONE_SHOT);
 
-        builder.addAction(R.drawable.ic_done, "Done", donePendingIntent);
+        builder.addAction(R.drawable.ic_done, context.getString(R.string.notification_done_button), donePendingIntent);
 
         // Show the notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat

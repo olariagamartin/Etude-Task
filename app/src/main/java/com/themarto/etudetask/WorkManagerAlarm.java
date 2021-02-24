@@ -42,9 +42,10 @@ public class WorkManagerAlarm extends Worker {
         return Result.success();
     }
 
-    public static String saveAlarm(long duration, Data data, String tag, Context context){
+    public static String saveAlarm(long duration, Data data, String taskId, String subjectId, Context context){
         OneTimeWorkRequest alarm = new OneTimeWorkRequest.Builder(WorkManagerAlarm.class)
-                .setInitialDelay(duration, TimeUnit.MILLISECONDS).addTag(tag)
+                .setInitialDelay(duration, TimeUnit.MILLISECONDS)
+                .addTag(taskId).addTag(subjectId)
                 .setInputData(data).build();
         String alarmStringId = alarm.getId().toString();
         WorkManager instance = WorkManager.getInstance(context);

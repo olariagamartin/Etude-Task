@@ -315,7 +315,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             Data data = Util.saveNotificationData(notificationTitle, notificationDetail, task.getId());
 
             String alarmStringId = WorkManagerAlarm
-                    .saveAlarm(alertTime, data, subject.getId(), requireContext());
+                    .saveAlarm(alertTime, data,task.getId(), subject.getId(), requireContext());
 
             task.setAlarmStringId(alarmStringId);
         }
