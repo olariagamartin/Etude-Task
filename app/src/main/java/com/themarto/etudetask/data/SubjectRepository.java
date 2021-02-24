@@ -94,6 +94,12 @@ public class SubjectRepository {
         return deletedTask;
     }
 
+    public Task getTask(String taskId) {
+        Task task = realm.where(Task.class).equalTo("id", taskId).findFirst();
+        Task unmanagedTask = realm.copyFromRealm(task);
+        return unmanagedTask;
+    }
+
     public Subject deleteAllCompletedTasks(Subject subject) {
         List<Task> doneTasks = new ArrayList<>();
         for (Task task : subject.getTaskList()) {

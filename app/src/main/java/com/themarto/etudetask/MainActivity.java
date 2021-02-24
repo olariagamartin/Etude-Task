@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.themarto.etudetask.data.SharedViewModel;
 import com.themarto.etudetask.databinding.ActivityMainBinding;
+import com.themarto.etudetask.fragments.bottomsheets.BottomSheetTaskDetails;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
@@ -22,6 +23,14 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         viewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
+        if (getIntent().getExtras() != null) {
+            String taskId = getIntent().getExtras().getString("task_id", "");
+            if (!taskId.equals("")) {
+                viewModel.selectTask(taskId);
+                BottomSheetTaskDetails taskDetails = new BottomSheetTaskDetails();
+                taskDetails.show(getSupportFragmentManager(), taskDetails.getTag());
+            }
+        }
     }
 
     @Override

@@ -47,6 +47,11 @@ public class SharedViewModel extends AndroidViewModel {
         selectedTask.setValue(unmanagedTask);
     }
 
+    public void selectTask(String taskId) {
+        Task unmanagedTask = mRepository.getTask(taskId);
+        selectedTask.setValue(unmanagedTask);
+    }
+
     public LiveData<Task> getSelectedTask() {
         return selectedTask;
     }
