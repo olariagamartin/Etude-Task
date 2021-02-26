@@ -130,7 +130,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
 
     // Load Data Methods
     private void loadSubject(Subject subject){
-        // todo: setup color
+        binding.subjectColorTaskDetails.getBackground().setTint(subject.getColor());
         binding.textSubjectTitle.setText(subject.getTitle());
     }
 
