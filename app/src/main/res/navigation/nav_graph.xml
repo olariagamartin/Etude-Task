@@ -23,4 +23,9 @@
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@anim/to_right" />
     </fragment>
+    <fragment
+        android:id="@+id/timelineFragment"
+        android:name="com.themarto.etudetask.fragments.TimelineFragment"
+        android:label="fragment_timeline"
+        tools:layout="@layout/fragment_timeline" />
 </navigation>

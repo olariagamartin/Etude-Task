@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">EtudeTask</string>
     <string name="subjects_app_bar_title">Subjects</string>
+    <string name="timeline_app_bar_title">Timeline</string>
     <string name="dialog_edit_subject_hint_title">Enter title</string>
     <string name="dialog_edit_subject_choose_color_message">Choose a color</string>
     <string name="dialog_add_subject_dialog_title">New subject</string>

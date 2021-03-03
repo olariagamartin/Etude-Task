@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/subjects"
+        android:id="@+id/subjectFragment"
         android:icon="@drawable/ic_list"
         android:title="@string/bottom_nav_menu_subjects_item" />
 
     <item
-        android:id="@+id/timeline"
+        android:id="@+id/timelineFragment"
         android:icon="@drawable/ic_calendar_check"
         android:title="@string/bottom_nav_menu_timeline_item" />
 
     <item
-        android:id="@+id/settings"
+        android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings"
         android:title="@string/bottom_nav_view_settings_item" />
 </menu>
