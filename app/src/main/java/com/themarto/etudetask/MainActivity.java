@@ -1,12 +1,16 @@
 package com.themarto.etudetask;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
 
 import com.themarto.etudetask.data.SharedViewModel;
 import com.themarto.etudetask.databinding.ActivityMainBinding;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetTaskDetails;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
