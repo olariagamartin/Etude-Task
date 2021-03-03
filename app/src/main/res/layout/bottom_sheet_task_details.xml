@@ -113,7 +113,7 @@
                 android:background="@android:color/transparent"
                 android:tint="@color/gray4"
                 android:padding="8dp"
-                android:src="@drawable/ic_calendar_check" />
+                android:src="@drawable/ic_add_date" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_add_task_due_date"
@@ -125,7 +125,7 @@
                 android:textColor="@color/blue_button"
                 android:visibility="gone"
                 app:chipBackgroundColor="@color/white"
-                app:chipIcon="@drawable/ic_calendar_check"
+                app:chipIcon="@drawable/ic_add_date"
                 app:chipIconTint="@color/blue_button"
                 app:chipStrokeWidth="0.5dp"
                 app:closeIconTint="@color/gray3"
