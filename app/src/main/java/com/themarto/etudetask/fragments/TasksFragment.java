@@ -1,5 +1,6 @@
     package com.themarto.etudetask.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import com.themarto.etudetask.MainActivity;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetTaskDetails;
 import com.themarto.etudetask.models.Subject;
@@ -77,6 +79,18 @@ public class TasksFragment extends Fragment {
         });
         setupFAB();
 
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        ((MainActivity)requireActivity()).hideBottomNavView();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity)requireActivity()).showBottomNavView();
     }
 
     private void setToolbarBehavior(){

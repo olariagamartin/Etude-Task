@@ -39,5 +39,8 @@
     <string name="add_subject_button_title">Add subject</string>
     <string name="completed_tasks_count">Completed (%1$d)</string>
     <string name="notification_done_button">Done</string>
+    <string name="bottom_nav_menu_subjects_item">Subjects</string>
+    <string name="bottom_nav_menu_timeline_item">Timeline</string>
+    <string name="bottom_nav_view_settings_item">Settings</string>
 
 </resources>

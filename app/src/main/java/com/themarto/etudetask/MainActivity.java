@@ -33,6 +33,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void hideBottomNavView () {
+        binding.bottomNavView.setVisibility(View.GONE);
+    }
+
+    public void showBottomNavView () {
+        binding.bottomNavView.setVisibility(View.VISIBLE);
+    }
+
     @Override
     protected void onDestroy() {
         viewModel.closeDB();
