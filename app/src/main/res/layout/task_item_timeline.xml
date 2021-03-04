@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.loopeer.shadow.ShadowView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/shadowView"
+    app:cornerRadius="15dp"
+    app:shadowMarginBottom="4dp"
+    app:shadowMarginTop="4dp"
+    app:shadowMarginLeft="10dp"
+    app:shadowMarginRight="10dp"
+    app:shadowRadius="15dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_checkbox_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginVertical="5dp"
+            android:src="@drawable/ic_checkmark_circle"
+            android:background="@android:color/transparent"
+            android:tint="@color/gray3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginVertical="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayoutDateAndFlag"
+            app:layout_constraintStart_toEndOf="@+id/btn_checkbox_task"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/taskTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray2"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Title" />
+
+            <LinearLayout
+                android:id="@+id/layoutSubtaskCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginEnd="10dp"
+                android:layout_marginVertical="4dp"
+                android:visibility="visible">
+
+                <com.loopeer.shadow.ShadowView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cornerRadius="4dp"
+                    app:backgroundColor="@color/subject_red"
+                    android:paddingHorizontal="4dp"
+                    android:layout_marginEnd="10dp">
+                    <TextView
+                        android:id="@+id/task_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:linksClickable="true"
+                        android:visibility="visible"
+                        android:text="Math"/>
+
+                </com.loopeer.shadow.ShadowView>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    app:srcCompat="@drawable/ic_sub_right"
+                    app:tint="@color/gray4" />
+
+                <TextView
+                    android:id="@+id/textSubtaskCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:textColor="@color/gray4"
+                    android:textSize="12sp"
+                    android:text="1 / 3"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/taskNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray4"
+                android:linksClickable="true"
+                android:autoLink="web"
+                android:visibility="visible"
+                android:text="This is a note bro"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutDateAndFlag"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginVertical="5dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/taskDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blue_button"
+                android:textSize="14sp"
+                android:text="14:30"
+                android:layout_marginVertical="5dp"/>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/task_flag_item"
+            android:layout_width="22dp"
+            android:layout_height="5dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginHorizontal="16dp"
+            android:visibility="visible"
+            android:layout_gravity="end"
+            android:background="@drawable/subject_color"
+            android:backgroundTint="@color/amber_600"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.loopeer.shadow.ShadowView>
