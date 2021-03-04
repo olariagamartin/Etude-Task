@@ -126,7 +126,7 @@ public class TasksFragment extends Fragment {
 
     private void setupFAB(){
         binding.fabAddTask.setOnClickListener(v -> showBottomSheetAddTask());
-        binding.nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+        binding.nestedScrollViewTasks.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if ((scrollY - oldScrollY) > 0 && binding.fabAddTask.getVisibility() == View.VISIBLE) {

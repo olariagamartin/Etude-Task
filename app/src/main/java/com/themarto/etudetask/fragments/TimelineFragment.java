@@ -40,6 +40,7 @@ public class TimelineFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupAppBar();
+        setupHeaderTitles();
     }
 
     private void setupAppBar() {
@@ -49,5 +50,11 @@ public class TimelineFragment extends Fragment {
         activity.getSupportActionBar().setCustomView(R.layout.custom_toolbar);
         TextView toolbarTitle = activity.getSupportActionBar().getCustomView().findViewById(R.id.toolbar_title);
         toolbarTitle.setText(R.string.timeline_app_bar_title);
+    }
+
+    private void setupHeaderTitles () {
+        binding.headerToday.textHeaderToday.setText(R.string.timeline_list_header_text_today);
+        binding.headerTomorrow.textHeaderToday.setText(R.string.timeline_list_header_text_tomorrow);
+        binding.headerUpcoming.textHeaderToday.setText(R.string.timeline_list_header_text_upcoming);
     }
 }

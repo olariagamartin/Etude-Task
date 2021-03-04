@@ -43,5 +43,8 @@
     <string name="bottom_nav_menu_subjects_item">Subjects</string>
     <string name="bottom_nav_menu_timeline_item">Timeline</string>
     <string name="bottom_nav_view_settings_item">Settings</string>
+    <string name="timeline_list_header_text_today">Today</string>
+    <string name="timeline_list_header_text_tomorrow">Tomorrow</string>
+    <string name="timeline_list_header_text_upcoming">Upcoming</string>
 
 </resources>
