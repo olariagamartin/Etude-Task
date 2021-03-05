@@ -4,6 +4,7 @@ import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.realm.Realm;
@@ -26,6 +27,17 @@ public class SubjectRepository {
 
     public List<Subject> getAllSubjects() {
         return subjects;
+    }
+
+    public List<Task> getTodayTaskList () {
+        Calendar startOfDay = Calendar.getInstance();
+        Calendar endOfDay = Calendar.getInstance();
+        startOfDay.set(Calendar.HOUR_OF_DAY, 0);
+        startOfDay.set(Calendar.MINUTE, 0);
+        startOfDay.set(Calendar.SECOND, 0);
+        endOfDay.setTime(startOfDay.getTime());
+        endOfDay.set(Calendar.DAY_OF_MONTH, startOfDay.get(Calendar.DAY_OF_MONTH) + 1);
+        return realm.where(Task.class).between("date", startOfDay.getTime(), endOfDay.getTime()).findAll();
     }
 
     public void addSubject(Subject subject) {

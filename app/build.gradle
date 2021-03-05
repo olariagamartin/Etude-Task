@@ -44,7 +44,7 @@ dependencies {
 
     implementation "androidx.work:work-runtime:2.4.0"
 
-    implementation 'com.loopeer.lib:shadow:0.0.4-beta3'
+    implementation project(":shadow")
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'

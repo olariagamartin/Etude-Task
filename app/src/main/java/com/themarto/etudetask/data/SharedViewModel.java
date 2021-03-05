@@ -18,6 +18,7 @@ public class SharedViewModel extends AndroidViewModel {
     private MutableLiveData<List<Subject>> subjects;
     private MutableLiveData<Subject> selectedSubject = new MutableLiveData<>();
     private MutableLiveData<Task> selectedTask = new MutableLiveData<>();
+    private MutableLiveData<List<Task>> todayTaskList = new MutableLiveData<>();
 
     public SharedViewModel(Application application) {
         super(application);
@@ -28,6 +29,13 @@ public class SharedViewModel extends AndroidViewModel {
 
     public LiveData<List<Subject>> getAllSubjects() {
         return subjects;
+    }
+
+    public LiveData<List<Task>> getTodayTaskList () {
+        if (todayTaskList.getValue() == null) {
+            todayTaskList.setValue(mRepository.getTodayTaskList());
+        }
+        return todayTaskList;
     }
 
     public void loadSubjects() {

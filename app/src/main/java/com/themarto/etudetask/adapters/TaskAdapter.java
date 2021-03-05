@@ -9,10 +9,10 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.loopeer.shadow.ShadowView;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.models.Task;
 import com.themarto.etudetask.utils.Util;
+import com.themarto.shadow.ShadowView;
 
 import java.util.List;
 
