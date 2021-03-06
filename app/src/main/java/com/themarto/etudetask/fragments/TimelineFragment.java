@@ -92,7 +92,10 @@ public class TimelineFragment extends Fragment {
         return new TaskAdapter.TaskListener() {
             @Override
             public void onItemClick(Task task) {
-                Toast.makeText(requireContext(), "Item click", Toast.LENGTH_SHORT).show();
+                // todo: update
+                viewModel.selectTask(task);
+                BottomSheetTaskDetails taskDetails = new BottomSheetTaskDetails();
+                taskDetails.show(getParentFragmentManager(), taskDetails.getTag());
             }
 
             @Override
@@ -107,5 +110,10 @@ public class TimelineFragment extends Fragment {
         };
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 
 }
