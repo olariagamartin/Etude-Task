@@ -46,29 +46,12 @@ public class TaskTimelineAdapter extends RecyclerView.Adapter<TaskTimelineAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // TODO: set if is done
+        // todo: check performance
         Task currentTask = taskList.get(position);
         holder.taskTitle.setText(currentTask.getTitle());
-        if (showDate) {
-            holder.taskDate.setText(Util.getDateString(currentTask.getDate(), context));
-        } else {
-            if (currentTask.hasAlarm()) {
-                holder.taskDate.setText(Util.getTimeString(currentTask.getDate()));
-            }
-        }
-        // configuring first and last item for correct shadow
-        if (position == 0)
-            holder.shadowView.setShadowMarginTop(30);
-        if (position == getItemCount() - 1)
-            holder.shadowView.setShadowMarginBottom(30);
-
-        // if hasn't flag, the flag color doesn't appear
-        if (currentTask.getFlagColor().equals(Util.FlagColors.NONE)) {
-            holder.taskFlag.setVisibility(View.INVISIBLE);
-        } else { // set the color saved for the flag
-            holder.taskFlag.setVisibility(View.VISIBLE);
-            holder.taskFlag.getBackground().setTint(Color.parseColor(currentTask.getFlagColor()));
-        }
+        holder.taskSubject.setText(currentTask.getSubject().getTitle());
+        holder.taskSubjectBackground.setBackgroundClr(currentTask.getSubject().getColor());
+        // subtask count
         if (currentTask.getSubtasks().isEmpty()) {
             holder.layoutSubtaskCount.setVisibility(View.GONE);
         } else {
@@ -77,12 +60,31 @@ public class TaskTimelineAdapter extends RecyclerView.Adapter<TaskTimelineAdapte
                     currentTask.subtaskDoneCount(), currentTask.getSubtasks().size());
             holder.textSubtaskCount.setText(subtaskCount);
         }
+        if (showDate) {
+            holder.taskDate.setText(Util.getDateString(currentTask.getDate(), context));
+        } else {
+            if (currentTask.hasAlarm()) {
+                holder.taskDate.setText(Util.getTimeString(currentTask.getDate()));
+            }
+        }
+        // if hasn't flag, the flag color doesn't appear
+        if (currentTask.getFlagColor().equals(Util.FlagColors.NONE)) {
+            holder.taskFlag.setVisibility(View.INVISIBLE);
+        } else { // set the color saved for the flag
+            holder.taskFlag.setVisibility(View.VISIBLE);
+            holder.taskFlag.getBackground().setTint(Color.parseColor(currentTask.getFlagColor()));
+        }
         if (!currentTask.getNote().isEmpty()) {
             holder.taskNote.setVisibility(View.VISIBLE);
             holder.taskNote.setText(currentTask.getNote());
         }
-        holder.taskSubject.setText(currentTask.getSubject().getTitle());
-        holder.taskSubjectBackground.setBackgroundClr(currentTask.getSubject().getColor());
+
+
+        // configuring first and last item for correct shadow
+        if (position == 0)
+            holder.shadowView.setShadowMarginTop(30);
+        if (position == getItemCount() - 1)
+            holder.shadowView.setShadowMarginBottom(30);
     }
 
     @Override
@@ -90,7 +92,7 @@ public class TaskTimelineAdapter extends RecyclerView.Adapter<TaskTimelineAdapte
         return taskList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageButton btnTaskDone;
         TextView taskTitle;

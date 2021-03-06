@@ -30,7 +30,7 @@
             android:text="Repaso"
             android:layout_gravity="center"
             android:textColor="@color/gray3"
-            android:textSize="15sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

@@ -222,11 +222,11 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
             }
         });
         if (currentTask.isDone()) {
-            binding.editTextTaskTitle.setTextColor(getResources().getColor(R.color.gray3));
+            binding.editTextTaskTitle.setTextColor(getResources().getColor(R.color.gray3, requireContext().getTheme()));
             binding.editTextTaskTitle.setPaintFlags(
                     binding.editTextTaskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
-            binding.editTextTaskTitle.setTextColor(getResources().getColor(R.color.gray2));
+            binding.editTextTaskTitle.setTextColor(getResources().getColor(R.color.gray2, requireContext().getTheme()));
             binding.editTextTaskTitle.setPaintFlags(binding.editTextTaskTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }
     }
