@@ -23,6 +23,7 @@
     <string name="snackbar_completed_tasks_deleted">Completed tasks deleted</string>
     <string name="snackbar_undo_action">Undo</string>
     <string name="snackbar_task_deleted_message">Task deleted</string>
+    <string name="snackbar_task_done_message">Task done</string>
     <string name="task_item_subtask_count">%1$d / %2$d</string>
     <string name="date_format_today">Today</string>
     <string name="date_format_yesterday">Yesterday</string>

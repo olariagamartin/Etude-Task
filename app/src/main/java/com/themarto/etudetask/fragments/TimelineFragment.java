@@ -1,6 +1,5 @@
 package com.themarto.etudetask.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +11,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.ChangeBounds;
+import androidx.transition.TransitionManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.adapters.TaskAdapter;
 import com.themarto.etudetask.adapters.TaskTimelineAdapter;
@@ -100,7 +102,9 @@ public class TimelineFragment extends Fragment {
 
             @Override
             public void onTaskChecked(Task task) {
-                Toast.makeText(requireContext(), "Task checked", Toast.LENGTH_SHORT).show();
+                TransitionManager.beginDelayedTransition(binding.getRoot(), new ChangeBounds());
+                Task doneTask = viewModel.setTaskDone(task);
+                showUndoDoneSnackbar(doneTask);
             }
 
             @Override
@@ -108,6 +112,18 @@ public class TimelineFragment extends Fragment {
                 Toast.makeText(requireContext(), "task deleted", Toast.LENGTH_SHORT).show();
             }
         };
+    }
+
+    private void showUndoDoneSnackbar(Task doneTask) {
+        Snackbar snackbar = Snackbar.make(binding.getRoot(), R.string.snackbar_task_done_message,
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snackbar_undo_action, v -> undoDone(doneTask));
+        snackbar.show();
+    }
+
+    private void undoDone(Task doneTask) {
+        TransitionManager.beginDelayedTransition(binding.todayTasks, new ChangeBounds());
+        viewModel.setTaskUndone(doneTask);
     }
 
     @Override

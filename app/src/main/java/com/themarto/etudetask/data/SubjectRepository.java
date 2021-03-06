@@ -124,11 +124,12 @@ public class SubjectRepository {
         return subject;
     }
 
-    public void setTaskDone(Task task) {
+    public Task setTaskDone(Task task) {
         realm.beginTransaction();
         task.setDone(true);
         task.setAlarmStringId("");
         realm.commitTransaction();
+        return task;
     }
 
     public static void setTaskDone(String taskId) {

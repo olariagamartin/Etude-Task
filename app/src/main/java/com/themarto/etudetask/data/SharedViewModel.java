@@ -127,15 +127,18 @@ public class SharedViewModel extends AndroidViewModel {
         return deletedTask;
     }
 
-    public void setTaskDone(Task task) {
+    public Task setTaskDone(Task task) {
         removeTaskNotifications(task);
-        mRepository.setTaskDone(task);
+        Task doneTask = mRepository.setTaskDone(task);
         selectedSubject.setValue(selectedSubject.getValue());
+        todayTaskList.setValue(todayTaskList.getValue());
+        return doneTask;
     }
 
     public void setTaskUndone(Task task) {
         mRepository.setTaskUndone(task);
         selectedSubject.setValue(selectedSubject.getValue());
+        todayTaskList.setValue(todayTaskList.getValue());
     }
 
     private void removeTaskNotifications(Task task) {
