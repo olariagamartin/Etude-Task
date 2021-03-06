@@ -23,6 +23,7 @@ import com.themarto.etudetask.adapters.TaskAdapter;
 import com.themarto.etudetask.adapters.TaskTimelineAdapter;
 import com.themarto.etudetask.data.SharedViewModel;
 import com.themarto.etudetask.databinding.FragmentTimelineBinding;
+import com.themarto.etudetask.fragments.bottomsheets.BottomSheetTaskDetails;
 import com.themarto.etudetask.models.Task;
 
 import java.util.List;

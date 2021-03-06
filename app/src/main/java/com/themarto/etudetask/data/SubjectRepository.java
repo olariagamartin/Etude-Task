@@ -38,7 +38,7 @@ public class SubjectRepository {
         endOfDay.setTime(startOfDay.getTime());
         endOfDay.set(Calendar.DAY_OF_MONTH, startOfDay.get(Calendar.DAY_OF_MONTH) + 1);
         return realm.where(Task.class).between("date", startOfDay.getTime(), endOfDay.getTime())
-                .and().equalTo("done", true).findAll();
+                .and().equalTo("done", false).findAll();
     }
 
     public void addSubject(Subject subject) {
