@@ -1,5 +1,6 @@
 package com.themarto.etudetask.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -92,7 +93,6 @@ public class TimelineFragment extends Fragment {
         return new TaskAdapter.TaskListener() {
             @Override
             public void onItemClick(Task task) {
-                // todo: update
                 viewModel.selectTask(task);
                 BottomSheetTaskDetails taskDetails = new BottomSheetTaskDetails();
                 taskDetails.show(getParentFragmentManager(), taskDetails.getTag());

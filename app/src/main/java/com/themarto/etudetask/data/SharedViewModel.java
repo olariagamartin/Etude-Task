@@ -104,7 +104,9 @@ public class SharedViewModel extends AndroidViewModel {
 
     public void commitTaskChanges(){
         mRepository.updateTask(selectedTask.getValue());
+        // todo: find a better way to update screen
         selectedSubject.setValue(selectedSubject.getValue());
+        todayTaskList.setValue(todayTaskList.getValue());
     }
 
     public void deleteTask() {
