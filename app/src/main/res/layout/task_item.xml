@@ -12,7 +12,9 @@
     app:shadowMarginRight="10dp"
     app:shadowRadius="15dp"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:foregroundColor="@color/gray1">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
