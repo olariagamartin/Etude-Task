@@ -36,13 +36,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.ChangeBounds;
@@ -254,9 +252,17 @@ public class TasksFragment extends Fragment {
         return new TaskAdapter.TaskListener() {
             @Override
             public void onItemClick(Task task) {
-                viewModel.selectTask(task);
+                /*viewModel.selectTask(task);
                 BottomSheetTaskDetails taskDetails = new BottomSheetTaskDetails();
-                taskDetails.show(getParentFragmentManager(), taskDetails.getTag());
+                taskDetails.show(getParentFragmentManager(), taskDetails.getTag());*/
+                BottomSheetTaskDetails fragment = BottomSheetTaskDetails.newInstance(task.getId());
+                fragment.setListener(new BottomSheetTaskDetails.Listener() {
+                    @Override
+                    public void onPause() {
+                        viewModel.loadSubject();
+                    }
+                });
+                fragment.show(getParentFragmentManager(), fragment.getTag());
             }
 
             @Override

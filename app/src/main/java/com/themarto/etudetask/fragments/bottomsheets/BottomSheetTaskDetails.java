@@ -30,6 +30,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.WorkManagerAlarm;
 import com.themarto.etudetask.adapters.SubtaskAdapter;
+import com.themarto.etudetask.data.DetailsViewModel;
 import com.themarto.etudetask.data.SharedViewModel;
 import com.themarto.etudetask.databinding.BottomSheetTaskDetailsBinding;
 import com.themarto.etudetask.models.Subject;
@@ -59,18 +60,33 @@ import androidx.work.WorkManager;
 
 public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
 
-    private BottomSheetTaskDetailsBinding binding;
-    private SharedViewModel viewModel;
+    private static final String ARG_TASK_ID = "TASK_ID";
+    private String task_id;
     private Task currentTask;
+    private Listener listener;
+
+    private BottomSheetTaskDetailsBinding binding;
+    private DetailsViewModel viewModel;
     private boolean isDeleted = false;
     private Calendar actual;
     private Calendar calendar = Calendar.getInstance();
     private final int CONTENT_HEIGHT_DEFAULT = 762;
 
+    public static BottomSheetTaskDetails newInstance (String taskId) {
+        BottomSheetTaskDetails fragment = new BottomSheetTaskDetails();
+        Bundle args = new Bundle();
+        args.putString(ARG_TASK_ID, taskId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NORMAL, R.style.BottomSheetDialogTheme);
+        if (getArguments() != null) {
+            task_id = getArguments().getString(ARG_TASK_ID);
+        }
     }
 
     @NonNull
@@ -83,7 +99,8 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = BottomSheetTaskDetailsBinding.inflate(inflater, container, false);
-        viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(DetailsViewModel.class);
+        viewModel.loadTask(task_id);
         getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
@@ -96,7 +113,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel.getSelectedTask().observe(getViewLifecycleOwner(), new Observer<Task>() {
+        viewModel.getTask().observe(getViewLifecycleOwner(), new Observer<Task>() {
             @Override
             public void onChanged(Task task) {
                 currentTask = task;
@@ -470,7 +487,8 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
         if (alertTime > 0) {
             String notificationTitle = task.getTitle();
-            Subject subject = viewModel.getSelectedSubject().getValue();
+            //Subject subject = viewModel.getSelectedSubject().getValue();
+            Subject subject = task.getSubject();
             String notificationDetail = subject.getTitle();
             Data data = Util.saveNotificationData(notificationTitle, notificationDetail, task.getId());
 
@@ -499,12 +517,23 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         return result;
     }
 
+    public void setListener (Listener listener) {
+        this.listener = listener;
+    }
+
     @Override
     public void onPause() {
         super.onPause();
         if(!isDeleted) {
             viewModel.commitTaskChanges();
         }
+        if (listener != null) {
+            listener.onPause();
+        }
+    }
+
+    public interface Listener {
+        void onPause();
     }
 
     @Override
