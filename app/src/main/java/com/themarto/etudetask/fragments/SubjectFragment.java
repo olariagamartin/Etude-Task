@@ -29,6 +29,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
@@ -97,9 +98,9 @@ public class SubjectFragment extends Fragment {
     private SubjectAdapter.SubjectListener getSubjectActions() {
         return new SubjectAdapter.SubjectListener() {
             @Override
-            public void onItemClick(int position) {
-                viewModel.selectSubject(position);
-                NavDirections action = SubjectFragmentDirections.actionSubjectFragmentToTasksFragment();
+            public void onItemClick(Subject subject) {
+                NavDirections action = SubjectFragmentDirections
+                        .actionSubjectFragmentToTasksFragment(subject.getId());
                 Navigation.findNavController(binding.getRoot()).navigate(action);
             }
 

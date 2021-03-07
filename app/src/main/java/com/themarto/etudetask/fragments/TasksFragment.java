@@ -18,6 +18,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.MainActivity;
 import com.themarto.etudetask.R;
+import com.themarto.etudetask.data.SubjectViewModel;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetTaskDetails;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
@@ -48,10 +49,19 @@ import androidx.transition.TransitionManager;
 
 public class TasksFragment extends Fragment {
 
-    private FragmentTasksBinding binding;
-    private SharedViewModel viewModel;
+    private String subject_id;
     private Subject currentSubject;
-    MyItemTouchHelper itemTouchHelper;
+
+    private boolean isDeleted = false;
+    private FragmentTasksBinding binding;
+    private SubjectViewModel viewModel;
+    private MyItemTouchHelper itemTouchHelper;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        subject_id = TasksFragmentArgs.fromBundle(getArguments()).getSubjectId();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,8 +74,9 @@ public class TasksFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         itemTouchHelper = new MyItemTouchHelper();
-        viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
-        viewModel.getSelectedSubject().observe(getViewLifecycleOwner(), new Observer<Subject>() {
+        viewModel = ViewModelProviders.of(this).get(SubjectViewModel.class);
+        viewModel.loadSubject(subject_id);
+        viewModel.getSubject().observe(getViewLifecycleOwner(), new Observer<Subject>() {
             @Override
             public void onChanged(Subject subject) {
                 currentSubject = subject;
@@ -141,10 +152,6 @@ public class TasksFragment extends Fragment {
         binding.tasksDoneText.setText(completedTasksCount);
     }
 
-    private void setViewBehavior() {
-
-    }
-
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_toolbar_task, menu);
@@ -192,10 +199,9 @@ public class TasksFragment extends Fragment {
         colorPicker.check(radioBtnChecked.getId());
         builder.setView(editLayout)
                 .setPositiveButton(R.string.text_button_save, (dialog, which) -> {
-                    Subject updateSubject = new Subject(editTitle.getText().toString(), currentSubject.getTaskList());
-                    updateSubject.setId(currentSubject.getId());
-                    updateSubject.setColor(colorPicked[0]);
-                    viewModel.updateSubject(updateSubject);
+                    currentSubject.setTitle(editTitle.getText().toString());
+                    currentSubject.setColor(colorPicked[0]);
+                    viewModel.updateSubject(currentSubject);
                 })
                 .setNegativeButton(R.string.text_button_cancel, (dialog, which) -> {});
 
@@ -217,12 +223,13 @@ public class TasksFragment extends Fragment {
         bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
     }
 
-    public void showDialogDeleteSubject() {
+    private void showDialogDeleteSubject() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
         alertDialogBuilder.setTitle(R.string.alert_dialog_confirmation_title)
                 .setMessage(R.string.alert_dialog_delete_subject_message)
                 .setNegativeButton(R.string.text_button_cancel, (dialog, which) -> { })
                 .setPositiveButton(R.string.text_button_delete, (dialog, which) -> {
+                    isDeleted = true;
                     Navigation.findNavController(binding.getRoot()).navigateUp();
                     viewModel.deleteSubject();
                     Toast.makeText(requireContext(), R.string.toast_subject_deleted, Toast.LENGTH_SHORT).show();
@@ -230,7 +237,7 @@ public class TasksFragment extends Fragment {
     }
 
     private void deleteCompletedTasks() {
-        viewModel.deleteAllCompletedTasks();
+        viewModel.deletedCompletedTasks();
         Snackbar.make(binding.getRoot(), R.string.snackbar_completed_tasks_deleted, Snackbar.LENGTH_SHORT)
                 .show();
     }
@@ -252,14 +259,11 @@ public class TasksFragment extends Fragment {
         return new TaskAdapter.TaskListener() {
             @Override
             public void onItemClick(Task task) {
-                /*viewModel.selectTask(task);
-                BottomSheetTaskDetails taskDetails = new BottomSheetTaskDetails();
-                taskDetails.show(getParentFragmentManager(), taskDetails.getTag());*/
                 BottomSheetTaskDetails fragment = BottomSheetTaskDetails.newInstance(task.getId());
                 fragment.setListener(new BottomSheetTaskDetails.Listener() {
                     @Override
                     public void onPause() {
-                        viewModel.loadSubject();
+                        viewModel.reloadSubject();
                     }
                 });
                 fragment.show(getParentFragmentManager(), fragment.getTag());
@@ -268,13 +272,13 @@ public class TasksFragment extends Fragment {
             @Override
             public void onTaskChecked(Task task) {
                 TransitionManager.beginDelayedTransition(binding.getRoot(), new ChangeBounds());
-                viewModel.setTaskDone(task);
+                viewModel.setTaskAsDone(task);
             }
 
             @Override
             public void onDeleteTask(Task task) {
-                Task deletedTask = viewModel.deleteTask(task);
-                showUndoSnackbar(deletedTask);
+                viewModel.deleteTask(task);
+                showUndoSnackbar(task);
             }
         };
     }
@@ -288,7 +292,8 @@ public class TasksFragment extends Fragment {
 
     private void undoDelete(Task deletedTask) {
         TransitionManager.beginDelayedTransition(binding.recyclerViewTasks, new ChangeBounds());
-        viewModel.addTask(deletedTask);
+        currentSubject.getTaskList().add(deletedTask);
+        viewModel.updateSubject(currentSubject);
     }
 
     private void setupRecyclerViewDoneTasks(List<Task> doneTasks){
@@ -296,12 +301,21 @@ public class TasksFragment extends Fragment {
         RecyclerView.LayoutManager layoutManagerDone = new LinearLayoutManager(getContext());
         TaskDoneAdapter taskDoneAdapter = new TaskDoneAdapter(doneTasks, task -> {
             TransitionManager.beginDelayedTransition(binding.getRoot(), new ChangeBounds());
-            viewModel.setTaskUndone(task);
+            task.setDone(false);
+            viewModel.updateSubject(currentSubject);
         });
         binding.recyclerViewDoneTasks.setLayoutManager(layoutManagerDone);
         binding.recyclerViewDoneTasks.setAdapter(taskDoneAdapter);
         binding.recyclerViewDoneTasks.setHasFixedSize(true);
         binding.recyclerViewDoneTasks.setNestedScrollingEnabled(false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (!isDeleted) {
+            viewModel.commitChanges();
+        }
     }
 
     @Override

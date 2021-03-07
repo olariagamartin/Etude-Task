@@ -68,7 +68,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
             subjectCountSections = itemView.findViewById(R.id.subjectCountSections);
             subjectColor = itemView.findViewById(R.id.subject_color_item);
             if(listener != null) {
-                itemView.setOnClickListener(v -> listener.onItemClick(getAdapterPosition()));
+                itemView.setOnClickListener(v -> listener.onItemClick(subjectList.get(getAdapterPosition())));
             }
 
             itemView.setOnCreateContextMenuListener(this);
@@ -93,7 +93,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     }
 
     public interface SubjectListener {
-        void onItemClick(int position);
+        void onItemClick(Subject subject);
         void onEditSubjectClick(int position);
         void onDeleteSubjectClick(int position);
     }

@@ -21,6 +21,11 @@ public class SubjectRepository {
         subjects = realm.where(Subject.class).sort("title").findAll();
     }
 
+    public Subject getSubject (String id) {
+        Subject subject = realm.where(Subject.class).equalTo("id", id).findFirst();
+        return realm.copyFromRealm(subject);
+    }
+
     public void closeRealm() {
         realm.close();
     }
@@ -60,7 +65,8 @@ public class SubjectRepository {
             deleteTask(subject.getTaskList().first());
         }
         realm.beginTransaction();
-        subject.deleteFromRealm();
+        Subject managedSubject = realm.where(Subject.class).equalTo("id", subject.getId()).findFirst();
+        managedSubject.deleteFromRealm();
         realm.commitTransaction();
     }
 
@@ -109,8 +115,7 @@ public class SubjectRepository {
 
     public Task getTask(String taskId) {
         Task task = realm.where(Task.class).equalTo("id", taskId).findFirst();
-        Task unmanagedTask = realm.copyFromRealm(task);
-        return unmanagedTask;
+        return realm.copyFromRealm(task);
     }
 
     public Subject deleteAllCompletedTasks(Subject subject) {

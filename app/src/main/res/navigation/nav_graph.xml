@@ -9,7 +9,11 @@
         android:id="@+id/tasksFragment"
         android:name="com.themarto.etudetask.fragments.TasksFragment"
         android:label="fragment_tasks"
-        tools:layout="@layout/fragment_tasks" />
+        tools:layout="@layout/fragment_tasks" >
+        <argument
+            android:name="subject_id"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/subjectFragment"
         android:name="com.themarto.etudetask.fragments.SubjectFragment"
