@@ -1,4 +1,4 @@
-package com.themarto.etudetask.data;
+package com.themarto.etudetask;
 
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
@@ -18,7 +18,6 @@ public class SubjectRepository {
 
     public SubjectRepository() {
         realm = Realm.getDefaultInstance();
-        subjects = realm.where(Subject.class).sort("title").findAll();
     }
 
     public Subject getSubject (String id) {
@@ -31,7 +30,8 @@ public class SubjectRepository {
     }
 
     public List<Subject> getAllSubjects() {
-        return subjects;
+        List<Subject> subjectList = realm.where(Subject.class).findAll();
+        return realm.copyFromRealm(subjectList);
     }
 
     public List<Task> getTodayTaskList () {
@@ -44,6 +44,12 @@ public class SubjectRepository {
         endOfDay.set(Calendar.DAY_OF_MONTH, startOfDay.get(Calendar.DAY_OF_MONTH) + 1);
         return realm.where(Task.class).between("date", startOfDay.getTime(), endOfDay.getTime())
                 .and().equalTo("done", false).findAll();
+    }
+
+    public void updateSubjectList(List<Subject> subjectList) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(subjectList);
+        realm.commitTransaction();
     }
 
     public void addSubject(Subject subject) {
@@ -83,7 +89,6 @@ public class SubjectRepository {
 
     public Subject  addTask(Subject subject, Task nTask) {
         realm.beginTransaction();
-        nTask.setSubject(subject);
         subject.getTaskList().add(nTask);
         realm.commitTransaction();
         return subject;

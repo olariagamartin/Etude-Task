@@ -18,6 +18,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.adapters.SubjectAdapter;
 import com.themarto.etudetask.data.SharedViewModel;
+import com.themarto.etudetask.data.SubjectListViewModel;
 import com.themarto.etudetask.databinding.FragmentSubjectBinding;
 import com.themarto.etudetask.models.Subject;
 
@@ -40,7 +41,8 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SubjectFragment extends Fragment {
 
     private FragmentSubjectBinding binding;
-    private SharedViewModel viewModel;
+    private SubjectListViewModel viewModel;
+    private List<Subject> subjectList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,11 +55,12 @@ public class SubjectFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
-        viewModel.getAllSubjects().observe(getViewLifecycleOwner(), new Observer<List<Subject>>() {
+        viewModel = ViewModelProviders.of(this).get(SubjectListViewModel.class);
+        viewModel.getSubjectList().observe(getViewLifecycleOwner(), new Observer<List<Subject>>() {
             @Override
             public void onChanged(List<Subject> subjects) {
                 loadSubjects(subjects);
+                subjectList = subjects;
             }
         });
         setupAppBar();
@@ -106,7 +109,7 @@ public class SubjectFragment extends Fragment {
 
             @Override
             public void onEditSubjectClick(int position) {
-                Subject subject = viewModel.getAllSubjects().getValue().get(position);
+                Subject subject = subjectList.get(position);
                 showDialogEditSubject(subject);
             }
 
@@ -171,10 +174,9 @@ public class SubjectFragment extends Fragment {
         colorPicker.check(radioBtnChecked.getId());
         builder.setView(editLayout)
                 .setPositiveButton(R.string.text_button_save, (dialog, which) -> {
-                    Subject updateSubject = new Subject(editTitle.getText().toString(), subject.getTaskList());
-                    updateSubject.setColor(colorPicked[0]);
-                    updateSubject.setId(subject.getId());
-                    viewModel.updateSubject(updateSubject);
+                    subject.setTitle(editTitle.getText().toString());
+                    subject.setColor(colorPicked[0]);
+                    viewModel.reloadSubjectList();
                 })
                 .setNegativeButton(R.string.text_button_cancel, (dialog, which) -> {});
 
@@ -204,7 +206,13 @@ public class SubjectFragment extends Fragment {
 
     private void saveSubject(String title, int color) {
         Subject subject = new Subject(title, color);
-        viewModel.addSubject(subject);
+        subjectList.add(subject);
+        viewModel.reloadSubjectList();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        viewModel.commitChanges();
+    }
 }

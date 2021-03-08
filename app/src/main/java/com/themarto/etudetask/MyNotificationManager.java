@@ -8,10 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 
-import com.themarto.etudetask.data.SubjectRepository;
-
-import java.util.UUID;
-
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 

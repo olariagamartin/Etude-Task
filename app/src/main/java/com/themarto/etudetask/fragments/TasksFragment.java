@@ -26,7 +26,6 @@ import com.themarto.etudetask.adapters.TaskAdapter;
 import com.themarto.etudetask.adapters.TaskDoneAdapter;
 import com.themarto.etudetask.databinding.FragmentTasksBinding;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetAddTask;
-import com.themarto.etudetask.data.SharedViewModel;
 import com.themarto.etudetask.utils.MyItemTouchHelper;
 import com.themarto.etudetask.utils.SwipeToDeleteCallback;
 import com.themarto.etudetask.utils.Util;
@@ -219,8 +218,9 @@ public class TasksFragment extends Fragment {
     }
 
     private void showBottomSheetAddTask() {
-        BottomSheetAddTask bottomSheet = new BottomSheetAddTask();
-        bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
+        BottomSheetAddTask addTask = BottomSheetAddTask.newInstance(this.subject_id);
+        addTask.setListener(() -> viewModel.reloadSubject());
+        addTask.show(getParentFragmentManager(), addTask.getTag());
     }
 
     private void showDialogDeleteSubject() {
@@ -260,12 +260,7 @@ public class TasksFragment extends Fragment {
             @Override
             public void onItemClick(Task task) {
                 BottomSheetTaskDetails fragment = BottomSheetTaskDetails.newInstance(task.getId());
-                fragment.setListener(new BottomSheetTaskDetails.Listener() {
-                    @Override
-                    public void onPause() {
-                        viewModel.reloadSubject();
-                    }
-                });
+                fragment.setListener(() -> viewModel.reloadSubject());
                 fragment.show(getParentFragmentManager(), fragment.getTag());
             }
 

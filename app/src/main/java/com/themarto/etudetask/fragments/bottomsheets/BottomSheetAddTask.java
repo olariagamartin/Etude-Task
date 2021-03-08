@@ -22,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.WorkManagerAlarm;
+import com.themarto.etudetask.data.AddTaskViewModel;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.utils.MyTextWatcher;
 import com.themarto.etudetask.utils.Util;
@@ -45,26 +46,39 @@ import androidx.work.Data;
 
 public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
+    private static final String ARG_SUBJECT_ID = "SUBJECT_ID";
+    private String subjectId;
+    private Listener listener;
+
     private BottomSheetAddTaskBinding binding;
-    private SharedViewModel viewModel;
+    private AddTaskViewModel viewModel;
     private Calendar actual;
     private Calendar calendar = Calendar.getInstance();
     private String flagColor = Util.FlagColors.NONE;
 
-    public BottomSheetAddTask() {
+    public static BottomSheetAddTask newInstance (String subjectId) {
+        BottomSheetAddTask fragment = new BottomSheetAddTask();
+        Bundle args = new Bundle();
+        args.putString(ARG_SUBJECT_ID, subjectId);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
+        if (getArguments() != null) {
+            subjectId = getArguments().getString(ARG_SUBJECT_ID);
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = BottomSheetAddTaskBinding.inflate(inflater, container, false);
-        viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(AddTaskViewModel.class);
+        viewModel.loadSubject(subjectId);
         return binding.getRoot();
     }
 
@@ -126,7 +140,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private void setBtnSaveTaskBehavior() {
         binding.btnSaveTask.setOnClickListener(v -> {
             Task task = getTask();
-            viewModel.addTask(task);
+            viewModel.addTask(task, viewModel.getSubject());
             dismiss();
         });
     }
@@ -221,7 +235,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                 && !binding.editTextNewTaskDetails.getText().toString().isEmpty()) {
             details = binding.editTextNewTaskDetails.getText().toString();
         }
-        Task nTask = new Task(title, details, viewModel.getSelectedSubject().getValue());
+        Task nTask = new Task(title, details, viewModel.getSubject());
         nTask.setFlagColor(flagColor);
         if (binding.chipAddTaskDueDate.getVisibility() == View.VISIBLE) {
             if (binding.chipAddTaskTime.getVisibility() == View.VISIBLE) {
@@ -310,7 +324,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
         if (alertTime > 0) {
             String notificationTitle = task.getTitle();
-            Subject subject = viewModel.getSelectedSubject().getValue();
+            Subject subject = viewModel.getSubject();
             String notificationDetail = subject.getTitle();
             Data data = Util.saveNotificationData(notificationTitle, notificationDetail, task.getId());
 
@@ -318,6 +332,22 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
                     .saveAlarm(alertTime, data,task.getId(), subject.getId(), requireContext());
 
             task.setAlarmStringId(alarmStringId);
+        }
+    }
+
+    public interface Listener {
+        void onPause();
+    }
+
+    public void setListener (Listener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (listener != null) {
+            listener.onPause();
         }
     }
 }

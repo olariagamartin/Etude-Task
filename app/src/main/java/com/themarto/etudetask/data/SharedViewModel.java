@@ -2,6 +2,7 @@ package com.themarto.etudetask.data;
 
 import android.app.Application;
 
+import com.themarto.etudetask.SubjectRepository;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
 

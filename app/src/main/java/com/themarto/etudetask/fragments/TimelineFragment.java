@@ -55,15 +55,15 @@ public class TimelineFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
+        //viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
         setupAppBar();
         setupHeaderTitles();
-        viewModel.getTodayTaskList().observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
+        /*viewModel.getTodayTaskList().observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> taskList) {
                 loadTodayTaskList(taskList);
             }
-        });
+        });*/
     }
 
     private void setupAppBar() {
@@ -95,7 +95,7 @@ public class TimelineFragment extends Fragment {
         return new TaskAdapter.TaskListener() {
             @Override
             public void onItemClick(Task task) {
-                viewModel.selectTask(task);
+                //viewModel.selectTask(task);
                 BottomSheetTaskDetails taskDetails = new BottomSheetTaskDetails();
                 taskDetails.show(getParentFragmentManager(), taskDetails.getTag());
             }
@@ -103,8 +103,8 @@ public class TimelineFragment extends Fragment {
             @Override
             public void onTaskChecked(Task task) {
                 TransitionManager.beginDelayedTransition(binding.getRoot(), new ChangeBounds());
-                Task doneTask = viewModel.setTaskDone(task);
-                showUndoDoneSnackbar(doneTask);
+                //Task doneTask = viewModel.setTaskDone(task);
+                //showUndoDoneSnackbar(doneTask);
             }
 
             @Override
@@ -123,7 +123,7 @@ public class TimelineFragment extends Fragment {
 
     private void undoDone(Task doneTask) {
         TransitionManager.beginDelayedTransition(binding.todayTasks, new ChangeBounds());
-        viewModel.setTaskUndone(doneTask);
+        //viewModel.setTaskUndone(doneTask);
     }
 
     @Override

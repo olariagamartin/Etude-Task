@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        viewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
+        //viewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
         setupBottomNavigationView();
         checkIntentFromNotification();
     }
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             String taskId = getIntent().getExtras().getString("task_id", "");
             if (!taskId.equals("")) {
-                viewModel.selectTask(taskId);
+                //viewModel.selectTask(taskId);
                 BottomSheetTaskDetails taskDetails = new BottomSheetTaskDetails();
                 taskDetails.show(getSupportFragmentManager(), taskDetails.getTag());
             }
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        viewModel.closeDB();
+        //viewModel.closeDB();
         super.onDestroy();
     }
 }
