@@ -24,7 +24,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.adapters.TaskAdapter;
 import com.themarto.etudetask.adapters.TaskTimelineAdapter;
-import com.themarto.etudetask.data.SharedViewModel;
+import com.themarto.etudetask.data.TimelineViewModel;
 import com.themarto.etudetask.databinding.FragmentTimelineBinding;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetTaskDetails;
 import com.themarto.etudetask.models.Task;
@@ -34,11 +34,7 @@ import java.util.List;
 public class TimelineFragment extends Fragment {
 
     private FragmentTimelineBinding binding;
-    private SharedViewModel viewModel;
-
-    public TimelineFragment() {
-        // Required empty public constructor
-    }
+    private TimelineViewModel viewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,15 +51,16 @@ public class TimelineFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(TimelineViewModel.class);
+        viewModel.loadLists();
         setupAppBar();
         setupHeaderTitles();
-        /*viewModel.getTodayTaskList().observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
+        viewModel.getTodayTaskList().observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> taskList) {
                 loadTodayTaskList(taskList);
             }
-        });*/
+        });
     }
 
     private void setupAppBar() {
@@ -83,7 +80,7 @@ public class TimelineFragment extends Fragment {
 
     private void loadTodayTaskList(List<Task> list) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
-        TaskTimelineAdapter adapter = new TaskTimelineAdapter(list, getTaskTimelineListner(), false);
+        TaskTimelineAdapter adapter = new TaskTimelineAdapter(list, getTaskTimelineListener(), false);
 
         binding.todayTasks.setLayoutManager(layoutManager);
         binding.todayTasks.setAdapter(adapter);
@@ -91,20 +88,20 @@ public class TimelineFragment extends Fragment {
         binding.todayTasks.setNestedScrollingEnabled(false);
     }
 
-    private TaskAdapter.TaskListener getTaskTimelineListner() {
+    private TaskAdapter.TaskListener getTaskTimelineListener() {
         return new TaskAdapter.TaskListener() {
             @Override
             public void onItemClick(Task task) {
-                //viewModel.selectTask(task);
-                BottomSheetTaskDetails taskDetails = new BottomSheetTaskDetails();
+                BottomSheetTaskDetails taskDetails = BottomSheetTaskDetails.newInstance(task.getId());
+                taskDetails.setListener((() -> viewModel.loadLists()));
                 taskDetails.show(getParentFragmentManager(), taskDetails.getTag());
             }
 
             @Override
             public void onTaskChecked(Task task) {
                 TransitionManager.beginDelayedTransition(binding.getRoot(), new ChangeBounds());
-                //Task doneTask = viewModel.setTaskDone(task);
-                //showUndoDoneSnackbar(doneTask);
+                viewModel.setTaskAsDone(task);
+                showUndoDoneSnackbar(task);
             }
 
             @Override
@@ -123,7 +120,8 @@ public class TimelineFragment extends Fragment {
 
     private void undoDone(Task doneTask) {
         TransitionManager.beginDelayedTransition(binding.todayTasks, new ChangeBounds());
-        //viewModel.setTaskUndone(doneTask);
+        doneTask.setDone(false);
+        viewModel.updateTask(doneTask);
     }
 
     @Override

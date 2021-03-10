@@ -66,6 +66,7 @@ public class SubjectViewModel extends AndroidViewModel {
     public void setTaskAsDone (Task task) {
         removeTaskNotifications(task);
         task.setDone(true);
+        task.setAlarmStringId("");
         repository.updateTask(task);
         loadSubject();
     }

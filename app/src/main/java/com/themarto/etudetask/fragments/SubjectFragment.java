@@ -42,7 +42,6 @@ public class SubjectFragment extends Fragment {
 
     private FragmentSubjectBinding binding;
     private SubjectListViewModel viewModel;
-    private List<Subject> subjectList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,26 +52,6 @@ public class SubjectFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(SubjectListViewModel.class);
@@ -80,7 +59,6 @@ public class SubjectFragment extends Fragment {
             @Override
             public void onChanged(List<Subject> subjects) {
                 loadSubjects(subjects);
-                subjectList = subjects;
             }
         });
         setupAppBar();
