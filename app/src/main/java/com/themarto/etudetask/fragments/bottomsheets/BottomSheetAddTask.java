@@ -140,7 +140,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private void setBtnSaveTaskBehavior() {
         binding.btnSaveTask.setOnClickListener(v -> {
             Task task = getTask();
-            viewModel.addTask(task, viewModel.getSubject());
+            viewModel.addTask(task);
             dismiss();
         });
     }

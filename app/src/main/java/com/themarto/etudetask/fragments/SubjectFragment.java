@@ -53,6 +53,26 @@ public class SubjectFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(SubjectListViewModel.class);
@@ -108,14 +128,13 @@ public class SubjectFragment extends Fragment {
             }
 
             @Override
-            public void onEditSubjectClick(int position) {
-                Subject subject = subjectList.get(position);
+            public void onEditSubjectClick(Subject subject) {
                 showDialogEditSubject(subject);
             }
 
             @Override
-            public void onDeleteSubjectClick(int position) {
-                showDialogDeleteSubject(position);
+            public void onDeleteSubjectClick(Subject subject) {
+                showDialogDeleteSubject(subject);
             }
         };
     }
@@ -176,7 +195,7 @@ public class SubjectFragment extends Fragment {
                 .setPositiveButton(R.string.text_button_save, (dialog, which) -> {
                     subject.setTitle(editTitle.getText().toString());
                     subject.setColor(colorPicked[0]);
-                    viewModel.reloadSubjectList();
+                    viewModel.updateSubject(subject);
                 })
                 .setNegativeButton(R.string.text_button_cancel, (dialog, which) -> {});
 
@@ -193,26 +212,19 @@ public class SubjectFragment extends Fragment {
         alertDialog.show();
     }
 
-    public void showDialogDeleteSubject(int position) {
+    public void showDialogDeleteSubject(Subject subject) {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
         alertDialogBuilder.setTitle("Are you sure?")
                 .setMessage("The subject will be deleted")
                 .setNegativeButton("Cancel", (dialog, which) -> { })
                 .setPositiveButton("Delete", (dialog, which) -> {
-                    viewModel.deleteSubject(position);
+                    viewModel.deleteSubject(subject);
                     Toast.makeText(requireContext(), "Subject deleted", Toast.LENGTH_SHORT).show();
                 }).show();
     }
 
     private void saveSubject(String title, int color) {
-        Subject subject = new Subject(title, color);
-        subjectList.add(subject);
-        viewModel.reloadSubjectList();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        viewModel.commitChanges();
+        Subject newSubject = new Subject(title, color);
+        viewModel.addSubject(newSubject);
     }
 }

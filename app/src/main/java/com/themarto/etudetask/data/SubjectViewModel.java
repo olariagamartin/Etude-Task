@@ -20,20 +20,21 @@ public class SubjectViewModel extends AndroidViewModel {
 
     private SubjectRepository repository;
     private MutableLiveData<Subject> subject = new MutableLiveData<>();
+    private String subjectId;
 
     public SubjectViewModel(@NonNull Application application) {
         super(application);
         repository = new SubjectRepository();
     }
 
-    public void loadSubject (String id) {
-        subject.setValue(repository.getSubject(id));
+    // this method is obligatory, maybe I can make a Factory class
+    public void setSubjectId (String id) {
+        this.subjectId = id;
+        loadSubject();
     }
 
-    public void reloadSubject () {
-        if (subject.getValue() != null) {
-            subject.setValue(repository.getSubject(subject.getValue().getId()));
-        }
+    public void loadSubject () {
+        subject.setValue(repository.getSubject(subjectId));
     }
 
     public LiveData<Subject> getSubject () {
@@ -41,41 +42,45 @@ public class SubjectViewModel extends AndroidViewModel {
     }
 
     public void updateSubject (Subject updatedSubject) {
-        subject.setValue(updatedSubject);
+        repository.updateSubject(updatedSubject);
+        loadSubject();
     }
 
     public void deleteSubject () {
         removeNotificationsByTag(subject.getValue().getId());
         repository.deleteSubject(subject.getValue());
+        loadSubject();
+    }
+
+    public void addTask (Task task) {
+        subject.getValue().getTaskList().add(task);
+        repository.updateSubject(subject.getValue());
+        loadSubject();
     }
 
     public void deletedCompletedTasks () {
-        // todo: check db
-        Subject tempSubject = subject.getValue();
-        List<Task> doneTasks = new ArrayList<>();
-        for (Task t : tempSubject.getTaskList()) {
-            if (t.isDone()) doneTasks.add(t);
-        }
-        tempSubject.getTaskList().removeAll(doneTasks);
-        subject.setValue(tempSubject);
+        repository.deleteAllCompletedTasks(subject.getValue());
+        loadSubject();
     }
 
     public void setTaskAsDone (Task task) {
         removeTaskNotifications(task);
         task.setDone(true);
-        subject.setValue(subject.getValue());
+        repository.updateTask(task);
+        loadSubject();
+    }
+
+    public void updateTask (Task task) {
+        repository.updateTask(task);
+        loadSubject();
     }
 
     public void deleteTask (Task task) {
         // todo: check on db, check returned value
         removeTaskNotifications(task);
-        Subject tempSubject = subject.getValue();
-        tempSubject.getTaskList().remove(task);
-        subject.setValue(tempSubject);
-    }
-
-    public void commitChanges () {
-        repository.updateSubject(subject.getValue());
+        task.setAlarmStringId("");
+        repository.deleteTask(task);
+        loadSubject();
     }
 
     private void removeNotificationsByTag(String tag) {

@@ -100,7 +100,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = BottomSheetTaskDetailsBinding.inflate(inflater, container, false);
         viewModel = ViewModelProviders.of(this).get(DetailsViewModel.class);
-        viewModel.loadTask(task_id);
+        viewModel.setTaskId(task_id);
         getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {

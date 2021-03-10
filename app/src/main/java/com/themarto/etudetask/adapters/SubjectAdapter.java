@@ -81,12 +81,12 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
             MenuItem deleteSubject = menu.add(R.string.context_menu_subject_delete);
 
             editSubject.setOnMenuItemClickListener(item -> {
-                listener.onEditSubjectClick(getAdapterPosition());
+                listener.onEditSubjectClick(subjectList.get(getAdapterPosition()));
                 return true;
             });
 
             deleteSubject.setOnMenuItemClickListener(item -> {
-                listener.onDeleteSubjectClick(getAdapterPosition());
+                listener.onDeleteSubjectClick(subjectList.get(getAdapterPosition()));
                 return true;
             });
         }
@@ -94,8 +94,8 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
 
     public interface SubjectListener {
         void onItemClick(Subject subject);
-        void onEditSubjectClick(int position);
-        void onDeleteSubjectClick(int position);
+        void onEditSubjectClick(Subject subject);
+        void onDeleteSubjectClick(Subject subject);
     }
 
 }

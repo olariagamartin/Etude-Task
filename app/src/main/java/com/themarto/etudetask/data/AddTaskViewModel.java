@@ -12,7 +12,7 @@ import androidx.lifecycle.AndroidViewModel;
 public class AddTaskViewModel extends AndroidViewModel {
 
     private SubjectRepository repository;
-    private Subject subject;
+    private Subject subjectLiveData;
 
     public AddTaskViewModel(@NonNull Application application) {
         super(application);
@@ -20,15 +20,16 @@ public class AddTaskViewModel extends AndroidViewModel {
     }
 
     public void loadSubject (String id) {
-        subject = repository.getSubject(id);
+        subjectLiveData = repository.getSubject(id);
     }
 
     public Subject getSubject () {
-        return subject;
+        return subjectLiveData;
     }
 
-    public void addTask (Task task, Subject subject) {
-        repository.addTask(subject, task);
+    public void addTask (Task task) {
+        subjectLiveData.getTaskList().add(task);
+        repository.updateSubject(subjectLiveData);
     }
 
     @Override

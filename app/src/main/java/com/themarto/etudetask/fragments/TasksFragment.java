@@ -74,7 +74,7 @@ public class TasksFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         itemTouchHelper = new MyItemTouchHelper();
         viewModel = ViewModelProviders.of(this).get(SubjectViewModel.class);
-        viewModel.loadSubject(subject_id);
+        viewModel.setSubjectId(subject_id);
         viewModel.getSubject().observe(getViewLifecycleOwner(), new Observer<Subject>() {
             @Override
             public void onChanged(Subject subject) {
@@ -219,7 +219,7 @@ public class TasksFragment extends Fragment {
 
     private void showBottomSheetAddTask() {
         BottomSheetAddTask addTask = BottomSheetAddTask.newInstance(this.subject_id);
-        addTask.setListener(() -> viewModel.reloadSubject());
+        addTask.setListener(() -> viewModel.loadSubject());
         addTask.show(getParentFragmentManager(), addTask.getTag());
     }
 
@@ -260,7 +260,7 @@ public class TasksFragment extends Fragment {
             @Override
             public void onItemClick(Task task) {
                 BottomSheetTaskDetails fragment = BottomSheetTaskDetails.newInstance(task.getId());
-                fragment.setListener(() -> viewModel.reloadSubject());
+                fragment.setListener(() -> viewModel.loadSubject());
                 fragment.show(getParentFragmentManager(), fragment.getTag());
             }
 
@@ -287,8 +287,7 @@ public class TasksFragment extends Fragment {
 
     private void undoDelete(Task deletedTask) {
         TransitionManager.beginDelayedTransition(binding.recyclerViewTasks, new ChangeBounds());
-        currentSubject.getTaskList().add(deletedTask);
-        viewModel.updateSubject(currentSubject);
+        viewModel.addTask(deletedTask);
     }
 
     private void setupRecyclerViewDoneTasks(List<Task> doneTasks){
@@ -297,20 +296,12 @@ public class TasksFragment extends Fragment {
         TaskDoneAdapter taskDoneAdapter = new TaskDoneAdapter(doneTasks, task -> {
             TransitionManager.beginDelayedTransition(binding.getRoot(), new ChangeBounds());
             task.setDone(false);
-            viewModel.updateSubject(currentSubject);
+            viewModel.updateTask(task);
         });
         binding.recyclerViewDoneTasks.setLayoutManager(layoutManagerDone);
         binding.recyclerViewDoneTasks.setAdapter(taskDoneAdapter);
         binding.recyclerViewDoneTasks.setHasFixedSize(true);
         binding.recyclerViewDoneTasks.setNestedScrollingEnabled(false);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (!isDeleted) {
-            viewModel.commitChanges();
-        }
     }
 
     @Override

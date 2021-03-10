@@ -24,33 +24,37 @@ public class SubjectListViewModel extends AndroidViewModel {
         loadSubjectList();
     }
 
-    public void loadSubjectList () {
+    public void loadSubjectList() {
         subjectListLiveData.setValue(repository.getAllSubjects());
-    }
-
-    public void reloadSubjectList () {
-        subjectListLiveData.setValue(subjectListLiveData.getValue());
     }
 
     public LiveData<List<Subject>> getSubjectList () {
         return subjectListLiveData;
     }
 
-    public void deleteSubject (int position) {
-        List<Subject> subjectList = subjectListLiveData.getValue();
-        removeNotificationsByTag(subjectList.get(position).getId());
-        repository.deleteSubject(subjectList.get(position));
-        subjectList.remove(position);
-        subjectListLiveData.setValue(subjectList);
+    public void deleteSubject (Subject subject) {
+        removeNotificationsByTag(subject.getId());
+        repository.deleteSubject(subject);
+        loadSubjectList();
     }
 
-    public void commitChanges () {
-        repository.updateSubjectList(subjectListLiveData.getValue());
+    public void addSubject (Subject subject) {
+        repository.addSubject(subject);
+        loadSubjectList();
+    }
+
+    public void updateSubject (Subject subject) {
+        repository.updateSubject(subject);
+        loadSubjectList();
     }
 
     private void removeNotificationsByTag(String tag) {
         WorkManager.getInstance(getApplication()).cancelAllWorkByTag(tag);
     }
 
-    // todo: add on cleared
+    @Override
+    protected void onCleared() {
+        repository.closeRealm();
+        super.onCleared();
+    }
 }

@@ -14,8 +14,6 @@ public class SubjectRepository {
 
     private Realm realm;
 
-    private RealmResults<Subject> subjects;
-
     public SubjectRepository() {
         realm = Realm.getDefaultInstance();
     }
@@ -87,7 +85,7 @@ public class SubjectRepository {
         realm.close();
     }
 
-    public Subject  addTask(Subject subject, Task nTask) {
+    public Subject addTask(Subject subject, Task nTask) {
         realm.beginTransaction();
         subject.getTaskList().add(nTask);
         realm.commitTransaction();
@@ -132,6 +130,13 @@ public class SubjectRepository {
         for(Task task : doneTasks)
             deleteTask(task);
         return subject;
+    }
+
+    public void deleteSubtasks (Task task) {
+        realm.beginTransaction();
+        Task managedTask = realm.where(Task.class).equalTo("id", task.getId()).findFirst();
+        managedTask.getSubtasks().deleteAllFromRealm();
+        realm.commitTransaction();
     }
 
     public Task setTaskDone(Task task) {

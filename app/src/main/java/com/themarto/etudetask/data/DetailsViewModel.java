@@ -16,32 +16,44 @@ import androidx.work.WorkManager;
 public class DetailsViewModel extends AndroidViewModel {
 
     private SubjectRepository repository;
-    private MutableLiveData<Task> task = new MutableLiveData<>();
+    private String taskId;
+    private MutableLiveData<Task> taskLiveData = new MutableLiveData<>();
 
     public DetailsViewModel(@NonNull Application application) {
         super(application);
         repository = new SubjectRepository();
     }
 
-    public void loadTask (String id) {
-        task.setValue(repository.getTask(id));
+    public void setTaskId (String id) {
+        taskId = id;
+        loadTask();
+    }
+
+    public void loadTask () {
+        taskLiveData.setValue(repository.getTask(taskId));
     }
 
     public LiveData<Task> getTask () {
-        return task;
+        return taskLiveData;
     }
 
     public void updateTask (Task updatedTask) {
-        task.setValue(updatedTask);
+        taskLiveData.setValue(updatedTask);
     }
 
     public void deleteTask () {
-        removeTaskNotifications(task.getValue());
-        repository.deleteTask(task.getValue());
+        removeTaskNotifications(taskLiveData.getValue());
+        repository.deleteTask(taskLiveData.getValue());
     }
 
     public void commitTaskChanges () {
-        repository.updateTask(task.getValue());
+        /* if some sub-task were deleted the database doesn't know
+        about it, so when a task is updated, the sub-task deleted will no longer
+        be in the sub-task list of the task, but will still be in the
+        database */
+        // todo: check
+        repository.deleteSubtasks(taskLiveData.getValue());
+        repository.updateTask(taskLiveData.getValue());
     }
 
     private void removeTaskNotifications(Task task) {
