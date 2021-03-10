@@ -51,7 +51,6 @@ public class TasksFragment extends Fragment {
     private String subject_id;
     private Subject currentSubject;
 
-    private boolean isDeleted = false;
     private FragmentTasksBinding binding;
     private SubjectViewModel viewModel;
     private MyItemTouchHelper itemTouchHelper;
@@ -229,7 +228,6 @@ public class TasksFragment extends Fragment {
                 .setMessage(R.string.alert_dialog_delete_subject_message)
                 .setNegativeButton(R.string.text_button_cancel, (dialog, which) -> { })
                 .setPositiveButton(R.string.text_button_delete, (dialog, which) -> {
-                    isDeleted = true;
                     Navigation.findNavController(binding.getRoot()).navigateUp();
                     viewModel.deleteSubject();
                     Toast.makeText(requireContext(), R.string.toast_subject_deleted, Toast.LENGTH_SHORT).show();
@@ -306,7 +304,7 @@ public class TasksFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         binding = null;
+        super.onDestroyView();
     }
 }

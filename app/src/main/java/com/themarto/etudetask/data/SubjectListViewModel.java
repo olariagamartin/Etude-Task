@@ -21,7 +21,6 @@ public class SubjectListViewModel extends AndroidViewModel {
     public SubjectListViewModel(@NonNull Application application) {
         super(application);
         repository = new SubjectRepository();
-        loadSubjectList();
     }
 
     public void loadSubjectList() {
@@ -29,6 +28,7 @@ public class SubjectListViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Subject>> getSubjectList () {
+        loadSubjectList();
         return subjectListLiveData;
     }
 
