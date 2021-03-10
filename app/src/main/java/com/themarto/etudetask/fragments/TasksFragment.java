@@ -66,6 +66,7 @@ public class TasksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentTasksBinding.inflate(inflater, container, false);
+        ((MainActivity)requireActivity()).hideBottomNavView();
         return binding.getRoot();
     }
 
@@ -92,7 +93,6 @@ public class TasksFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        ((MainActivity)requireActivity()).hideBottomNavView();
     }
 
     @Override
