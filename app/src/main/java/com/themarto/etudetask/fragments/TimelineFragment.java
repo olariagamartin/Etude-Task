@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.ChangeBounds;
@@ -18,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.R;
@@ -28,6 +28,8 @@ import com.themarto.etudetask.data.TimelineViewModel;
 import com.themarto.etudetask.databinding.FragmentTimelineBinding;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetTaskDetails;
 import com.themarto.etudetask.models.Task;
+import com.themarto.etudetask.utils.MyItemTouchHelper;
+import com.themarto.etudetask.utils.SwipeToDeleteCallbackTimeline;
 
 import java.util.List;
 
@@ -86,6 +88,8 @@ public class TimelineFragment extends Fragment {
         binding.todayTasks.setAdapter(adapter);
         binding.todayTasks.setHasFixedSize(true);
         binding.todayTasks.setNestedScrollingEnabled(false);
+        MyItemTouchHelper helper = new MyItemTouchHelper(new SwipeToDeleteCallbackTimeline(adapter, requireContext()));
+        helper.attachToRecyclerView(binding.todayTasks);
     }
 
     private TaskAdapter.TaskListener getTaskTimelineListener() {
@@ -101,17 +105,18 @@ public class TimelineFragment extends Fragment {
             public void onTaskChecked(Task task) {
                 TransitionManager.beginDelayedTransition(binding.getRoot(), new ChangeBounds());
                 viewModel.setTaskAsDone(task);
-                showUndoDoneSnackbar(task);
+                showUndoDoneSnackBar(task);
             }
 
             @Override
             public void onDeleteTask(Task task) {
-                Toast.makeText(requireContext(), "task deleted", Toast.LENGTH_SHORT).show();
+                viewModel.deleteTask(task);
+                showUndoDeleteSnackBar(task);
             }
         };
     }
 
-    private void showUndoDoneSnackbar(Task doneTask) {
+    private void showUndoDoneSnackBar(Task doneTask) {
         Snackbar snackbar = Snackbar.make(binding.getRoot(), R.string.snackbar_task_done_message,
                 Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.snackbar_undo_action, v -> undoDone(doneTask));
@@ -122,6 +127,18 @@ public class TimelineFragment extends Fragment {
         TransitionManager.beginDelayedTransition(binding.todayTasks, new ChangeBounds());
         doneTask.setDone(false);
         viewModel.updateTask(doneTask);
+    }
+
+    private void showUndoDeleteSnackBar(Task deletedTask) {
+        Snackbar snackbar = Snackbar.make(binding.getRoot(), R.string.snackbar_task_deleted_message,
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snackbar_undo_action, v -> undoDelete(deletedTask));
+        snackbar.show();
+    }
+
+    private void undoDelete(Task deletedTask) {
+        TransitionManager.beginDelayedTransition(binding.getRoot(), new ChangeBounds());
+        viewModel.addTask(deletedTask);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.themarto.etudetask.data;
 import android.app.Application;
 
 import com.themarto.etudetask.SubjectRepository;
+import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
 
 import java.util.List;
@@ -47,6 +48,13 @@ public class TimelineViewModel extends AndroidViewModel {
         loadLists();
     }
 
+    public void addTask (Task task) {
+        Subject subject = task.getSubject();
+        subject.getTaskList().add(task);
+        repository.updateSubject(subject);
+        loadLists();
+    }
+
     public void updateTask (Task task) {
         repository.updateTask(task);
         loadLists();
@@ -57,6 +65,7 @@ public class TimelineViewModel extends AndroidViewModel {
         removeTaskNotifications(task);
         task.setAlarmStringId("");
         repository.deleteTask(task);
+        loadLists();
     }
 
     private void removeTaskNotifications(Task task) {

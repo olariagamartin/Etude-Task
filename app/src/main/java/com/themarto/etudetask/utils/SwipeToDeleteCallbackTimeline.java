@@ -2,25 +2,25 @@ package com.themarto.etudetask.utils;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.adapters.TaskAdapter;
+import com.themarto.etudetask.adapters.TaskTimelineAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SwipeToDeleteCallback extends MyItemTouchHelper.SimpleCallback {
+public class SwipeToDeleteCallbackTimeline extends MyItemTouchHelper.SimpleCallback {
 
-    private TaskAdapter adapter;
+    private TaskTimelineAdapter adapter;
     private Context context;
     private Drawable icon;
 
-    public SwipeToDeleteCallback(TaskAdapter adapter, Context context) {
+    public SwipeToDeleteCallbackTimeline(TaskTimelineAdapter adapter, Context context) {
         super(0, ItemTouchHelper.LEFT);
         this.adapter = adapter;
         this.context = context;
@@ -28,9 +28,7 @@ public class SwipeToDeleteCallback extends MyItemTouchHelper.SimpleCallback {
     }
 
     @Override
-    public boolean onMove(@NonNull RecyclerView recyclerView,
-                          @NonNull RecyclerView.ViewHolder viewHolder,
-                          @NonNull RecyclerView.ViewHolder target) {
+    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
         return false;
     }
 
