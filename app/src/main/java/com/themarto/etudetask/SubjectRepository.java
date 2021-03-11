@@ -9,6 +9,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class SubjectRepository {
 
@@ -43,6 +44,17 @@ public class SubjectRepository {
         List<Task> todayList = realm.where(Task.class).between("date", startOfDay.getTime(), endOfDay.getTime())
                 .and().equalTo("done", false).findAll();
         return realm.copyFromRealm(todayList);
+    }
+
+    public List<Task> getUpcomingTaskList () {
+        Calendar endOfDay = Calendar.getInstance();
+        endOfDay.set(Calendar.HOUR_OF_DAY, 0);
+        endOfDay.set(Calendar.MINUTE, 0);
+        endOfDay.set(Calendar.SECOND, 0);
+        endOfDay.set(Calendar.DAY_OF_MONTH, endOfDay.get(Calendar.DAY_OF_MONTH) + 1);
+        List<Task> upcomingList = realm.where(Task.class).greaterThan("date", endOfDay.getTime())
+                .and().equalTo("done", false).sort("date").findAll();
+        return realm.copyFromRealm(upcomingList);
     }
 
     public void updateSubjectList(List<Subject> subjectList) {

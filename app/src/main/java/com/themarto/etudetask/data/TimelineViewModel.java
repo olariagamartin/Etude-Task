@@ -19,7 +19,6 @@ public class TimelineViewModel extends AndroidViewModel {
 
     private SubjectRepository repository;
     private MutableLiveData<List<Task>> todayTaskListLD = new MutableLiveData<>();
-    private MutableLiveData<List<Task>> tomorrowTaskListLD = new MutableLiveData<>();
     private MutableLiveData<List<Task>> upcomingTaskListLD = new MutableLiveData<>();
 
     public TimelineViewModel(@NonNull Application application) {
@@ -30,14 +29,23 @@ public class TimelineViewModel extends AndroidViewModel {
 
     public void loadLists () {
         loadTodayTaskList();
+        loadUpcomingTaskList();
     }
 
     public void loadTodayTaskList() {
         todayTaskListLD.setValue(repository.getTodayTaskList());
     }
 
+    public void loadUpcomingTaskList () {
+        upcomingTaskListLD.setValue(repository.getUpcomingTaskList());
+    }
+
     public LiveData<List<Task>> getTodayTaskList() {
         return todayTaskListLD;
+    }
+
+    public LiveData<List<Task>> getUpcomingTaskList () {
+        return upcomingTaskListLD;
     }
 
     public void setTaskAsDone (Task task) {

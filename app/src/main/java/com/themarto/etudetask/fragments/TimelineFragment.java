@@ -37,6 +37,8 @@ public class TimelineFragment extends Fragment {
 
     private FragmentTimelineBinding binding;
     private TimelineViewModel viewModel;
+    private MyItemTouchHelper todayItemTouchHelper;
+    private MyItemTouchHelper upcomingItemTouchHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class TimelineFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        todayItemTouchHelper = new MyItemTouchHelper();
+        upcomingItemTouchHelper = new MyItemTouchHelper();
         viewModel = ViewModelProviders.of(requireActivity()).get(TimelineViewModel.class);
         viewModel.loadLists();
         setupAppBar();
@@ -61,6 +65,12 @@ public class TimelineFragment extends Fragment {
             @Override
             public void onChanged(List<Task> taskList) {
                 loadTodayTaskList(taskList);
+            }
+        });
+        viewModel.getUpcomingTaskList().observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
+            @Override
+            public void onChanged(List<Task> taskList) {
+                loadUpcomingTaskList(taskList);
             }
         });
     }
@@ -88,8 +98,20 @@ public class TimelineFragment extends Fragment {
         binding.todayTasks.setAdapter(adapter);
         binding.todayTasks.setHasFixedSize(true);
         binding.todayTasks.setNestedScrollingEnabled(false);
-        MyItemTouchHelper helper = new MyItemTouchHelper(new SwipeToDeleteCallbackTimeline(adapter, requireContext()));
-        helper.attachToRecyclerView(binding.todayTasks);
+        todayItemTouchHelper.setCallback(new SwipeToDeleteCallbackTimeline(adapter, requireContext()));
+        todayItemTouchHelper.attachToRecyclerView(binding.todayTasks);
+    }
+
+    private void loadUpcomingTaskList (List<Task> list) {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
+        TaskTimelineAdapter adapter = new TaskTimelineAdapter(list, getTaskTimelineListener(), true);
+
+        binding.upcomingTasks.setLayoutManager(layoutManager);
+        binding.upcomingTasks.setAdapter(adapter);
+        binding.upcomingTasks.setHasFixedSize(true);
+        binding.upcomingTasks.setNestedScrollingEnabled(false);
+        upcomingItemTouchHelper.setCallback(new SwipeToDeleteCallbackTimeline(adapter, requireContext()));
+        upcomingItemTouchHelper.attachToRecyclerView(binding.upcomingTasks);
     }
 
     private TaskAdapter.TaskListener getTaskTimelineListener() {
