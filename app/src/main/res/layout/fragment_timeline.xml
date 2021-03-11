@@ -43,19 +43,6 @@
                 android:layout_height="wrap_content"/>
 
             <include
-                android:id="@+id/header_tomorrow"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                layout="@layout/list_header_timeline"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginVertical="10dp"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/tomorrow_tasks"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <include
                 android:id="@+id/header_upcoming"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"

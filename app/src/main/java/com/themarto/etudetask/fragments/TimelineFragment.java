@@ -85,9 +85,8 @@ public class TimelineFragment extends Fragment {
     }
 
     private void setupHeaderTitles () {
-        binding.headerToday.textHeaderToday.setText(R.string.timeline_list_header_text_today);
-        binding.headerTomorrow.textHeaderToday.setText(R.string.timeline_list_header_text_tomorrow);
-        binding.headerUpcoming.textHeaderToday.setText(R.string.timeline_list_header_text_upcoming);
+        binding.headerToday.textHeaderTimelineList.setText(R.string.timeline_list_header_text_today);
+        binding.headerUpcoming.textHeaderTimelineList.setText(R.string.timeline_list_header_text_upcoming);
     }
 
     private void loadTodayTaskList(List<Task> list) {
