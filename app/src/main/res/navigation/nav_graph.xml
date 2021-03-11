@@ -32,4 +32,8 @@
         android:name="com.themarto.etudetask.fragments.TimelineFragment"
         android:label="fragment_timeline"
         tools:layout="@layout/fragment_timeline" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.themarto.etudetask.fragments.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

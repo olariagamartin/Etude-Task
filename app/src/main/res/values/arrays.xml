@@ -1,0 +1,22 @@
+<resources>
+    <!-- Theme Preference -->
+    <string-array name="theme_entries">
+        <item>@string/light</item>
+        <item>@string/dark</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+    <!-- Start Page Preference -->
+    <string-array name="start_page_entries">
+        <item>@string/timeline_app_bar_title</item>
+        <item>@string/subjects_app_bar_title</item>
+    </string-array>
+
+    <string-array name="start_page_values">
+        <item>timeline</item>
+        <item>subjects</item>
+    </string-array>
+</resources>

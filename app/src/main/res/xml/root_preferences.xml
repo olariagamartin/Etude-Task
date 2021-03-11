@@ -1,0 +1,39 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Preferences">
+
+        <ListPreference
+            app:defaultValue="light"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_values"
+            app:key="theme"
+            app:title="@string/theme"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            app:key="ask_before_delete_sub_task"
+            app:title="@string/ask_sub_task_preferences" />
+
+        <ListPreference
+            app:defaultValue="timeline"
+            app:entries="@array/start_page_entries"
+            app:entryValues="@array/start_page_values"
+            app:key="start_page"
+            app:title="@string/preferences_start_page_title"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/app_name">
+
+        <Preference
+            app:key="rate"
+            app:title="@string/preference_rate_app_message" />
+
+        <Preference
+            app:key="thanks"
+            app:title="@string/thanks_message" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
