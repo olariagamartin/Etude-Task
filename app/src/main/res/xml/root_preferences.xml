@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="Preferences">
 
@@ -32,7 +33,11 @@
 
         <Preference
             app:key="source_code"
-            app:title="@string/preference_source_code_message" />
+            app:title="@string/preference_source_code_message">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/olariagamartin/Etude-Task" />
+        </Preference>
 
         <Preference
             app:key="thanks"
