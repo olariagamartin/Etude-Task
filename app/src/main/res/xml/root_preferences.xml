@@ -31,6 +31,10 @@
             app:title="@string/preference_rate_app_message" />
 
         <Preference
+            app:key="source_code"
+            app:title="@string/preference_source_code_message" />
+
+        <Preference
             app:key="thanks"
             app:title="@string/thanks_message" />
 

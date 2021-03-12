@@ -68,5 +68,6 @@
     <string name="preferences_start_page_title">Start Page</string>
     <string name="preference_rate_app_message">Rate this app</string>
     <string name="thanks_message">Thanks</string>
+    <string name="preference_source_code_message">Source code</string>
 
 </resources>
