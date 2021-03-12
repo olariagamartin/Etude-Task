@@ -8,6 +8,7 @@ import com.themarto.etudetask.databinding.ActivityMainBinding;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetTaskDetails;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -16,7 +17,6 @@ import androidx.navigation.ui.NavigationUI;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private SharedViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        //viewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
         setupBottomNavigationView();
         checkIntentFromNotification();
     }
@@ -38,8 +37,7 @@ public class MainActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             String taskId = getIntent().getExtras().getString("task_id", "");
             if (!taskId.equals("")) {
-                //viewModel.selectTask(taskId);
-                BottomSheetTaskDetails taskDetails = new BottomSheetTaskDetails();
+                BottomSheetTaskDetails taskDetails = BottomSheetTaskDetails.newInstance(taskId);
                 taskDetails.show(getSupportFragmentManager(), taskDetails.getTag());
             }
         }
@@ -53,9 +51,4 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavView.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    protected void onDestroy() {
-        //viewModel.closeDB();
-        super.onDestroy();
-    }
 }
