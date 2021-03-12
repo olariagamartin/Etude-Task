@@ -9,7 +9,7 @@
         <item name="colorOnPrimary">@color/gray2</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/gray2</item>
+        <item name="colorSecondary">@color/blue_button</item>
         <item name="colorSecondaryVariant">@color/gray3</item>
         <item name="colorOnSecondary">@color/white</item>
 
