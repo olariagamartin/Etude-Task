@@ -41,8 +41,7 @@
                     android:layout_weight="90"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:text="Completed"
-                    android:textColor="@color/gray2"
+                    android:textColor="?android:textColorSecondary"
                     android:paddingVertical="10dp"
                     android:paddingHorizontal="15dp" />
 
@@ -52,7 +51,7 @@
                     android:layout_weight="10"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    app:tint="@color/gray2"
+                    app:tint="?attr/colorPrimaryVariant"
                     android:src="@drawable/ic_keyboard_arrow_down" />
 
             </LinearLayout>

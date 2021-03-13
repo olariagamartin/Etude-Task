@@ -5,15 +5,20 @@
         <item name="colorPrimary">@color/blue_button</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/subject_red</item>
+        <item name="colorPrimaryDark">@color/gray2</item>
+        <item name="colorAccent">@color/blue_button</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/amber_600</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/subject_green</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="backgroundTint">@color/subject_purple</item>
-        <item name="backgroundColor">@color/red_600</item>
+        <item name="backgroundTint">@color/gray_42</item>
+        <item name="backgroundColor">@color/gray_42</item>
+        <item name="shadowColor">@color/gray2</item>
+
+        <item name="android:textColorPrimary">@color/white</item>
+
+        <item name="colorOnSurface">@color/gray1</item>
 
         <item name="preferenceTheme">@style/Theme.EtudeTask.PreferenceTheme</item>
 

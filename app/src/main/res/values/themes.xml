@@ -4,9 +4,11 @@
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/blue_button</item>
-        <item name="colorPrimaryVariant">@color/blue_grey_600</item>
-        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorPrimaryVariant">@color/gray3</item>
+        <item name="colorPrimaryDark">@color/gray4</item>
         <item name="colorOnPrimary">@color/gray2</item>
+        <item name="colorAccent">@color/blue_button</item>
+        <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/blue_button</item>
@@ -17,6 +19,11 @@
 
         <item name="colorControlNormal">@color/black</item>
         <item name="android:actionMenuTextColor">@color/black</item>
+
+        <!-- Text colors-->
+        <item name="android:textColorPrimary">@color/gray2</item>
+        <item name="android:textColorSecondary">@color/gray4</item>
+        <item name="android:textColorTertiary">@color/gray1</item>
 
         <item name="preferenceTheme">@style/Theme.EtudeTask.PreferenceTheme</item>
 

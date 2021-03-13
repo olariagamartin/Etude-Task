@@ -16,6 +16,7 @@
     <color name="blue_button">#4C8CF5</color>
     <color name="itemBackground">#340077C2</color>
     <color name="red_600">#e53935</color>
+    <color name="gray_42">#424242</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
@@ -27,5 +28,6 @@
     <color name="subject_purple">#ce93d8</color>
     <color name="subject_blue">#90caf9</color>
     <color name="subject_green">#a5d6a7</color>
+    <color name="app_bar_background">#ffffff</color>
 
 </resources>
