@@ -1,6 +1,7 @@
 package com.themarto.etudetask.adapters;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Paint;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.android.material.color.MaterialColors;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.models.Subtask;
 import com.themarto.etudetask.utils.MyTextWatcher;
+import com.themarto.etudetask.utils.Util;
 
 import java.util.List;
 
@@ -50,7 +53,8 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         if (subtask.isDone()){
             holder.doneBtn.setImageResource(R.drawable.ic_checkmark_in_circle);
             holder.editTextTitle.setPaintFlags(holder.editTextTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.editTextTitle.setTextColor(ContextCompat.getColor(context, R.color.gray3));
+            // todo: test
+            holder.editTextTitle.setTextColor(Util.resolveColorAttr(android.R.attr.textColorSecondary, context));
             holder.editTextTitle.setEnabled(false);
         }
         holder.bind(position);

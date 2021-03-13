@@ -14,7 +14,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    app:foregroundColor="@color/gray1">
+    app:foregroundColor="?attr/colorSecondaryVariant">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
             android:layout_marginVertical="5dp"
             android:src="@drawable/ic_checkmark_circle"
             android:background="@android:color/transparent"
-            android:tint="@color/gray3"
+            android:tint="?attr/colorOnSecondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +48,7 @@
                 android:id="@+id/taskTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gray2"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -89,14 +89,14 @@
                         android:layout_width="14dp"
                         android:layout_height="14dp"
                         app:srcCompat="@drawable/ic_sub_right"
-                        app:tint="@color/gray4" />
+                        app:tint="?attr/colorOnSecondary" />
 
                     <TextView
                         android:id="@+id/textSubtaskCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="4dp"
-                        android:textColor="@color/gray4"
+                        android:textColor="?android:textColorSecondary"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -107,7 +107,7 @@
                 android:id="@+id/taskNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gray4"
+                android:textColor="?android:textColorSecondary"
                 android:linksClickable="true"
                 android:autoLink="web"
                 android:visibility="gone" />
@@ -129,7 +129,7 @@
                 android:id="@+id/taskDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/blue_button"
+                android:textColor="?attr/colorAccent"
                 android:textSize="14sp"
                 android:layout_marginVertical="5dp"/>
 

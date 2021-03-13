@@ -3,17 +3,21 @@
     <style name="Theme.EtudeTask" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/blue_button</item>
-        <item name="colorPrimaryVariant">@color/gray3</item>
-        <item name="colorPrimaryDark">@color/gray4</item>
-        <item name="colorOnPrimary">@color/gray2</item>
-        <item name="colorAccent">@color/blue_button</item>
+        <item name="colorPrimary">@color/blue_500</item>
+        <item name="colorPrimaryVariant">@color/blue_500_light</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorAccent">@color/blue_500</item>
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/blue_button</item>
-        <item name="colorSecondaryVariant">@color/gray3</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/grey_200</item>
+        <item name="colorOnSecondary">@color/grey_700</item>
+
+        <item name="colorPrimarySurface">@color/grey_400</item>
+
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/grey_900</item>
 
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
 
@@ -21,9 +25,9 @@
         <item name="android:actionMenuTextColor">@color/black</item>
 
         <!-- Text colors-->
-        <item name="android:textColorPrimary">@color/gray2</item>
-        <item name="android:textColorSecondary">@color/gray4</item>
-        <item name="android:textColorTertiary">@color/gray1</item>
+        <item name="android:textColorPrimary">@color/grey_900</item>
+        <item name="android:textColorSecondary">@color/grey_700</item>
+        <item name="android:textColorTertiary">@color/grey_400</item>
 
         <item name="preferenceTheme">@style/Theme.EtudeTask.PreferenceTheme</item>
 
@@ -45,7 +49,7 @@
 
     <!-- alert dialog theme -->
     <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="colorPrimary">@color/blue_button</item>
+        <item name="colorPrimary">@color/blue_500</item>
         <item name="colorSurface">@color/white</item>
         <item name="colorOnSurface">@color/black</item>
     </style>
@@ -53,7 +57,7 @@
     <!-- round corner bottom sheet -->
     <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog" >
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
-        <item name="colorAccent">@color/blue_button</item>
+        <item name="colorAccent">@color/blue_500</item>
     </style>
 
     <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
@@ -65,7 +69,7 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
-        <item name="colorAccent">@color/blue_button</item>
+        <item name="colorAccent">@color/blue_500</item>
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
 

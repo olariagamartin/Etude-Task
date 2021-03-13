@@ -1,6 +1,7 @@
 package com.themarto.etudetask.utils;
 
 import android.content.Context;
+import android.util.TypedValue;
 
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.WorkManagerAlarm;
@@ -13,12 +14,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.core.content.ContextCompat;
 import androidx.work.Data;
 
 public class Util {
 
     public static final String SELECTED_SUBJECT_KEY = "SELECTED_SUBJECT";
 
+    public static int resolveColorAttr (int colorAttr, Context context) {
+        TypedValue resolvedAttr = resolveThemeAttr(colorAttr, context);
+        // resourceId is used if it's a ColorStateList, and data if it's a color reference or a hex color
+        int colorRes = (resolvedAttr.resourceId != 0) ? resolvedAttr.resourceId : resolvedAttr.data;
+        return ContextCompat.getColor(context, colorRes);
+    }
+
+    private static TypedValue resolveThemeAttr (int attrRes, Context context) {
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(attrRes, typedValue, true);
+        return typedValue;
+    }
 
     public static String getDateStr(Date date, Context context, boolean hasTime) {
         String strDate = "";

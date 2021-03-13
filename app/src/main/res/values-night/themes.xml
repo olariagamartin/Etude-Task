@@ -2,23 +2,25 @@
     <!-- Base application theme. -->
     <style name="Theme.EtudeTask" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/blue_button</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/subject_red</item>
-        <item name="colorPrimaryDark">@color/gray2</item>
-        <item name="colorAccent">@color/blue_button</item>
+        <item name="colorPrimary">@color/blue_500</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorAccent">@color/blue_500</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/amber_600</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/subject_green</item>
+        <item name="colorSecondary">@color/grey_800</item>
+        <item name="colorSecondaryVariant">@color/grey_700</item>
+        <item name="colorOnSecondary">@color/grey_200</item>
         <!-- Customize your theme here. -->
-        <item name="backgroundTint">@color/gray_42</item>
-        <item name="backgroundColor">@color/gray_42</item>
-        <item name="shadowColor">@color/gray2</item>
+        <item name="backgroundTint">@color/grey_700</item>
+        <item name="backgroundColor">@color/grey_700</item>
+        <item name="shadowColor">@color/grey_700</item>
 
+        <!-- Text colors-->
         <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/grey_400</item>
+        <item name="android:textColorTertiary">@color/grey_700</item>
 
-        <item name="colorOnSurface">@color/gray1</item>
+        <item name="colorSurface">@color/grey_900</item>
+        <item name="colorOnSurface">@color/white</item>
 
         <item name="preferenceTheme">@style/Theme.EtudeTask.PreferenceTheme</item>
 

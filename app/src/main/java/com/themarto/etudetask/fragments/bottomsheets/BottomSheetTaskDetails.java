@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.WorkManagerAlarm;
@@ -166,7 +167,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     private void loadFlag() {
         if (currentTask.getFlagColor().equals(Util.FlagColors.NONE)) {
             binding.btnTaskFlag.setImageResource(R.drawable.ic_flag_outline);
-            binding.btnTaskFlag.setColorFilter(ContextCompat.getColor(requireContext(), R.color.gray4));
+            binding.btnTaskFlag.setColorFilter(MaterialColors.getColor(binding.btnTaskFlag, R.attr.colorOnSecondary));
         } else {
             binding.btnTaskFlag.setImageResource(R.drawable.ic_flag_fill_yellow);
             binding.btnTaskFlag.setColorFilter(Color.parseColor(currentTask.getFlagColor()));
@@ -239,11 +240,11 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
             }
         });
         if (currentTask.isDone()) {
-            binding.editTextTaskTitle.setTextColor(getResources().getColor(R.color.gray3, requireContext().getTheme()));
+            binding.editTextTaskTitle.setTextColor(Util.resolveColorAttr(android.R.attr.textColorSecondary, requireContext()));
             binding.editTextTaskTitle.setPaintFlags(
                     binding.editTextTaskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
-            binding.editTextTaskTitle.setTextColor(getResources().getColor(R.color.gray2, requireContext().getTheme()));
+            binding.editTextTaskTitle.setTextColor(Util.resolveColorAttr(android.R.attr.textColorPrimary, requireContext()));
             binding.editTextTaskTitle.setPaintFlags(binding.editTextTaskTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }
     }
@@ -413,16 +414,17 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         saveAlarm(currentTask);
     }
 
-    private void disableImageButton(ImageButton btn) {
+    private void disableImageButton(AppCompatImageButton btn) {
         btn.setEnabled(false);
-        btn.setImageTintList(AppCompatResources.getColorStateList(requireContext(),
-                R.color.gray1));
+        // todo: test
+        btn.setColorFilter(MaterialColors.getColor(btn, R.attr.colorPrimarySurface));
+        /*btn.setImageTintList(AppCompatResources.getColorStateList(requireContext(),
+                R.attr.colorOnSecondary));*/
     }
 
     private void enableImageButton(AppCompatImageButton btn) {
         btn.setEnabled(true);
-        btn.setImageTintList(AppCompatResources.getColorStateList(requireContext(),
-                R.color.gray4));
+        btn.setColorFilter(MaterialColors.getColor(btn, R.attr.colorOnSecondary));
     }
 
     private void showDialogDeleteTask() {
@@ -472,7 +474,8 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     private void selectFlagColor(String rgbColor) {
         if (rgbColor.equals(Util.FlagColors.NONE)) {
             binding.btnTaskFlag.setImageResource(R.drawable.ic_flag_outline);
-            binding.btnTaskFlag.setColorFilter(ContextCompat.getColor(requireContext(), R.color.gray4));
+            // todo: test
+            binding.btnTaskFlag.setColorFilter(MaterialColors.getColor(binding.btnTaskFlag, R.attr.colorOnSecondary));
         } else {
             binding.btnTaskFlag.setImageResource(R.drawable.ic_flag_fill_yellow);
             binding.btnTaskFlag.setColorFilter(Color.parseColor(rgbColor));

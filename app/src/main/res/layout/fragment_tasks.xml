@@ -51,7 +51,7 @@
                     android:layout_weight="10"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    app:tint="?attr/colorPrimaryVariant"
+                    app:tint="?attr/colorOnSecondary"
                     android:src="@drawable/ic_keyboard_arrow_down" />
 
             </LinearLayout>
@@ -72,11 +72,11 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_add"
         app:tint="@color/white"
-        app:backgroundTint="@color/blue_button"
-        app:rippleColor="@color/blue_grey_600"
-        android:layout_gravity="bottom|right"
+        app:backgroundTint="?attr/colorPrimary"
+        app:rippleColor="?attr/colorPrimaryVariant"
+        android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:contentDescription="add new task" />
+        android:contentDescription="@string/fab_add_task_description" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

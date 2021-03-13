@@ -70,5 +70,6 @@
     <string name="thanks_message">Thanks</string>
     <string name="preference_source_code_message">Source code</string>
     <string name="settings_app_bar_title">Settings</string>
+    <string name="fab_add_task_description">Add new task</string>
 
 </resources>

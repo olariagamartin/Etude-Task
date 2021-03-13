@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 
+import com.google.android.material.color.MaterialColors;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -30,7 +32,8 @@ public class MyNotificationManager {
         NotificationCompat.Builder builder = new NotificationCompat.Builder
                 (context, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.ic_etude_notification)
-                .setColor(context.getResources().getColor(R.color.blue_button))
+                // todo test
+                .setColor(MaterialColors.getColor(context, R.attr.colorAccent, "Color accent failed"))
                 //.setGroup(TASK_GROUP)
                 .setContentTitle(title) // task title
                 .setContentText(detail) // subject title

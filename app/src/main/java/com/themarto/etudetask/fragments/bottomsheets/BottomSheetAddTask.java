@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.color.MaterialColors;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.WorkManagerAlarm;
 import com.themarto.etudetask.data.AddTaskViewModel;
@@ -286,7 +287,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private void selectFlagColor(String rgbColor) {
         if (rgbColor.equals(Util.FlagColors.NONE)) {
             binding.btnAddFlag.setImageResource(R.drawable.ic_flag_outline);
-            binding.btnAddFlag.setColorFilter(ContextCompat.getColor(requireContext(), R.color.gray4));
+            binding.btnAddFlag.setColorFilter(MaterialColors.getColor(binding.btnAddFlag, R.attr.colorOnSecondary));
         } else {
             binding.btnAddFlag.setImageResource(R.drawable.ic_flag_fill_yellow);
             binding.btnAddFlag.setColorFilter(Color.parseColor(rgbColor));
@@ -296,26 +297,26 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
     private void disableTextButton(Button btn) {
         btn.setEnabled(false);
-        btn.setTextColor(getResources()
-                .getColor(R.color.gray1));
+        btn.setTextColor(MaterialColors.getColor(btn, R.attr.colorPrimarySurface));
     }
 
     private void enableTextButton(Button btn) {
         btn.setEnabled(true);
-        btn.setTextColor(getResources()
-                .getColor(R.color.blue_button));
+        btn.setTextColor(MaterialColors.getColor(btn, R.attr.colorAccent));
     }
 
     private void disableImageButton(ImageButton btn) {
         btn.setEnabled(false);
-        btn.setImageTintList(AppCompatResources.getColorStateList(requireContext(),
-                R.color.gray1));
+        btn.setColorFilter(MaterialColors.getColor(btn, R.attr.colorPrimarySurface));
+        /*btn.setImageTintList(AppCompatResources.getColorStateList(requireContext(),
+                R.color.gray1));*/
     }
 
     private void enableImageButton(AppCompatImageButton btn) {
         btn.setEnabled(true);
-        btn.setImageTintList(AppCompatResources.getColorStateList(requireContext(),
-                R.color.gray4));
+        btn.setColorFilter(MaterialColors.getColor(btn, R.attr.colorOnSecondary));
+        /*btn.setImageTintList(AppCompatResources.getColorStateList(requireContext(),
+                R.color.gray4));*/
     }
 
     private void saveAlarm(Task task) {
