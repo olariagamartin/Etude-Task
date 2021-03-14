@@ -14,10 +14,9 @@
         <item name="colorSecondaryVariant">@color/grey_200</item>
         <item name="colorOnSecondary">@color/grey_700</item>
 
-        <item name="colorPrimarySurface">@color/grey_400</item>
-
         <item name="colorSurface">@color/white</item>
         <item name="colorOnSurface">@color/grey_900</item>
+        <item name="colorPrimarySurface">@color/grey_400</item>
 
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
 

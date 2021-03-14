@@ -308,15 +308,11 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private void disableImageButton(ImageButton btn) {
         btn.setEnabled(false);
         btn.setColorFilter(MaterialColors.getColor(btn, R.attr.colorPrimarySurface));
-        /*btn.setImageTintList(AppCompatResources.getColorStateList(requireContext(),
-                R.color.gray1));*/
     }
 
     private void enableImageButton(AppCompatImageButton btn) {
         btn.setEnabled(true);
         btn.setColorFilter(MaterialColors.getColor(btn, R.attr.colorOnSecondary));
-        /*btn.setImageTintList(AppCompatResources.getColorStateList(requireContext(),
-                R.color.gray4));*/
     }
 
     private void saveAlarm(Task task) {

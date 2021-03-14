@@ -19,6 +19,7 @@
 
         <item name="colorSurface">@color/grey_900</item>
         <item name="colorOnSurface">@color/white</item>
+        <item name="colorPrimarySurface">@color/grey_700</item>
 
         <item name="shadowColor">@color/grey_900</item>
 
