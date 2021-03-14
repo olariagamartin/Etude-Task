@@ -11,6 +11,7 @@
     app:shadowMarginLeft="10dp"
     app:shadowMarginRight="10dp"
     app:shadowRadius="15dp"
+    app:backgroundColor="?attr/colorSecondary"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"

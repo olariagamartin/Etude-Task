@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@color/white"
+                android:background="@android:color/transparent"
                 android:padding="10dp"
                 android:src="@drawable/ic_details"
                 android:tint="?attr/colorOnSecondary" />
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="14dp"
-                android:background="@color/white"
+                android:background="@android:color/transparent"
                 android:padding="10dp"
                 android:src="@drawable/ic_flag_outline"
                 android:tint="?attr/colorOnSecondary" />
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="14dp"
-                android:background="@color/white"
+                android:background="@android:color/transparent"
                 android:padding="10dp"
                 android:src="@drawable/ic_add_date"
                 android:tint="?attr/colorOnSecondary" />
@@ -119,7 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@color/white"
+                android:background="@android:color/transparent"
                 android:padding="10dp"
                 android:src="@drawable/ic_notifications_none"
                 android:tint="?attr/colorOnSecondary" />
