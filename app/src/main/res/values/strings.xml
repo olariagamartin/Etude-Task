@@ -37,6 +37,7 @@
     <string name="task_details_task_title">Task title</string>
     <string name="hint_add_subtask">Add subtask</string>
     <string name="hint_subtask_title">Subtask title</string>
+    <string name="delete_sub_task_message">\"%1$s\" will be deleted</string>
     <string name="alert_dialog_delete_task_message">The task will be deleted</string>
     <string name="add_subject_button_title">Add subject</string>
     <string name="completed_tasks_count">Completed (%1$d)</string>
@@ -63,7 +64,7 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="light">Light</string>
     <string name="dark">Dark</string>
-    <string name="ask_sub_task_preferences">Ask before delete subtask</string>
+    <string name="ask_sub_task_preferences">Ask before delete a sub-task</string>
     <string name="theme">Theme</string>
     <string name="preferences_start_page_title">Start Page</string>
     <string name="preference_rate_app_message">Rate this app</string>

@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -54,6 +55,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Data;
@@ -71,7 +73,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     private boolean isDeleted = false;
     private Calendar actual;
     private Calendar calendar = Calendar.getInstance();
-    private final int CONTENT_HEIGHT_DEFAULT = 762;
+    SharedPreferences pref;
 
     public static BottomSheetTaskDetails newInstance (String taskId) {
         BottomSheetTaskDetails fragment = new BottomSheetTaskDetails();
@@ -88,6 +90,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         if (getArguments() != null) {
             task_id = getArguments().getString(ARG_TASK_ID);
         }
+        pref = PreferenceManager.getDefaultSharedPreferences(requireContext());
     }
 
     @NonNull
@@ -207,8 +210,13 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
 
             @Override
             public void onDeleteSubtask(int position) {
-                currentTask.getSubtasks().remove(position);
-                viewModel.updateTask(currentTask);
+                boolean needConfirmation = pref.getBoolean("ask_before_delete_sub_task", false);
+                if (needConfirmation) {
+                    showDialogDeleteSubTask(position);
+                } else {
+                    currentTask.getSubtasks().remove(position);
+                    viewModel.updateTask(currentTask);
+                }
             }
 
             @Override
@@ -339,6 +347,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         View bottomSheetInternal = getDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet);
         BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(screenHeight / 2);
+        int CONTENT_HEIGHT_DEFAULT = 762;
         int spaceAdded = (screenHeight - CONTENT_HEIGHT_DEFAULT) - getStatusBarHeight();
         binding.extraSpace.setMinimumHeight(spaceAdded);
         //setSpaceAdded();
@@ -436,6 +445,18 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
                     isDeleted = true;
                     viewModel.deleteTask();
                     dismiss();
+                }).show();
+    }
+
+    private void showDialogDeleteSubTask(int position) {
+        String title = currentTask.getSubtasks().get(position).getTitle();
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
+        alertDialogBuilder.setTitle(R.string.alert_dialog_confirmation_title)
+                .setMessage(getString(R.string.delete_sub_task_message, title))
+                .setNegativeButton(R.string.text_button_cancel, (dialog, which) -> { })
+                .setPositiveButton(R.string.text_button_delete, (dialog, which) -> {
+                    currentTask.getSubtasks().remove(position);
+                    viewModel.updateTask(currentTask);
                 }).show();
     }
 
