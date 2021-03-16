@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
@@ -24,20 +25,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setupDarkMode();
         View view = binding.getRoot();
         setContentView(view);
         setupBottomNavigationView();
         checkIntentFromNotification();
-    }
-
-    private void setupDarkMode () {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        String darkTheme = getResources().getStringArray(R.array.theme_values)[1];
-        String theme = pref.getString("theme", "");
-        if (theme.equals(darkTheme)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
     }
 
     private void setupBottomNavigationView() {
