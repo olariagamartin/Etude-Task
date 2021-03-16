@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
+import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
@@ -34,6 +35,14 @@ public class MainActivity extends AppCompatActivity {
     private void setupBottomNavigationView() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(binding.bottomNavView, navController);
+        // home page
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        String home = pref.getString("start_page", "");
+        if (home.equals("timeline")) {
+            NavGraph navGraph = navController.getGraph();
+            navGraph.setStartDestination(R.id.timelineFragment);
+            navController.setGraph(navGraph);
+        }
     }
 
     private void checkIntentFromNotification () {
