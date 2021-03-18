@@ -4,15 +4,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
-import com.themarto.etudetask.data.SharedViewModel;
 import com.themarto.etudetask.databinding.ActivityMainBinding;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetTaskDetails;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
