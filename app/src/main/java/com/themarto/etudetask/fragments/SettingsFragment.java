@@ -1,11 +1,15 @@
 package com.themarto.etudetask.fragments;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.themarto.etudetask.R;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -13,6 +17,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
+        Preference rateApp = findPreference("rate");
+        if (rateApp != null) {
+            rateApp.setIntent(openAppInPlayStoreIntent());
+        }
     }
 
     @Override
@@ -26,6 +34,17 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             }
         }
+    }
+
+    private Intent openAppInPlayStoreIntent(){
+        Uri uri = Uri.parse("market://details?id=" + requireContext().getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        // To count with Play market backstack, After pressing back button,
+        // to taken back to our application, we need to add following flags to intent.
+        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        return goToMarket;
     }
 
     @Override
