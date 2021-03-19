@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.themarto.etudetask.BuildConfig;
 import com.themarto.etudetask.R;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -13,12 +14,19 @@ import androidx.preference.PreferenceFragmentCompat;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private Preference shareApp;
+    private Preference rateApp;
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
-        Preference rateApp = findPreference("rate");
+        rateApp = findPreference("rate");
+        shareApp = findPreference("share");
         if (rateApp != null) {
             rateApp.setIntent(openAppInPlayStoreIntent());
+        }
+        if (shareApp != null) {
+            shareApp.setIntent(shareAppIntent());
         }
     }
 
@@ -44,6 +52,15 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
                 Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         return goToMarket;
+    }
+
+    private Intent shareAppIntent () {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.app_name);
+        String shareMessage= "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID;
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+        return shareIntent;
     }
 
     @Override

@@ -32,8 +32,13 @@
             app:title="@string/preference_rate_app_message" />
 
         <Preference
+            app:key="share"
+            app:title="@string/share_etude_pref_title" />
+
+        <Preference
             app:key="source_code"
-            app:title="@string/preference_source_code_message">
+            app:title="@string/preference_source_code_message"
+            app:isPreferenceVisible="false">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://github.com/olariagamartin/Etude-Task" />
