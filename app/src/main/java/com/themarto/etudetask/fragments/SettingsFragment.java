@@ -16,17 +16,22 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     private Preference shareApp;
     private Preference rateApp;
+    private Preference version;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
         rateApp = findPreference("rate");
         shareApp = findPreference("share");
+        version = findPreference("version");
         if (rateApp != null) {
             rateApp.setIntent(openAppInPlayStoreIntent());
         }
         if (shareApp != null) {
             shareApp.setIntent(shareAppIntent());
+        }
+        if (version != null) {
+            version.setSummary(BuildConfig.VERSION_NAME);
         }
     }
 

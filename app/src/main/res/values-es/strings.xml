@@ -40,4 +40,5 @@
     <string name="add_subject_button_title">Agregar asignatura</string>
     <string name="completed_tasks_count">Completadas (%1$d)</string>
     <string name="notification_done_button">Listo</string>
+    <string name="version_title">Versión</string>
 </resources>

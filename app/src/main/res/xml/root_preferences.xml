@@ -48,6 +48,12 @@
             app:key="thanks"
             app:title="@string/thanks_message" />
 
+        <Preference
+            app:key="version"
+            app:title="@string/version_title"
+            app:selectable="false"
+            android:summary=""/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

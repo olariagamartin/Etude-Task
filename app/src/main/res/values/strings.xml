@@ -73,5 +73,6 @@
     <string name="settings_app_bar_title">Settings</string>
     <string name="fab_add_task_description">Add new task</string>
     <string name="share_etude_pref_title">Share EtudeTask</string>
+    <string name="version_title">Version</string>
 
 </resources>
