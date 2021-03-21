@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.themarto.etudetask.R;
 import com.themarto.etudetask.adapters.SubjectAdapter;
-import com.themarto.etudetask.data.SubjectListViewModel;
+import com.themarto.etudetask.viewmodels.SubjectListViewModel;
 import com.themarto.etudetask.databinding.FragmentSubjectBinding;
 import com.themarto.etudetask.models.Subject;
 

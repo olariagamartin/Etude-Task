@@ -1,6 +1,8 @@
-package com.themarto.etudetask;
+package com.themarto.etudetask.notification;
 
 import android.content.Context;
+
+import com.themarto.etudetask.SubjectRepository;
 
 import java.util.concurrent.TimeUnit;
 

@@ -18,7 +18,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.themarto.etudetask.MainActivity;
 import com.themarto.etudetask.R;
-import com.themarto.etudetask.data.SubjectViewModel;
+import com.themarto.etudetask.viewmodels.SubjectViewModel;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetTaskDetails;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;

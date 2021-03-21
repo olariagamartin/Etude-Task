@@ -1,4 +1,4 @@
-package com.themarto.etudetask.data;
+package com.themarto.etudetask.viewmodels;
 
 import android.app.Application;
 

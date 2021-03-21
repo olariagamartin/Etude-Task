@@ -1,4 +1,4 @@
-package com.themarto.etudetask;
+package com.themarto.etudetask.notification;
 
 import android.app.NotificationChannel;
 import android.app.PendingIntent;
@@ -9,6 +9,9 @@ import android.content.IntentFilter;
 import android.os.Build;
 
 import com.google.android.material.color.MaterialColors;
+import com.themarto.etudetask.MainActivity;
+import com.themarto.etudetask.R;
+import com.themarto.etudetask.SubjectRepository;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;

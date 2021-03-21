@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.TypedValue;
 
 import com.themarto.etudetask.R;
-import com.themarto.etudetask.WorkManagerAlarm;
+import com.themarto.etudetask.notification.WorkManagerAlarm;
 import com.themarto.etudetask.models.Task;
 
 import java.text.SimpleDateFormat;

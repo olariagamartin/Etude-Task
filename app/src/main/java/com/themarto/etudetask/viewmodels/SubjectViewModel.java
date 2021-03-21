@@ -1,4 +1,4 @@
-package com.themarto.etudetask.data;
+package com.themarto.etudetask.viewmodels;
 
 import android.app.Application;
 
@@ -6,8 +6,6 @@ import com.themarto.etudetask.SubjectRepository;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
