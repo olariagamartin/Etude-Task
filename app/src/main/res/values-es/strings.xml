@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">EtudeTask</string>
     <string name="subjects_app_bar_title">Asignaturas</string>
-    <string name="dialog_edit_subject_hint_title">Titulo</string>
+    <string name="dialog_edit_subject_hint_title">Título</string>
     <string name="dialog_edit_subject_choose_color_message">Elige un color</string>
     <string name="dialog_add_subject_dialog_title">Nueva asignatura</string>
     <string name="dialog_edit_subject_dialog_title">Editar</string>
@@ -41,4 +41,25 @@
     <string name="completed_tasks_count">Completadas (%1$d)</string>
     <string name="notification_done_button">Listo</string>
     <string name="version_title">Versión</string>
+    <string name="timeline_app_bar_title">Agenda</string>
+    <string name="snackbar_task_done_message">Tarea completada</string>
+    <string name="delete_sub_task_message">\"%1$s\" será eliminada</string>
+    <string name="bottom_nav_menu_subjects_item">Asignaturas</string>
+    <string name="bottom_nav_menu_timeline_item">Agenda</string>
+    <string name="bottom_nav_view_settings_item">Ajustes</string>
+    <string name="timeline_list_header_text_today">Hoy</string>
+    <string name="timeline_list_header_text_tomorrow">Mañana</string>
+    <string name="timeline_list_header_text_upcoming">Próximo</string>
+    <string name="light">Claro</string>
+    <string name="dark">Oscuro</string>
+    <string name="ask_sub_task_preferences">Preguntar antes de borrar sub tareas</string>
+    <string name="theme">Tema</string>
+    <string name="preferences_start_page_title">Pantalla de inicio</string>
+    <string name="preference_rate_app_message">Calificar esta aplicación</string>
+    <string name="donations_message">Donaciones</string>
+    <string name="preference_source_code_message">Código fuente</string>
+    <string name="settings_app_bar_title">Ajustes</string>
+    <string name="fab_add_task_description">Agregar nueva tarea</string>
+    <string name="share_etude_pref_title">Compartir EtudeTask</string>
+    <string name="preference_category_general">General</string>
 </resources>
