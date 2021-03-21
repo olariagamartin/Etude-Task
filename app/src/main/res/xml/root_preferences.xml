@@ -45,8 +45,9 @@
         </Preference>
 
         <Preference
-            app:key="thanks"
-            app:title="@string/thanks_message" />
+            app:key="donations"
+            app:title="@string/donations_message"
+            app:isPreferenceVisible="false"/>
 
         <Preference
             app:key="version"
