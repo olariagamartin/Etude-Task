@@ -190,12 +190,12 @@ public class SubjectFragment extends Fragment {
 
     public void showDialogDeleteSubject(Subject subject) {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireContext());
-        alertDialogBuilder.setTitle("Are you sure?")
-                .setMessage("The subject will be deleted")
-                .setNegativeButton("Cancel", (dialog, which) -> { })
-                .setPositiveButton("Delete", (dialog, which) -> {
+        alertDialogBuilder.setTitle(R.string.alert_dialog_confirmation_title)
+                .setMessage(R.string.alert_dialog_delete_subject_message)
+                .setNegativeButton(R.string.text_button_cancel, (dialog, which) -> { })
+                .setPositiveButton(R.string.text_button_delete, (dialog, which) -> {
                     viewModel.deleteSubject(subject);
-                    Toast.makeText(requireContext(), "Subject deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), R.string.toast_subject_deleted, Toast.LENGTH_SHORT).show();
                 }).show();
     }
 
