@@ -6,8 +6,10 @@ import android.view.View;
 
 import com.themarto.etudetask.databinding.ActivityMainBinding;
 import com.themarto.etudetask.fragments.bottomsheets.BottomSheetTaskDetails;
+import com.themarto.etudetask.viewmodels.SharedViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
@@ -17,10 +19,12 @@ import androidx.preference.PreferenceManager;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private SharedViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -34,11 +38,12 @@ public class MainActivity extends AppCompatActivity {
         // home page
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String home = pref.getString("start_page", "");
-        if (home.equals("timeline")) {
+        if (home.equals("timeline") && !viewModel.isStartPageLoaded()) {
             NavGraph navGraph = navController.getGraph();
             navGraph.setStartDestination(R.id.timelineFragment);
             navController.setGraph(navGraph);
         }
+        viewModel.setStartPageLoaded(true);
     }
 
     private void checkIntentFromNotification () {
