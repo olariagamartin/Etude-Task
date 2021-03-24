@@ -15,6 +15,7 @@ import com.themarto.etudetask.SubjectRepository;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 public class MyNotificationManager {
 
@@ -35,8 +36,7 @@ public class MyNotificationManager {
         NotificationCompat.Builder builder = new NotificationCompat.Builder
                 (context, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.ic_etude_notification)
-                // todo test
-                .setColor(MaterialColors.getColor(context, R.attr.colorAccent, "Color accent failed"))
+                .setColor(ContextCompat.getColor(context, R.color.blue_500))
                 //.setGroup(TASK_GROUP)
                 .setContentTitle(title) // task title
                 .setContentText(detail) // subject title
