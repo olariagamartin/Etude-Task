@@ -406,6 +406,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void notifyTimeSet(){
+        deleteAlarm(currentTask);
         TransitionManager.beginDelayedTransition(binding.linearLayoutButtons);
         binding.chipAddTaskTime.setVisibility(View.VISIBLE);
         binding.btnAddTaskTime.setVisibility(View.GONE);
