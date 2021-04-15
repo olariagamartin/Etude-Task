@@ -28,6 +28,14 @@ public class Util {
         return ContextCompat.getColor(context, colorRes);
     }
 
+    public static boolean isDayPassed (Date date) {
+        Calendar today = Calendar.getInstance();
+        Calendar day = Calendar.getInstance();
+        day.setTime(date);
+        return (today.get(Calendar.YEAR) >= day.get(Calendar.YEAR)
+            && today.get(Calendar.DAY_OF_YEAR) > day.get(Calendar.DAY_OF_YEAR));
+    }
+
     private static TypedValue resolveThemeAttr (int attrRes, Context context) {
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(attrRes, typedValue, true);

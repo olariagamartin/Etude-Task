@@ -18,6 +18,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
@@ -52,6 +53,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.shadowView.setShadowMarginTop(30);
         if (position == getItemCount() - 1)
             holder.shadowView.setShadowMarginBottom(30);
+        if (currentTask.getDate() != null) {
+            if (Util.isDayPassed(currentTask.getDate())) {
+                holder.taskDate.setTextColor(ContextCompat.getColor(context, R.color.red_600));
+            }
+        }
         if (currentTask.hasAlarm()) {
             holder.notificationIcon.setVisibility(View.VISIBLE);
         } else {
