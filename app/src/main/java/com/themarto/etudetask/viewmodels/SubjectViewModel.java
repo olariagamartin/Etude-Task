@@ -47,7 +47,6 @@ public class SubjectViewModel extends AndroidViewModel {
     public void deleteSubject () {
         removeNotificationsByTag(subject.getValue().getId());
         repository.deleteSubject(subject.getValue());
-        loadSubject();
     }
 
     public void addTask (Task task) {
@@ -84,7 +83,6 @@ public class SubjectViewModel extends AndroidViewModel {
 
     private void removeNotificationsByTag(String tag) {
         WorkManager.getInstance(getApplication()).cancelAllWorkByTag(tag);
-        repository.deleteSubject(subject.getValue());
     }
 
     private void removeTaskNotifications(Task task) {

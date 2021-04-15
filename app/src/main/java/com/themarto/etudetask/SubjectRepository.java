@@ -77,9 +77,8 @@ public class SubjectRepository {
     }
 
     public void deleteSubject(Subject subject) {
-        int tasks = subject.getTaskList().size();
-        for(int i = 0; i < tasks; i++) {
-            deleteTask(subject.getTaskList().first());
+        for(Task t : subject.getTaskList()) {
+            deleteTask(t);
         }
         realm.beginTransaction();
         Subject managedSubject = realm.where(Subject.class).equalTo("id", subject.getId()).findFirst();
