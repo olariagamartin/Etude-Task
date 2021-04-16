@@ -1,9 +1,11 @@
 # Etude-Task
-Simple To Do task for students. It allows you to organize your subjects by dividing them into sections in which you can create tasks with notes and reminders.
-Arquitecture MVVM.
+Simple To Do task (with some features). Create projects, tasks, subtasks, remindern and more.
+Some used tools:
+* MVVM Architecture
+* Navigation Components
+* Realm DB
+* Work Manager
 
-![Subjects page](subjects_page.png)
-![Tasks page](tasks_page.png)
-![Bottom sheet task details collapsed](bottom_sheet_details_colapsed.png)
-![Bottom sheet task details expanded](bottom_sheet_details_expanded.png)
-![Bottom sheet add task](bottom_sheet_add_task.png)
+Screenshots
+-----------
+<img src="screenshots/projects.png" height="400" alt="Projects"/> <img src="screenshots/tasks.png" height="400" alt="Tasks"/> <img src="screenshots/details_colapsed.png" height="400" alt="Task Details Collapsed"/> <img src="screenshots/details_expanded.png" height="400" alt="Tasks Details Expanded"/> <img src="screenshots/timeline.png" height="400" alt="Timeline"/> <img src="screenshots/tasks_dark.png" height="400" alt="Tasks Dark"/> <img src="screenshots/timeline.png" height="400" alt="Timeline Dark"/>
