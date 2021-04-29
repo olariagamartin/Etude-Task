@@ -57,7 +57,7 @@ public class TimelineViewModel extends AndroidViewModel {
     }
 
     public void addTask (Task task) {
-        Subject subject = task.getSubject();
+        Subject subject = repository.getSubject(task.getSubject().getId());
         subject.getTaskList().add(task);
         repository.updateSubject(subject);
         loadLists();
