@@ -94,6 +94,11 @@ public class SubjectFragment extends Fragment {
         binding.recyclerViewSubjects.setHasFixedSize(true);
     }
 
+    /**
+     * Actions to perform for the context item click
+     * (long click on the subject item)
+     * @return interface that contains the actions
+     */
     private SubjectAdapter.SubjectListener getSubjectActions() {
         return new SubjectAdapter.SubjectListener() {
             @Override

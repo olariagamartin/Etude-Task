@@ -57,7 +57,7 @@ public class TimelineFragment extends Fragment {
         todayItemTouchHelper = new MyItemTouchHelper();
         upcomingItemTouchHelper = new MyItemTouchHelper();
         viewModel = ViewModelProviders.of(requireActivity()).get(TimelineViewModel.class);
-        viewModel.loadLists();
+        viewModel.loadLists(); // todo: delete
         setupAppBar();
         setupHeaderTitles();
         viewModel.getTodayTaskList().observe(getViewLifecycleOwner(), new Observer<List<Task>>() {

@@ -48,7 +48,7 @@ import androidx.transition.TransitionManager;
 
 public class TasksFragment extends Fragment {
 
-    private String subject_id;
+    private String subject_id;  // todo: move to the view model
     private Subject currentSubject;
 
     private FragmentTasksBinding binding;
@@ -82,7 +82,7 @@ public class TasksFragment extends Fragment {
                 setupRecyclerViewDoneTasks(Util.getDoneTasks(subject.getTaskList()));
                 setupRecyclerViewToDoTasks(Util.getToDoTasks(subject.getTaskList()));
                 setToolbarBehavior();
-                setupDoneTask();
+                setupDoneTasks();
             }
         });
         setupFAB();
@@ -111,14 +111,15 @@ public class TasksFragment extends Fragment {
         binding.toolbarTask.toolbarLayout.setOnClickListener(v -> showDialogEditSubject());
     }
 
-    private void setupDoneTask(){
+    private void setupDoneTasks(){
         setTasksCompletedTitle();
-        // Done tasks behavior
+        // if there's no done tasks to show
         if (currentSubject.getDoneSize() == 0) {
             binding.tasksDoneHeader.setVisibility(View.INVISIBLE);
         } else {
             binding.tasksDoneHeader.setVisibility(View.VISIBLE);
 
+            // show or hide done task list by pressing the taskDoneHeader
             binding.tasksDoneHeader.setOnClickListener(v -> {
                 if (binding.recyclerViewDoneTasks.getVisibility() == View.VISIBLE) {
                     binding.recyclerViewDoneTasks.setVisibility(View.GONE);
@@ -218,6 +219,7 @@ public class TasksFragment extends Fragment {
 
     private void showBottomSheetAddTask() {
         BottomSheetAddTask addTask = BottomSheetAddTask.newInstance(this.subject_id);
+        // sends the action to perform when the Bottom sheet closes
         addTask.setListener(() -> viewModel.loadSubject());
         addTask.show(getParentFragmentManager(), addTask.getTag());
     }
@@ -253,6 +255,10 @@ public class TasksFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewTasks);
     }
 
+    /**
+     * Returns the actions that can be performed on each item
+     * @return interface whit those actions
+     */
     private TaskAdapter.TaskListener getTaskListener () {
         return new TaskAdapter.TaskListener() {
             @Override
