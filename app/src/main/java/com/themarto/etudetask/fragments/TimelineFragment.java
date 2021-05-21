@@ -8,6 +8,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,8 +57,8 @@ public class TimelineFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         todayItemTouchHelper = new MyItemTouchHelper();
         upcomingItemTouchHelper = new MyItemTouchHelper();
-        viewModel = ViewModelProviders.of(requireActivity()).get(TimelineViewModel.class);
-        viewModel.loadLists(); // todo: delete
+        //viewModel = ViewModelProviders.of(requireActivity()).get(TimelineViewModel.class);
+        viewModel = (new ViewModelProvider(this)).get(TimelineViewModel.class);
         setupAppBar();
         setupHeaderTitles();
         viewModel.getTodayTaskList().observe(getViewLifecycleOwner(), new Observer<List<Task>>() {

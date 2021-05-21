@@ -24,7 +24,7 @@ public class TimelineViewModel extends AndroidViewModel {
     public TimelineViewModel(@NonNull Application application) {
         super(application);
         repository = new SubjectRepository();
-        loadTodayTaskList();
+        loadLists();
     }
 
     public void loadLists () {
