@@ -56,9 +56,6 @@ public class MyNotificationManager {
         builder.setContentIntent(pendingIntent);
 
         // Done button
-        /*context.registerReceiver(new AlarmReceiver(),
-                new IntentFilter(ACTION_TASK_DONE + taskId));*/
-        //Intent doneIntent = new Intent(ACTION_TASK_DONE + taskId);
         Intent doneIntent = new Intent(context, AlarmReceiver.class);
         doneIntent.putExtra(TASK_ID, taskId);
         PendingIntent donePendingIntent = PendingIntent.getBroadcast(context,
