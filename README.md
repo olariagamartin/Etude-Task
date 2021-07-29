@@ -1,5 +1,5 @@
 # Etude-Task
-Simple To Do task (with some features). Create projects, tasks, subtasks, remindern and more.
+Simple To Do task (with some features). Create projects, tasks, subtasks, reminders and more.
 Some used tools:
 * Navigation Components
 * Realm DB
