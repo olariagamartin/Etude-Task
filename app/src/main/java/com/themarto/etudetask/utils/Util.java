@@ -19,8 +19,6 @@ import androidx.work.Data;
 
 public class Util {
 
-    public static final String SELECTED_SUBJECT_KEY = "SELECTED_SUBJECT";
-
     public static int resolveColorAttr(int colorAttr, Context context) {
         TypedValue resolvedAttr = resolveThemeAttr(colorAttr, context);
         // resourceId is used if it's a ColorStateList, and data if it's a color reference or a hex color
