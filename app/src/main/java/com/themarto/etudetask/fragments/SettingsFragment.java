@@ -37,14 +37,20 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        // todo: extract string key theme
         if (key.equals("theme")) {
-            String theme = getPreferenceManager().getSharedPreferences().getString(key, "");
-            if (theme.equals("light")) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
-            if (theme.equals("dark")) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
+            onThemePreferenceChanged();
+        }
+    }
+
+    private void onThemePreferenceChanged () {
+        // todo: extract string key theme
+        String theme = getPreferenceManager().getSharedPreferences().getString("theme", "");
+        if (theme.equals("light")) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        if (theme.equals("dark")) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
     }
 
