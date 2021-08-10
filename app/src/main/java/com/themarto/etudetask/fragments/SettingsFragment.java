@@ -21,9 +21,19 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
-        rateApp = findPreference("rate");
-        shareApp = findPreference("share");
-        version = findPreference("version");
+        initializePreferences();
+        setupPreferences();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        // todo: extract string key theme
+        if (key.equals("theme")) {
+            onThemePreferenceChanged();
+        }
+    }
+
+    private void setupPreferences () {
         if (rateApp != null) {
             rateApp.setIntent(openAppInPlayStoreIntent());
         }
@@ -35,12 +45,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         }
     }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        // todo: extract string key theme
-        if (key.equals("theme")) {
-            onThemePreferenceChanged();
-        }
+    private void initializePreferences() {
+        // todo: extract string keys
+        rateApp = findPreference("rate");
+        shareApp = findPreference("share");
+        version = findPreference("version");
     }
 
     private void onThemePreferenceChanged () {
