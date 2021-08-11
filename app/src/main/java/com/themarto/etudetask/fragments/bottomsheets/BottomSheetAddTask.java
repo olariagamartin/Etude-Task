@@ -84,6 +84,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         setViewsBehavior();
+        setObservers();
     }
 
     private void setViewsBehavior() {
@@ -98,22 +99,24 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         disableImageButton(binding.btnAddTaskTime);
     }
 
+    private void setObservers () {
+        viewModel.isSaveBtnActive().observe(getViewLifecycleOwner(), saveBtnActive -> {
+            if (saveBtnActive) {
+                enableTextButton(binding.btnSaveTask);
+            } else {
+                disableTextButton(binding.btnSaveTask);
+            }
+        });
+    }
+
     private void setEditTextTitleBehavior() {
         binding.editTextNewTask.requestFocus(); // required for API 28+
         binding.editTextNewTask.addTextChangedListener(new MyTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                onTaskTitleTextChanged(s.toString());
+                viewModel.onTaskTitleTextChanged(s.toString());
             }
         });
-    }
-
-    private void onTaskTitleTextChanged(String title) {
-        if (title.isEmpty()) {
-            disableTextButton(binding.btnSaveTask);
-        } else {
-            enableTextButton(binding.btnSaveTask);
-        }
     }
 
     private void setBtnAddDetailsBehavior() {

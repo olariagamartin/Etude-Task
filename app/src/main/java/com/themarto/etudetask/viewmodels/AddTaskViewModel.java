@@ -8,15 +8,24 @@ import com.themarto.etudetask.models.Task;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 public class AddTaskViewModel extends AndroidViewModel {
 
     private SubjectRepository repository;
     private Subject subject;
+    private Task task = new Task();
+
+    private MutableLiveData<Boolean> saveBtnActive = new MutableLiveData<>();
 
     public AddTaskViewModel(@NonNull Application application) {
         super(application);
         repository = new SubjectRepository();
+    }
+
+    public LiveData<Boolean> isSaveBtnActive() {
+        return saveBtnActive;
     }
 
     public void loadSubject (String id) {
@@ -30,6 +39,14 @@ public class AddTaskViewModel extends AndroidViewModel {
     public void addTask (Task task) {
         subject.getTaskList().add(task);
         repository.updateSubject(subject);
+    }
+
+    public void onTaskTitleTextChanged (String title) {
+        if (title.isEmpty()) {
+            saveBtnActive.setValue(false);
+        } else {
+            saveBtnActive.setValue(true);
+        }
     }
 
     @Override
