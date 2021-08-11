@@ -100,12 +100,17 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     }
 
     private void setObservers () {
+        // todo: extract methods
         viewModel.isSaveBtnActive().observe(getViewLifecycleOwner(), saveBtnActive -> {
             if (saveBtnActive) {
                 enableTextButton(binding.btnSaveTask);
             } else {
                 disableTextButton(binding.btnSaveTask);
             }
+        });
+
+        viewModel.isAddDetailsClicked().observe(getViewLifecycleOwner(), addDetailsClickde -> {
+            onAddDetailsClicked();
         });
     }
 
@@ -121,7 +126,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
     private void setBtnAddDetailsBehavior() {
         binding.btnAddTaskDetails.setOnClickListener(v -> {
-            onAddDetailsClicked();
+            viewModel.onAddDetailsClicked();
         });
     }
 

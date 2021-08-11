@@ -18,6 +18,7 @@ public class AddTaskViewModel extends AndroidViewModel {
     private Task task = new Task();
 
     private MutableLiveData<Boolean> saveBtnActive = new MutableLiveData<>();
+    private MutableLiveData<Boolean> addDetailsClicked = new MutableLiveData<>();
 
     public AddTaskViewModel(@NonNull Application application) {
         super(application);
@@ -26,6 +27,10 @@ public class AddTaskViewModel extends AndroidViewModel {
 
     public LiveData<Boolean> isSaveBtnActive() {
         return saveBtnActive;
+    }
+
+    public LiveData<Boolean> isAddDetailsClicked () {
+        return addDetailsClicked;
     }
 
     public void loadSubject (String id) {
@@ -49,6 +54,10 @@ public class AddTaskViewModel extends AndroidViewModel {
             saveBtnActive.setValue(true);
         }
         task.setTitle(title);
+    }
+
+    public void onAddDetailsClicked () {
+        addDetailsClicked.setValue(true);
     }
 
     @Override
