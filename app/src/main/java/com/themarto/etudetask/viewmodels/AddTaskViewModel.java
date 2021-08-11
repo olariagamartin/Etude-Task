@@ -30,6 +30,7 @@ public class AddTaskViewModel extends AndroidViewModel {
 
     public void loadSubject (String id) {
         subject = repository.getSubject(id);
+        task.setSubject(subject);
     }
 
     public Subject getSubject () {
@@ -47,6 +48,7 @@ public class AddTaskViewModel extends AndroidViewModel {
         } else {
             saveBtnActive.setValue(true);
         }
+        task.setTitle(title);
     }
 
     @Override
