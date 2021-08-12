@@ -175,9 +175,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
     private void setBtnSaveTaskBehavior() {
         binding.btnSaveTask.setOnClickListener(v -> {
-            // todo: move to view model
-            Task task = getTask();
-            viewModel.addTask(task);
+            viewModel.onSaveTaskClicked();
             dismiss();
         });
     }

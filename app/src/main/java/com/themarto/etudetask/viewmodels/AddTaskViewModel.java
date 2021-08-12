@@ -5,6 +5,8 @@ import android.app.Application;
 import com.themarto.etudetask.SubjectRepository;
 import com.themarto.etudetask.models.Subject;
 import com.themarto.etudetask.models.Task;
+import com.themarto.etudetask.notification.WorkManagerAlarm;
+import com.themarto.etudetask.utils.Util;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -13,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.work.Data;
 
 public class AddTaskViewModel extends AndroidViewModel {
 
@@ -62,7 +65,29 @@ public class AddTaskViewModel extends AndroidViewModel {
         return subject;
     }
 
-    public void addTask (Task task) {
+    public void onSaveTaskClicked() {
+        checkDateAndTime();
+        saveTaskOnDB();
+    }
+
+    private void checkDateAndTime () {
+        if (dateWasSet()) {
+            task.setDate(taskCalendar.getTime());
+            if (timeWasSet()) {
+                setAlarm();
+            }
+        }
+    }
+
+    private boolean dateWasSet () {
+        return  dateSet.getValue() != null && dateSet.getValue();
+    }
+
+    private boolean timeWasSet () {
+        return timeSet.getValue() != null && timeSet.getValue();
+    }
+
+    public void saveTaskOnDB () {
         subject.getTaskList().add(task);
         repository.updateSubject(subject);
     }
@@ -120,6 +145,21 @@ public class AddTaskViewModel extends AndroidViewModel {
     public void onRemoveDate() {
         dateSet.setValue(false);
         timeSet.setValue(false);
+    }
+
+    private void setAlarm() {
+        // todo: extract method
+        long alertTime = getTaskTimeInMillis() - System.currentTimeMillis();
+        if (alertTime > 0) {
+            String notificationTitle = task.getTitle();
+            String notificationDetail = subject.getTitle();
+            Data data = Util.saveNotificationData(notificationTitle, notificationDetail, task.getId());
+
+            String alarmStringId = WorkManagerAlarm
+                    .saveAlarm(alertTime, data, task.getId(), subject.getId(), getApplication());
+
+            task.setAlarmStringId(alarmStringId);
+        }
     }
 
     @Override
