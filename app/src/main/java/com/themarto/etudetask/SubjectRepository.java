@@ -51,6 +51,7 @@ public class SubjectRepository {
         endOfDay.set(Calendar.HOUR_OF_DAY, 0);
         endOfDay.set(Calendar.MINUTE, 0);
         endOfDay.set(Calendar.SECOND, 0);
+        // todo: test at the end of the month
         endOfDay.set(Calendar.DAY_OF_MONTH, endOfDay.get(Calendar.DAY_OF_MONTH) + 1);
         List<Task> upcomingList = realm.where(Task.class).greaterThan("date", endOfDay.getTime())
                 .and().equalTo("done", false).sort("date").findAll();
