@@ -19,6 +19,7 @@ public class AddTaskViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> saveBtnActive = new MutableLiveData<>();
     private MutableLiveData<Boolean> addDetailsClicked = new MutableLiveData<>();
+    private MutableLiveData<String> flagRgbColor = new MutableLiveData<>();
 
     public AddTaskViewModel(@NonNull Application application) {
         super(application);
@@ -31,6 +32,10 @@ public class AddTaskViewModel extends AndroidViewModel {
 
     public LiveData<Boolean> isAddDetailsClicked () {
         return addDetailsClicked;
+    }
+
+    public LiveData<String> getFlagRgbColor() {
+        return flagRgbColor;
     }
 
     public void loadSubject (String id) {
@@ -58,6 +63,11 @@ public class AddTaskViewModel extends AndroidViewModel {
 
     public void onAddDetailsClicked () {
         addDetailsClicked.setValue(true);
+    }
+
+    public void onFlagColorSelected (String rgbColor) {
+        flagRgbColor.setValue(rgbColor);
+        task.setFlagColor(rgbColor);
     }
 
     @Override

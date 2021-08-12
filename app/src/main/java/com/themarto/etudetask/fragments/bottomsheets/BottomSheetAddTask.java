@@ -112,6 +112,8 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         viewModel.isAddDetailsClicked().observe(getViewLifecycleOwner(), addDetailsClickde -> {
             onAddDetailsClicked();
         });
+
+        viewModel.getFlagRgbColor().observe(getViewLifecycleOwner(), this::selectFlagColor);
     }
 
     private void setEditTextTitleBehavior() {
@@ -282,16 +284,16 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.flag_red:
-                        selectFlagColor(Util.FlagColors.RED);
+                        viewModel.onFlagColorSelected(Util.FlagColors.RED);
                         return true;
                     case R.id.flag_yellow:
-                        selectFlagColor(Util.FlagColors.YELLOW);
+                        viewModel.onFlagColorSelected(Util.FlagColors.YELLOW);
                         return true;
                     case R.id.flag_blue:
-                        selectFlagColor(Util.FlagColors.BLUE);
+                        viewModel.onFlagColorSelected(Util.FlagColors.BLUE);
                         return true;
                     case R.id.flag_none:
-                        selectFlagColor(Util.FlagColors.NONE);
+                        viewModel.onFlagColorSelected(Util.FlagColors.NONE);
                         return true;
                     default:
                         return false;
@@ -313,6 +315,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             binding.btnAddFlag.setImageResource(R.drawable.ic_flag_fill_yellow);
             binding.btnAddFlag.setColorFilter(Color.parseColor(rgbColor));
         }
+        // todo: delete after after move gathering data to view model
         flagColor = rgbColor;
     }
 
