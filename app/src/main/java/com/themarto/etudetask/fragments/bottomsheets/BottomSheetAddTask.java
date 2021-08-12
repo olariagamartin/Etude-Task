@@ -18,13 +18,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.color.MaterialColors;
 import com.themarto.etudetask.R;
-import com.themarto.etudetask.notification.WorkManagerAlarm;
-import com.themarto.etudetask.viewmodels.AddTaskViewModel;
-import com.themarto.etudetask.models.Subject;
+import com.themarto.etudetask.databinding.BottomSheetAddTaskBinding;
 import com.themarto.etudetask.utils.MyTextWatcher;
 import com.themarto.etudetask.utils.Util;
-import com.themarto.etudetask.databinding.BottomSheetAddTaskBinding;
-import com.themarto.etudetask.models.Task;
+import com.themarto.etudetask.viewmodels.AddTaskViewModel;
 
 import java.util.Calendar;
 
@@ -36,7 +33,6 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.work.Data;
 
 public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
