@@ -46,7 +46,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
     private BottomSheetAddTaskBinding binding;
     private AddTaskViewModel viewModel;
-    private Calendar actual;
     private String flagColor = Util.FlagColors.NONE;
 
     // todo: add listener as a parameter
@@ -203,15 +202,15 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
     private void lunchDatePicker() {
         // todo: change name to "current"
-        actual = Calendar.getInstance();
-        int year = actual.get(Calendar.YEAR);
-        int month = actual.get(Calendar.MONTH);
-        int day = actual.get(Calendar.DAY_OF_MONTH);
+        Calendar currentDate = Calendar.getInstance();
+        int currentYear = currentDate.get(Calendar.YEAR);
+        int currentMonth = currentDate.get(Calendar.MONTH);
+        int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                (view12, year1, month1, dayOfMonth) -> {
-                    viewModel.onDateSet(dayOfMonth, month1, year1);
-                }, year, month, day);
+                (view, year, month, dayOfMonth) -> {
+                    viewModel.onDateSet(dayOfMonth, month, year);
+                }, currentYear, currentMonth, currentDay);
         datePickerDialog.show();
     }
 
@@ -227,14 +226,14 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
     private void lunchTimePicker() {
         // todo: change name to "current"
-        actual = Calendar.getInstance();
-        int hour = actual.get(Calendar.HOUR_OF_DAY);
-        int min = actual.get(Calendar.MINUTE);
+        Calendar currentTime = Calendar.getInstance();
+        int currentHour = currentTime.get(Calendar.HOUR_OF_DAY);
+        int currentMin = currentTime.get(Calendar.MINUTE);
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
-                (view1, hourOfDay, minute) -> {
+                (view, hourOfDay, minute) -> {
                     viewModel.onTimeSet(hourOfDay, minute);
-                }, hour, min, false);
+                }, currentHour, currentMin, false);
         timePickerDialog.show();
     }
 
