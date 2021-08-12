@@ -46,7 +46,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
     private BottomSheetAddTaskBinding binding;
     private AddTaskViewModel viewModel;
-    private String flagColor = Util.FlagColors.NONE;
 
     // todo: add listener as a parameter
     public static BottomSheetAddTask newInstance(String subjectId) {
@@ -209,7 +208,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     }
 
     private void lunchDatePicker() {
-        // todo: change name to "current"
         Calendar currentDate = Calendar.getInstance();
         int currentYear = currentDate.get(Calendar.YEAR);
         int currentMonth = currentDate.get(Calendar.MONTH);
@@ -233,7 +231,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     }
 
     private void lunchTimePicker() {
-        // todo: change name to "current"
         Calendar currentTime = Calendar.getInstance();
         int currentHour = currentTime.get(Calendar.HOUR_OF_DAY);
         int currentMin = currentTime.get(Calendar.MINUTE);
@@ -252,31 +249,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
         binding.chipAddTaskTime
                 .setText(Util.getTimeString(viewModel.getTaskTime()));
-    }
-
-    /**
-     * Gathers all loaded data and loads it into a Task object.
-     * If an alarm was set then is saved.
-     *
-     * @return the Task with all data
-     */
-    private Task getTask() {
-        // todo: gather info in view model
-        String title = binding.editTextNewTask.getText().toString();
-        String details = "";
-        if (binding.editTextNewTaskDetails.getVisibility() == View.VISIBLE
-                && !binding.editTextNewTaskDetails.getText().toString().isEmpty()) {
-            details = binding.editTextNewTaskDetails.getText().toString();
-        }
-        Task nTask = new Task(title, details, viewModel.getSubject());
-        nTask.setFlagColor(flagColor);
-        if (binding.chipAddTaskDueDate.getVisibility() == View.VISIBLE) {
-            if (binding.chipAddTaskTime.getVisibility() == View.VISIBLE) {
-                saveAlarm(nTask);
-            }
-            nTask.setDate(viewModel.getTaskTime());
-        }
-        return nTask;
     }
 
     private void setBottomSheetExtended() {
@@ -324,8 +296,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             binding.btnAddFlag.setImageResource(R.drawable.ic_flag_fill_yellow);
             binding.btnAddFlag.setColorFilter(Color.parseColor(rgbColor));
         }
-        // todo: delete after after move gathering data to view model
-        flagColor = rgbColor;
     }
 
     private void disableTextButton(Button btn) {
@@ -346,22 +316,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private void enableImageButton(AppCompatImageButton btn) {
         btn.setEnabled(true);
         btn.setColorFilter(MaterialColors.getColor(btn, R.attr.colorOnSecondary));
-    }
-
-    // todo: move to view model
-    private void saveAlarm(Task task) {
-        long alertTime = viewModel.getTaskTimeInMillis() - System.currentTimeMillis();
-        if (alertTime > 0) {
-            String notificationTitle = task.getTitle();
-            Subject subject = viewModel.getSubject();
-            String notificationDetail = subject.getTitle();
-            Data data = Util.saveNotificationData(notificationTitle, notificationDetail, task.getId());
-
-            String alarmStringId = WorkManagerAlarm
-                    .saveAlarm(alertTime, data, task.getId(), subject.getId(), requireContext());
-
-            task.setAlarmStringId(alarmStringId);
-        }
     }
 
     public interface Listener {
