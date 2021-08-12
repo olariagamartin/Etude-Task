@@ -87,6 +87,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private void setViewsBehavior() {
         setEditTextTitleBehavior();
         setBtnAddDetailsBehavior();
+        setEditTextDetailsBehavior();
         setBtnAddFlagBehavior();
         setBtnAddDateBehavior();
         setBtnAddTimeBehavior();
@@ -149,6 +150,15 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         binding.editTextNewTaskDetails.setVisibility(View.VISIBLE);
         binding.editTextNewTaskDetails.requestFocus();
         setBottomSheetExtended();
+    }
+
+    private void setEditTextDetailsBehavior () {
+        binding.editTextNewTaskDetails.addTextChangedListener(new MyTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                viewModel.onTaskDetailsChanged(s.toString());
+            }
+        });
     }
 
     private void setBtnAddFlagBehavior() {

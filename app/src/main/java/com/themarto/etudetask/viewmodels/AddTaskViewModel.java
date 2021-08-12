@@ -78,8 +78,12 @@ public class AddTaskViewModel extends AndroidViewModel {
 
     public void onAddDetailsClicked () {
         // todo-issue: when the fragment is recreated the
-        // will be on the add details edit text
+        // focus will be on the add details edit text
         addDetailsClicked.setValue(true);
+    }
+
+    public void onTaskDetailsChanged (String note) {
+        task.setNote(note);
     }
 
     public void onFlagColorSelected (String rgbColor) {
