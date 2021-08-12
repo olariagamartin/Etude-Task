@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -48,11 +47,10 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private BottomSheetAddTaskBinding binding;
     private AddTaskViewModel viewModel;
     private Calendar actual;
-    private Calendar calendar = Calendar.getInstance();
     private String flagColor = Util.FlagColors.NONE;
 
     // todo: add listener as a parameter
-    public static BottomSheetAddTask newInstance (String subjectId) {
+    public static BottomSheetAddTask newInstance(String subjectId) {
         BottomSheetAddTask fragment = new BottomSheetAddTask();
         Bundle args = new Bundle();
         args.putString(ARG_SUBJECT_ID, subjectId);
@@ -99,7 +97,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         disableImageButton(binding.btnAddTaskTime);
     }
 
-    private void setObservers () {
+    private void setObservers() {
         // todo: extract methods
         viewModel.isSaveBtnActive().observe(getViewLifecycleOwner(), saveBtnActive -> {
             if (saveBtnActive) {
@@ -109,11 +107,27 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             }
         });
 
-        viewModel.isAddDetailsClicked().observe(getViewLifecycleOwner(), addDetailsClickde -> {
-            onAddDetailsClicked();
+        viewModel.isAddDetailsClicked().observe(getViewLifecycleOwner(), addDetailsClicked -> {
+            if (addDetailsClicked) onAddDetailsClicked();
         });
 
         viewModel.getFlagRgbColor().observe(getViewLifecycleOwner(), this::selectFlagColor);
+
+        viewModel.isDateSet().observe(getViewLifecycleOwner(), dateSet -> {
+            if (dateSet) {
+                onDateSet();
+            } else {
+                onDateRemoved();
+            }
+        });
+
+        viewModel.isTimeSet().observe(getViewLifecycleOwner(), timeSet -> {
+            if (timeSet) {
+                onTimeSet();
+            } else {
+                onTimeRemoved();
+            }
+        });
     }
 
     private void setEditTextTitleBehavior() {
@@ -132,7 +146,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         });
     }
 
-    private void onAddDetailsClicked () {
+    private void onAddDetailsClicked() {
         binding.editTextNewTaskDetails.setVisibility(View.VISIBLE);
         binding.editTextNewTaskDetails.requestFocus();
         setBottomSheetExtended();
@@ -161,19 +175,19 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
     private void setChipsBehavior() {
         binding.chipAddTaskDueDate.setOnCloseIconClickListener(v -> {
-            onCloseDueDateChipClicked();
+            viewModel.onRemoveDate();
         });
 
         binding.chipAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
 
         binding.chipAddTaskTime.setOnCloseIconClickListener(v -> {
-            onCloseAddTimeChipClicked();
+            viewModel.onRemoveTime();
         });
 
         binding.chipAddTaskTime.setOnClickListener(v -> lunchTimePicker());
     }
 
-    private void onCloseDueDateChipClicked () {
+    private void onDateRemoved() {
         TransitionManager.beginDelayedTransition(binding.layoutChips);
         binding.chipAddTaskDueDate.setVisibility(View.GONE);
         binding.btnAddTaskDueDate.setVisibility(View.VISIBLE);
@@ -181,68 +195,56 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         disableImageButton(binding.btnAddTaskTime);
     }
 
-    private void onCloseAddTimeChipClicked () {
+    private void onTimeRemoved() {
         TransitionManager.beginDelayedTransition(binding.layoutChips);
         binding.chipAddTaskTime.setVisibility(View.GONE);
         binding.btnAddTaskTime.setVisibility(View.VISIBLE);
     }
 
     private void lunchDatePicker() {
+        // todo: change name to "current"
         actual = Calendar.getInstance();
         int year = actual.get(Calendar.YEAR);
         int month = actual.get(Calendar.MONTH);
         int day = actual.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view12, int year, int month, int dayOfMonth) {
-                        // save the value we pick
-                        // todo: move to view model
-                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        calendar.set(Calendar.MONTH, month);
-                        calendar.set(Calendar.YEAR, year);
-
-                        notifyDateSet();
-                    }
+                (view12, year1, month1, dayOfMonth) -> {
+                    viewModel.onDateSet(dayOfMonth, month1, year1);
                 }, year, month, day);
         datePickerDialog.show();
     }
 
-    private void notifyDateSet() {
+    private void onDateSet() {
         TransitionManager.beginDelayedTransition(binding.layoutChips);
         binding.chipAddTaskDueDate.setVisibility(View.VISIBLE);
         binding.btnAddTaskDueDate.setVisibility(View.GONE);
 
-        binding.chipAddTaskDueDate.setText(Util.getDateString(calendar.getTime(), requireContext()));
+        binding.chipAddTaskDueDate.setText(Util.getDateString(viewModel.getTaskTime(), requireContext()));
 
         enableImageButton(binding.btnAddTaskTime);
     }
 
     private void lunchTimePicker() {
+        // todo: change name to "current"
         actual = Calendar.getInstance();
         int hour = actual.get(Calendar.HOUR_OF_DAY);
         int min = actual.get(Calendar.MINUTE);
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
                 (view1, hourOfDay, minute) -> {
-            // todo: move to view model
-                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                    calendar.set(Calendar.MINUTE, minute);
-
-                    notifyTimeSet();
-
+                    viewModel.onTimeSet(hourOfDay, minute);
                 }, hour, min, false);
         timePickerDialog.show();
     }
 
-    private void notifyTimeSet() {
+    private void onTimeSet() {
         TransitionManager.beginDelayedTransition(binding.layoutChips);
         binding.chipAddTaskTime.setVisibility(View.VISIBLE);
         binding.btnAddTaskTime.setVisibility(View.GONE);
 
         binding.chipAddTaskTime
-                .setText(Util.getTimeString(calendar.getTime()));
+                .setText(Util.getTimeString(viewModel.getTaskTime()));
     }
 
     /**
@@ -265,7 +267,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             if (binding.chipAddTaskTime.getVisibility() == View.VISIBLE) {
                 saveAlarm(nTask);
             }
-            nTask.setDate(calendar.getTime());
+            nTask.setDate(viewModel.getTaskTime());
         }
         return nTask;
     }
@@ -341,9 +343,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
 
     // todo: move to view model
     private void saveAlarm(Task task) {
-        // the notification will be launched just at the start of the selected minute
-        calendar.set(Calendar.SECOND, 0);
-        long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
+        long alertTime = viewModel.getTaskTimeInMillis() - System.currentTimeMillis();
         if (alertTime > 0) {
             String notificationTitle = task.getTitle();
             Subject subject = viewModel.getSubject();
@@ -351,7 +351,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             Data data = Util.saveNotificationData(notificationTitle, notificationDetail, task.getId());
 
             String alarmStringId = WorkManagerAlarm
-                    .saveAlarm(alertTime, data,task.getId(), subject.getId(), requireContext());
+                    .saveAlarm(alertTime, data, task.getId(), subject.getId(), requireContext());
 
             task.setAlarmStringId(alarmStringId);
         }
@@ -361,7 +361,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         void onPause();
     }
 
-    public void setListener (Listener listener) {
+    public void setListener(Listener listener) {
         this.listener = listener;
     }
 
