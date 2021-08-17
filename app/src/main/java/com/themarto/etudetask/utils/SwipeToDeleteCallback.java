@@ -17,13 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SwipeToDeleteCallback extends MyItemTouchHelper.SimpleCallback {
 
     private TaskAdapter adapter;
-    private Context context;
     private Drawable icon;
 
     public SwipeToDeleteCallback(TaskAdapter adapter, Context context) {
         super(0, ItemTouchHelper.LEFT);
         this.adapter = adapter;
-        this.context = context;
         this.icon = ContextCompat.getDrawable(context, R.drawable.ic_delete_color_fixed);
     }
 
