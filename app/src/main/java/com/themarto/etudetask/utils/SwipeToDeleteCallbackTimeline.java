@@ -24,7 +24,7 @@ public class SwipeToDeleteCallbackTimeline extends MyItemTouchHelper.SimpleCallb
         super(0, ItemTouchHelper.LEFT);
         this.adapter = adapter;
         this.context = context;
-        this.icon = ContextCompat.getDrawable(context, R.drawable.ic_delete_outline_2);
+        this.icon = ContextCompat.getDrawable(context, R.drawable.ic_delete_color_fixed);
     }
 
     @Override
@@ -54,7 +54,6 @@ public class SwipeToDeleteCallbackTimeline extends MyItemTouchHelper.SimpleCallb
             int iconRight = itemView.getRight() - iconMargin;
             icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
         }
-        icon.setTint(ContextCompat.getColor(context, R.color.red_600));
         icon.draw(c);
     }
 }
