@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -161,7 +162,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     }
 
     private void setBtnAddDateBehavior() {
-        binding.btnAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
+        binding.btnAddTaskDueDate.setOnClickListener(v -> showQuickDateSelector());
     }
 
     private void setBtnAddTimeBehavior() {
@@ -201,6 +202,37 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         TransitionManager.beginDelayedTransition(binding.layoutChips);
         binding.chipAddTaskTime.setVisibility(View.GONE);
         binding.btnAddTaskTime.setVisibility(View.VISIBLE);
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void showQuickDateSelector() {
+        MenuBuilder menu = new MenuBuilder(requireContext());
+        // todo: extract strings
+        // todo: change icons
+        MenuItem todayItem  = menu.add("Today").setIcon(R.drawable.ic_add_date);
+        MenuItem tomorrowItem  = menu.add("Tomorrow").setIcon(R.drawable.ic_add_date);
+        MenuItem pickDateItem  = menu.add("Pick Date").setIcon(R.drawable.ic_add_date);
+
+        todayItem.setOnMenuItemClickListener(item -> {
+            Toast.makeText(requireContext(), "Today", Toast.LENGTH_SHORT).show();
+            return true;
+        });
+
+        tomorrowItem.setOnMenuItemClickListener(item -> {
+            Toast.makeText(requireContext(), "Tomorrow", Toast.LENGTH_SHORT).show();
+            return true;
+        });
+
+        pickDateItem.setOnMenuItemClickListener(item -> {
+            lunchDatePicker();
+            return true;
+        });
+
+        MenuPopupHelper helper = new MenuPopupHelper(requireContext(),
+                menu,
+                binding.btnAddFlag);
+        helper.setForceShowIcon(true);
+        helper.show();
     }
 
     private void lunchDatePicker() {
