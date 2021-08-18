@@ -360,11 +360,9 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     @SuppressLint("RestrictedApi")
     private void showQuickDateSelector() {
         MenuBuilder menu = new MenuBuilder(requireContext());
-        // todo: extract strings
-        // todo: change icons
-        MenuItem todayItem  = menu.add(R.string.date_format_today).setIcon(R.drawable.ic_add_date);
-        MenuItem tomorrowItem  = menu.add(R.string.date_format_tomorrow).setIcon(R.drawable.ic_add_date);
-        MenuItem pickDateItem  = menu.add(R.string.pick_date_item).setIcon(R.drawable.ic_add_date);
+        MenuItem todayItem  = menu.add(R.string.date_format_today).setIcon(R.drawable.ic_today);
+        MenuItem tomorrowItem  = menu.add(R.string.date_format_tomorrow).setIcon(R.drawable.ic_tomorrow);
+        MenuItem pickDateItem  = menu.add(R.string.pick_date_item).setIcon(R.drawable.ic_custom_date);
 
         todayItem.setOnMenuItemClickListener(item -> {
             onDateSetForToday();
