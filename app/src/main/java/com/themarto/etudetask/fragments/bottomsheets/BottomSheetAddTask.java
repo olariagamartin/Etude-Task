@@ -181,7 +181,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             viewModel.onRemoveDate();
         });
 
-        binding.chipAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
+        binding.chipAddTaskDueDate.setOnClickListener(v -> showQuickDateSelector());
 
         binding.chipAddTaskTime.setOnCloseIconClickListener(v -> {
             viewModel.onRemoveTime();
@@ -214,12 +214,12 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         MenuItem pickDateItem  = menu.add("Pick Date").setIcon(R.drawable.ic_add_date);
 
         todayItem.setOnMenuItemClickListener(item -> {
-            Toast.makeText(requireContext(), "Today", Toast.LENGTH_SHORT).show();
+            viewModel.onDateSetForToday();
             return true;
         });
 
         tomorrowItem.setOnMenuItemClickListener(item -> {
-            Toast.makeText(requireContext(), "Tomorrow", Toast.LENGTH_SHORT).show();
+            viewModel.onDateSetForTomorrow();
             return true;
         });
 

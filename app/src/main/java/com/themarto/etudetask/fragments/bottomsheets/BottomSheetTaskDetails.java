@@ -282,7 +282,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
             currentTask.setDate(null);
         });
 
-        binding.chipAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
+        binding.chipAddTaskDueDate.setOnClickListener(v -> showQuickDateSelector());
 
         binding.chipAddTaskTime.setOnCloseIconClickListener(v -> {
             TransitionManager.beginDelayedTransition(binding.linearLayoutButtons);
@@ -367,12 +367,12 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         MenuItem pickDateItem  = menu.add("Pick Date").setIcon(R.drawable.ic_add_date);
 
         todayItem.setOnMenuItemClickListener(item -> {
-            Toast.makeText(requireContext(), "Today", Toast.LENGTH_SHORT).show();
+            onDateSetForToday();
             return true;
         });
 
         tomorrowItem.setOnMenuItemClickListener(item -> {
-            Toast.makeText(requireContext(), "Tomorrow", Toast.LENGTH_SHORT).show();
+            onDateSetForTomorrow();
             return true;
         });
 
@@ -386,6 +386,31 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
                 binding.btnAddTaskDueDate);
         helper.setForceShowIcon(true);
         helper.show();
+    }
+
+    private void onDateSetForToday () {
+        // todo: refactor
+        Calendar today = Calendar.getInstance();
+        int day = today.get(Calendar.DAY_OF_MONTH);
+        int month = today.get(Calendar.MONTH);
+        int year = today.get(Calendar.YEAR);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.YEAR, year);
+        notifyDateSet();
+    }
+
+    private void onDateSetForTomorrow() {
+        // todo: refactor
+        Calendar tomorrow = Calendar.getInstance();
+        tomorrow.roll(Calendar.DAY_OF_MONTH, true);
+        int day = tomorrow.get(Calendar.DAY_OF_MONTH);
+        int month = tomorrow.get(Calendar.MONTH);
+        int year = tomorrow.get(Calendar.YEAR);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.YEAR, year);
+        notifyDateSet();
     }
 
     private void lunchDatePicker() {

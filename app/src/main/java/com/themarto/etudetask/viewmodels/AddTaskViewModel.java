@@ -123,6 +123,28 @@ public class AddTaskViewModel extends AndroidViewModel {
         dateSet.setValue(true);
     }
 
+    public void onDateSetForToday () {
+        Calendar today = Calendar.getInstance();
+        int day = today.get(Calendar.DAY_OF_MONTH);
+        int month = today.get(Calendar.MONTH);
+        int year = today.get(Calendar.YEAR);
+        onDateSet(day, month, year);
+    }
+
+    public void onDateSetForTomorrow () {
+        Calendar tomorrow = getTomorrowCalendar();
+        int day = tomorrow.get(Calendar.DAY_OF_MONTH);
+        int month = tomorrow.get(Calendar.MONTH);
+        int year = tomorrow.get(Calendar.YEAR);
+        onDateSet(day, month, year);
+    }
+
+    private Calendar getTomorrowCalendar () {
+        Calendar tomorrowCalendar = Calendar.getInstance();
+        tomorrowCalendar.roll(Calendar.DAY_OF_MONTH, true);
+        return tomorrowCalendar;
+    }
+
     public Date getTaskTime () {
         return taskCalendar.getTime();
     }
