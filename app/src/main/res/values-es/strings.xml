@@ -62,4 +62,5 @@
     <string name="fab_add_task_description">Agregar nueva tarea</string>
     <string name="share_etude_pref_title">Compartir EtudeTask</string>
     <string name="preference_category_general">General</string>
+    <string name="pick_date_item">Otro</string>
 </resources>

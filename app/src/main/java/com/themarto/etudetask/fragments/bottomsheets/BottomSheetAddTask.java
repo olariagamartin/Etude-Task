@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -161,7 +162,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     }
 
     private void setBtnAddDateBehavior() {
-        binding.btnAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
+        binding.btnAddTaskDueDate.setOnClickListener(v -> showQuickDateSelector());
     }
 
     private void setBtnAddTimeBehavior() {
@@ -180,7 +181,7 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
             viewModel.onRemoveDate();
         });
 
-        binding.chipAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
+        binding.chipAddTaskDueDate.setOnClickListener(v -> showQuickDateSelector());
 
         binding.chipAddTaskTime.setOnCloseIconClickListener(v -> {
             viewModel.onRemoveTime();
@@ -201,6 +202,35 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
         TransitionManager.beginDelayedTransition(binding.layoutChips);
         binding.chipAddTaskTime.setVisibility(View.GONE);
         binding.btnAddTaskTime.setVisibility(View.VISIBLE);
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void showQuickDateSelector() {
+        MenuBuilder menu = new MenuBuilder(requireContext());
+        MenuItem todayItem  = menu.add(R.string.date_format_today).setIcon(R.drawable.ic_today);
+        MenuItem tomorrowItem  = menu.add(R.string.date_format_tomorrow).setIcon(R.drawable.ic_tomorrow);
+        MenuItem pickDateItem  = menu.add(R.string.pick_date_item).setIcon(R.drawable.ic_custom_date);
+
+        todayItem.setOnMenuItemClickListener(item -> {
+            viewModel.onDateSetForToday();
+            return true;
+        });
+
+        tomorrowItem.setOnMenuItemClickListener(item -> {
+            viewModel.onDateSetForTomorrow();
+            return true;
+        });
+
+        pickDateItem.setOnMenuItemClickListener(item -> {
+            lunchDatePicker();
+            return true;
+        });
+
+        MenuPopupHelper helper = new MenuPopupHelper(requireContext(),
+                menu,
+                binding.btnAddFlag);
+        helper.setForceShowIcon(true);
+        helper.show();
     }
 
     private void lunchDatePicker() {

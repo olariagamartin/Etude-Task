@@ -48,6 +48,7 @@
     <string name="timeline_list_header_text_today">Today</string>
     <string name="timeline_list_header_text_tomorrow">Tomorrow</string>
     <string name="timeline_list_header_text_upcoming">Upcoming</string>
+    <string name="pick_date_item">Other</string>
     <!-- Preference Titles -->
 
     <!-- Messages Preferences -->

@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -264,7 +265,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void btnDateBehavior(){
-        binding.btnAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
+        binding.btnAddTaskDueDate.setOnClickListener(v -> showQuickDateSelector());
     }
 
     private void btnNotificationBehavior(){
@@ -281,7 +282,7 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
             currentTask.setDate(null);
         });
 
-        binding.chipAddTaskDueDate.setOnClickListener(v -> lunchDatePicker());
+        binding.chipAddTaskDueDate.setOnClickListener(v -> showQuickDateSelector());
 
         binding.chipAddTaskTime.setOnCloseIconClickListener(v -> {
             TransitionManager.beginDelayedTransition(binding.linearLayoutButtons);
@@ -354,6 +355,60 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         if (BottomSheetBehavior.from(bottomSheetInternal).getState() != BottomSheetBehavior.STATE_EXPANDED) {
             BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_EXPANDED);
         }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void showQuickDateSelector() {
+        MenuBuilder menu = new MenuBuilder(requireContext());
+        MenuItem todayItem  = menu.add(R.string.date_format_today).setIcon(R.drawable.ic_today);
+        MenuItem tomorrowItem  = menu.add(R.string.date_format_tomorrow).setIcon(R.drawable.ic_tomorrow);
+        MenuItem pickDateItem  = menu.add(R.string.pick_date_item).setIcon(R.drawable.ic_custom_date);
+
+        todayItem.setOnMenuItemClickListener(item -> {
+            onDateSetForToday();
+            return true;
+        });
+
+        tomorrowItem.setOnMenuItemClickListener(item -> {
+            onDateSetForTomorrow();
+            return true;
+        });
+
+        pickDateItem.setOnMenuItemClickListener(item -> {
+            lunchDatePicker();
+            return true;
+        });
+
+        MenuPopupHelper helper = new MenuPopupHelper(requireContext(),
+                menu,
+                binding.btnAddTaskDueDate);
+        helper.setForceShowIcon(true);
+        helper.show();
+    }
+
+    private void onDateSetForToday () {
+        // todo: refactor
+        Calendar today = Calendar.getInstance();
+        int day = today.get(Calendar.DAY_OF_MONTH);
+        int month = today.get(Calendar.MONTH);
+        int year = today.get(Calendar.YEAR);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.YEAR, year);
+        notifyDateSet();
+    }
+
+    private void onDateSetForTomorrow() {
+        // todo: refactor
+        Calendar tomorrow = Calendar.getInstance();
+        tomorrow.roll(Calendar.DAY_OF_MONTH, true);
+        int day = tomorrow.get(Calendar.DAY_OF_MONTH);
+        int month = tomorrow.get(Calendar.MONTH);
+        int year = tomorrow.get(Calendar.YEAR);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.YEAR, year);
+        notifyDateSet();
     }
 
     private void lunchDatePicker() {
