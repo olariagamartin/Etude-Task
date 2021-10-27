@@ -44,7 +44,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     private BottomSheetAddTaskBinding binding;
     private AddTaskViewModel viewModel;
 
-    // todo: add listener as a parameter
     public static BottomSheetAddTask newInstance(String subjectId) {
         BottomSheetAddTask fragment = new BottomSheetAddTask();
         Bundle args = new Bundle();
@@ -66,7 +65,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = BottomSheetAddTaskBinding.inflate(inflater, container, false);
-        // todo: use view model factory to send subjectId
         viewModel = ViewModelProviders.of(this).get(AddTaskViewModel.class);
         viewModel.loadSubject(subjectId);
         return binding.getRoot();
@@ -94,7 +92,6 @@ public class BottomSheetAddTask extends BottomSheetDialogFragment {
     }
 
     private void setObservers() {
-        // todo: extract methods
         viewModel.isSaveBtnActive().observe(getViewLifecycleOwner(), saveBtnActive -> {
             if (saveBtnActive) {
                 enableTextButton(binding.btnSaveTask);

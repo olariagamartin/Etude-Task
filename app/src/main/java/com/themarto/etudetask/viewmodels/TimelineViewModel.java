@@ -69,7 +69,6 @@ public class TimelineViewModel extends AndroidViewModel {
     }
 
     public void deleteTask (Task task) {
-        // todo: check on db, check returned value
         removeTaskNotifications(task);
         task.setAlarmStringId("");
         repository.deleteTask(task);

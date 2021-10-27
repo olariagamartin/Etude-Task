@@ -387,7 +387,6 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void onDateSetForToday () {
-        // todo: refactor
         Calendar today = Calendar.getInstance();
         int day = today.get(Calendar.DAY_OF_MONTH);
         int month = today.get(Calendar.MONTH);
@@ -399,7 +398,6 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     }
 
     private void onDateSetForTomorrow() {
-        // todo: refactor
         Calendar tomorrow = Calendar.getInstance();
         tomorrow.roll(Calendar.DAY_OF_MONTH, true);
         int day = tomorrow.get(Calendar.DAY_OF_MONTH);
@@ -475,7 +473,6 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
 
     private void disableImageButton(AppCompatImageButton btn) {
         btn.setEnabled(false);
-        // todo: test
         btn.setColorFilter(MaterialColors.getColor(btn, R.attr.colorPrimarySurface));
         /*btn.setImageTintList(AppCompatResources.getColorStateList(requireContext(),
                 R.attr.colorOnSecondary));*/
@@ -545,7 +542,6 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
     private void selectFlagColor(String rgbColor) {
         if (rgbColor.equals(Util.FlagColors.NONE)) {
             binding.btnTaskFlag.setImageResource(R.drawable.ic_flag_outline);
-            // todo: test
             binding.btnTaskFlag.setColorFilter(MaterialColors.getColor(binding.btnTaskFlag, R.attr.colorOnSecondary));
         } else {
             binding.btnTaskFlag.setImageResource(R.drawable.ic_flag_fill_yellow);
@@ -554,7 +550,6 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         currentTask.setFlagColor(rgbColor);
     }
 
-    // todo: extract method in other class
     private void saveAlarm(Task task) {
         // the notification will be launched just at the start of the selected minute
         calendar.set(Calendar.SECOND, 0);
@@ -573,7 +568,6 @@ public class BottomSheetTaskDetails extends BottomSheetDialogFragment {
         }
     }
 
-    // todo: extract method in other class
     private void deleteAlarm(Task task) {
         if(task.hasAlarm()) {
             WorkManager.getInstance(requireContext()).cancelWorkById(UUID

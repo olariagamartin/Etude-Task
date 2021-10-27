@@ -27,7 +27,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        // todo: extract string key theme
         if (key.equals("theme")) {
             onThemePreferenceChanged();
         }
@@ -46,14 +45,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void initializePreferences() {
-        // todo: extract string keys
         rateApp = findPreference("rate");
         shareApp = findPreference("share");
         version = findPreference("version");
     }
 
     private void onThemePreferenceChanged () {
-        // todo: extract string key theme
         String theme = getPreferenceManager().getSharedPreferences().getString("theme", "");
         if (theme.equals("light")) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);

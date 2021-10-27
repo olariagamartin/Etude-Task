@@ -47,11 +47,6 @@ public class DetailsViewModel extends AndroidViewModel {
     }
 
     public void commitTaskChanges () {
-        /* if some sub-task were deleted the database doesn't know
-        about it, so when a task is updated, the sub-task deleted will no longer
-        be in the sub-task list of the task, but will still be in the
-        database */
-        // todo: check
         repository.deleteSubtasks(taskLiveData.getValue());
         repository.updateTask(taskLiveData.getValue());
     }

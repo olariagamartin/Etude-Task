@@ -102,8 +102,6 @@ public class AddTaskViewModel extends AndroidViewModel {
     }
 
     public void onAddDetailsClicked () {
-        // todo-issue: when the fragment is recreated the
-        // focus will be on the add details edit text
         addDetailsClicked.setValue(true);
     }
 
@@ -170,7 +168,6 @@ public class AddTaskViewModel extends AndroidViewModel {
     }
 
     private void setAlarm() {
-        // todo: extract method
         long alertTime = getTaskTimeInMillis() - System.currentTimeMillis();
         if (alertTime > 0) {
             String notificationTitle = task.getTitle();

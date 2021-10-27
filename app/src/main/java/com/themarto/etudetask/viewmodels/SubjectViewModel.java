@@ -74,7 +74,6 @@ public class SubjectViewModel extends AndroidViewModel {
     }
 
     public void deleteTask (Task task) {
-        // todo: check on db, check returned value
         removeTaskNotifications(task);
         task.setAlarmStringId("");
         repository.deleteTask(task);

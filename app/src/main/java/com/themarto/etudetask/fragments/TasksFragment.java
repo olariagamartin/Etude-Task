@@ -48,7 +48,7 @@ import androidx.transition.TransitionManager;
 
 public class TasksFragment extends Fragment {
 
-    private String subject_id;  // todo: move to the view model
+    private String subject_id;
     private Subject currentSubject;
 
     private FragmentTasksBinding binding;

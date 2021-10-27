@@ -46,7 +46,6 @@ public class TaskTimelineAdapter extends RecyclerView.Adapter<TaskTimelineAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // todo: check performance
         Task currentTask = taskList.get(position);
         holder.taskTitle.setText(currentTask.getTitle());
         holder.taskSubject.setText(currentTask.getSubject().getTitle());
@@ -107,7 +106,6 @@ public class TaskTimelineAdapter extends RecyclerView.Adapter<TaskTimelineAdapte
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            // TODO: try binding
             btnTaskDone = itemView.findViewById(R.id.btn_checkbox_task);
             taskTitle = itemView.findViewById(R.id.taskTitle);
             taskDate = itemView.findViewById(R.id.taskDate);

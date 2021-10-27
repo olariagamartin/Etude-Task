@@ -53,7 +53,6 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         if (subtask.isDone()){
             holder.doneBtn.setImageResource(R.drawable.ic_checkmark_in_circle);
             holder.editTextTitle.setPaintFlags(holder.editTextTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            // todo: test
             holder.editTextTitle.setTextColor(Util.resolveColorAttr(android.R.attr.textColorSecondary, context));
             holder.editTextTitle.setEnabled(false);
         }
